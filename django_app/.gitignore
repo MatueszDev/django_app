@@ -1,4 +1,7 @@
+venv
 *.pyc
+.env
+staticfiles
 *.swp
 *.un~
 *.sqlite3
