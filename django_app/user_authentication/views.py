@@ -17,13 +17,11 @@ def register(request):
         if form.is_valid():
             user_obj = form.cleaned_data
             username = user_obj['username']
-            first_name = user_obj['first_name']
-            surname = user_obj['surname']
             email = user_obj['email']
             password = user_obj['password']
             if not (User.objects.filter(username=username).exists() or User.objects.filter(email=email).exists()):
-                User.objects.create_user(username, first_name, surname, email, password)
-                user = authenticate(username=username, password=password)
+                User.objects.create_user(username, email, password)
+                user = authenticate(username=username, password=password, email=email)
                 login(request, user)
                 return HttpResponseRedirect('/')
             else:
