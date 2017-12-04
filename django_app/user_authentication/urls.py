@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from django.contrib.auth import views as auth_views
-from .views import register
+from .views import home, register
 
 urlpatterns = [
     url(r'^login/$', auth_views.login,
@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^logout/$', auth_views.logout,
         {'template_name': 'user_authentication/log_out.html'}),
     url(r'^register/', register),
+    url(r'^$', home),
 ]
