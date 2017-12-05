@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+<div id="header">
+
+<span class="user">
+    {% if request.user.is_authenticated %}
+        Hello, {{ request.user.first_name }}!
+        <a href="{% url "logout" %}">Log out</a>
+    {% else %}
+        <a href="{% url "login" %}">Log in</a>
+    {% endif %}
+</span>
+
+<div id="content">
+{% block content %}
+{% endblock %}
+</div>
+</body>
+</html>
