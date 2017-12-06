@@ -1,23 +1,27 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block title %}Log in{% endblock %}
 
 {% block content %}
-<h1>Log in</h1>
+<div id="main_center">
+    <div id="login_window">
+        <div id="login_window_title">
+	 	    <h1>Log in</h1>
+        </div>
+		<div style="padding: 20px;">
+		{% if form.errors %}
+		    <p> Your username and password are invalid. Try again. </p>
+    	{% else %}
+            <p> Hey! Sign in or sign up <a href="{% url "register" %}">here</a>.</p>
+        {% endif %}
 
-{% if form.errors %}
-<p> Your username and password are invalid. Try again. </p>
-
-    {% else %}
-        <p> Hey! Sign in or sign up <a href="{% url "register" %}">here</a>.</p>
-    {% endif %}
-
-    <div class="login-form">
-        <form action="{% url 'login' %}" method="post">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <input type="hidden" name="next" value="{{ next }}" />
-        <p><input type="submit" value="Login"></p>
-    </form>
+         <form action="{% url 'login' %}" method="post">
+             {{ form.as_p }}
+             {% csrf_token %}
+             <input type="hidden" name="next" value="{{ next }}" />
+             <p><input type="submit" value="Login"></p>
+         </form>
+		</div>
     </div>
+</div>
 {% endblock %}

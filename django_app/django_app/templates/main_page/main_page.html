@@ -3,6 +3,14 @@
 {% block title %}Main page{% endblock %}
 
 {% block content %}
-    <h1>This is main page</h1>
-    <p>If you want to log out, please click <a href="{% url "logout" %}">here</a>.</p>
+<div id="main_center">
+    <div id="login_window">
+	    <div id="login_window_title">
+            <h1>This is main page</h1>
+	    </div>
+		<div style="padding: 20px;">
+            <p>If you want to log out, please click <a href="{% url "logout" %}">here</a>.</p>
+		</div>
+    </div>
+</div>
 {% endblock %}

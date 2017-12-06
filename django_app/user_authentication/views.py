@@ -26,7 +26,7 @@ def user_login(request):
 
 @login_required
 def dashboard(request):
-    return render(request, 'user_authentication/dashboard.html', {'section': 'dashboard'})
+    return render(request, 'main_page/main_page.html', {'section': 'dashboard'})
 
 
 def register(request):
