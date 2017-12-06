@@ -6,8 +6,8 @@ services:
 env:
     -DJANGO=1.11 DB=mysql
 install:
-    - pip install -r requirements.txt
+    - pip install -r tests_requirements.txt
 before_script:
     - mysql -e 'create database test;' -u root
 script:
-    - python django_app/manage.py test
+    - python django_app/manage.py test user_authentication
