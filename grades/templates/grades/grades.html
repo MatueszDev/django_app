@@ -1,0 +1,42 @@
+{% extends 'grades/base.html' %}
+{% block content %}
+<div class="years">
+            <h1>Choose your group:</h1>
+
+                <ol>
+                    <li>
+                        {% for field in fields %}
+                            <h3>{{field}}</h3>
+                        <ol>
+                            {% for year in years %}
+                            <li>
+                                <h4>year {{year}}</h4>
+                                <ol>
+                                    {% for class in classes %}
+                                    <li>
+                                        <a href="grades_table.html"><div class="grades_table">{{class}}</div></a>
+                                    </li>
+                                    {% endfor %}
+                                </ol>
+                            </li>
+                            {% endfor %}
+                        </ol>
+                        {% endfor %}
+                    </li>
+                </ol>
+            {% for gradesGroup in gradesGroups %}
+            <h1>{{gradesGroup.year}}</h1><br/>
+            {% endfor %}
+        </div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+    function show_grades(className)
+    {
+        var className = document.getElementById("")
+    }
+
+</script>
+
+{% endblock %}
