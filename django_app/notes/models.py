@@ -11,10 +11,8 @@ class Note(models.Model):
     def __unicode__(self):
         return self.name
 
-#note: NoteText,NoteImage as of now allow uploads, but trying to open them
-#     from the admin view yields non-existent invalid path [wip]
-
-#make sure you have the Pillow package, seems to be part of py2 by default
+#make sure you have the PIL/Pillow package, seems to be part of py2 by default
+#(Pillow is a newer fork of PIL, internally still referred to as PIL)
 class NoteImage(models.Model):
     name = models.CharField(max_length=250)
     author = models.CharField(max_length=250)

@@ -60,7 +60,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'django_app/templates'),
-                 os.path.join(BASE_DIR, 'user_authentication/templates')],
+                 os.path.join(BASE_DIR, 'user_authentication/templates'),
+                 os.path.join(BASE_DIR, 'notes/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -128,4 +129,4 @@ STATIC_URL = '/static/'
 
 # User-uploaded files (pictures for notes, files with code, etc.)
 
-MEDIA_ROOT = 'media/'
+MEDIA_ROOT = 'django_app/media/'
