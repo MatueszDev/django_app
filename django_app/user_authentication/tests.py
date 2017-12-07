@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.test import TestCase
 from .forms import LoginForm, UserRegistrationForm
 from django.contrib.auth.models import User
+from django.test import Client
 
 
 class LoginTest(TestCase):
@@ -22,24 +23,24 @@ class LoginTest(TestCase):
 class RegistrationTest(TestCase):
     def test_if_registration_form_is_valid(self):
         form = UserRegistrationForm(data={'username': 'john', 'first_name': 'john', 'last_name': 'john',
-                                          'email': 'john@fis.agh.edu.pl', 'password': 'johnjohn', 'password2': 'johnjohn'})
+                                          'email': 'john@fis.agh.edu.pl', 'password': 'johnjohn', 'password_2': 'johnjohn'})
         self.assertTrue(form.is_valid())
 
     def test_if_registration_is_invalid(self):
         form = UserRegistrationForm(data={'username': '', 'first_name': 'john', 'last_name': 'john',
-                                          'email': 'john@fis.agh.edu.pl', 'password': 'john', 'password2': 'john'})
+                                          'email': 'john@fis.agh.edu.pl', 'password': 'john', 'password_2': 'john'})
         self.assertFalse(form.is_valid())
         form = UserRegistrationForm(data={'username': 'john', 'first_name': '', 'last_name': 'john',
-                                          'email': 'john@fis.agh.edu.pl', 'password': 'al', 'password2': 'al'})
+                                          'email': 'john@fis.agh.edu.pl', 'password': 'al', 'password_2': 'al'})
         self.assertFalse(form.is_valid())
         form = UserRegistrationForm(data={'username': 'john', 'first_name': 'john', 'last_name': '',
-                                          'email': 'john@fis.agh.edu.pl', 'password': 'john', 'password2': 'john'})
+                                          'email': 'john@fis.agh.edu.pl', 'password': 'john', 'password_2': 'john'})
         self.assertFalse(form.is_valid())
         form = UserRegistrationForm(data={'username': 'john', 'first_name': 'john', 'last_name': 'john',
-                                          'email': 'john@hfh', 'password': 'john', 'password2': 'john'})
+                                          'email': 'john@hfh', 'password': 'john', 'password_2': 'john'})
         self.assertFalse(form.is_valid())
         form = UserRegistrationForm(data={'username': 'john', 'first_name': 'john', 'last_name': '',
-                                          'email': 'john@fis.agh.edu.pl', 'password': 'ss', 'password2': 'fd'})
+                                          'email': 'john@fis.agh.edu.pl', 'password': 'ss', 'password_2': 'fd'})
         self.assertFalse(form.is_valid())
 
 
@@ -87,3 +88,6 @@ class ViewTest(TestCase):
                                                    'email': '', 'password': '12345678',
                                                    'password_2': '12345678'}, follow=True)
         self.assertTemplateUsed(response, 'user_authentication/register.html')
+
+
+
