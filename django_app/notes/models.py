@@ -34,7 +34,7 @@ class NoteText(models.Model):
     
     def display_file(self):
         with open(self.content.path) as f:
-            return f.read().replace('\n', '<br>')
+            return f.read()#.replace('\n', '<br>')
 
     def __unicode__(self):
         return self.name
