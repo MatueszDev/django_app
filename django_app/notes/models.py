@@ -33,6 +33,10 @@ class NoteText(models.Model):
     lecture_number = models.IntegerField()
     lecture_title = models.CharField(max_length=250)
     content = models.FileField(upload_to='textfiles/')
+    
+    def display_file(self):
+        with open(self.content.path) as f:
+            return f.read().replace('\n', '<br>')
 
     def __unicode__(self):
         return self.name
