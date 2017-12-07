@@ -14,7 +14,7 @@
                                 <ol>
                                     {% for class in classes %}
                                     <li>
-                                        <h6 id='{{class}}' onclick="show_grades">{{class}}</h6>
+                                        <a href="grades_table.html"><div class="grades_table">{{class}}</div></a>
                                     </li>
                                     {% endfor %}
                                 </ol>
@@ -32,7 +32,7 @@
 
 {% block javascript %}
 <script type="text/javascript">
-    function show_grades()
+    function show_grades(className)
     {
         var className = document.getElementById("")
     }

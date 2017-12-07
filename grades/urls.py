@@ -5,5 +5,5 @@ from .import views
 
 urlpatterns = [
     url(r'^$', views.choose_group, name='choose_field'),
-    url(r'^fty1mmf1$', views.grades_table, name='grades_table')
+    url(r'^grades_table', views.grades_table, name='grades_table')
 ]
