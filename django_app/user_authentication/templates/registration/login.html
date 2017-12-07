@@ -10,7 +10,8 @@
         </div>
 		<div style="padding: 20px;">
 		{% if form.errors %}
-		    <p> Your username and password are invalid. Try again. </p>
+		    <p> Your username and password are invalid. Try again or sign up
+                <a href="{% url "register" %}">here</a> </p>
     	{% else %}
             <p> Hey! Sign in or sign up <a href="{% url "register" %}">here</a>.</p>
         {% endif %}

@@ -10,8 +10,9 @@
 	    </div>
 		<div style="padding: 20px;">
             <p>Fill in the form below in order to create new account:</p>
+            <p>If you already have account you can log in <a href="{% url "login" %}">here</a></p>
             <form action="." method="post">
-                {{ user_form.as_p }}
+                {{ register_form.as_p }}
                 {% csrf_token %}
                 <p><input type="submit" value="Sign up"></p>
             </form>

@@ -15,7 +15,7 @@ class UserRegistrationForm(forms.ModelForm):
                             help_text='Please provide your student email - fis.agh.edu.pl')
     password = forms.CharField(required=True, label='Password', widget=forms.PasswordInput, min_length=8,
                                help_text='Password should be at least 8 characters')
-    password2 = forms.CharField(required=True, label='Repeat password', widget=forms.PasswordInput, min_length=8)
+    password_2 = forms.CharField(required=True, label='Repeat password', widget=forms.PasswordInput, min_length=8)
 
     class Meta:
         model = User
@@ -30,3 +30,7 @@ class UserRegistrationForm(forms.ModelForm):
         if self.cleaned_data['password'] != self.cleaned_data['password_2']:
             raise forms.ValidationError('Passwords do not match. Please, provide password again.')
         return self.cleaned_data['password_2']
+
+
+
+
