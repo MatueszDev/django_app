@@ -11,5 +11,5 @@ before_script:
     - mysql -e 'create database test;' -u root
 script:
     - python manage.py test user_authentication notes groups
-    - coverage run --source=django_app manage.py test user_authentication 
+    - coverage run --source=home manage.py test
 after_success: coveralls
