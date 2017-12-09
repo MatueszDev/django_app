@@ -1,7 +1,9 @@
 from calendar import HTMLCalendar
-from datetime import datetime as dtime, date, time
-import datetime
-from models import Event
+from datetime import datetime
+from django import template
+from jsmin import  jsmin
+from time import mktime
+from .models import Event
 
 
 class Calendar(HTMLCalendar):
@@ -52,3 +54,14 @@ class Calendar(HTMLCalendar):
         a('</table>')
         a('\n')
         return ''.join(v)
+
+
+
+
+class MinifyJs(template.Node):
+
+    def __init__(self, nodelist):
+        self.nodelist = nodelist
+
+    def render(self, context):
+        return jsmin(self.nodelist.render(context))
