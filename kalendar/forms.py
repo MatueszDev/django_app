@@ -11,3 +11,5 @@ class EventForm(forms.Form):
 
     personal_notes = forms.CharField( label='notes',widget=forms.Textarea, required=False)
 
+
+

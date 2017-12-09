@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.views.generic import ListView, TemplateView
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Event
+from .models import Event, EventModelForm
 from utils import Calendar
 import datetime
 import calendar
@@ -55,16 +55,18 @@ def add_event(request):
         form = EventForm(request.POST)
 
         if form.is_valid():
-            form.save(commit=False)
-            '''form.title = request.title
-            form.day = request.day
-            form.starting_time = request.starting_time
-            form.ending_time = request.ending_time
-            form.personal_notes = request.personal_notes'''
-            form.save()
+            #obj = EventModelForm(request.POST)
+            obj = Event()
+            obj.title = form.cleaned_data['title']
+            obj.day = form.cleaned_data['day']
+            obj.starting_time = form.cleaned_data['starting_time']
+            obj.ending_time = form.cleaned_data['ending_time']
+            obj.personal_notes = form.cleaned_data['personal_notes']
+            obj.save()
 
 
-            return HttpResponseRedirect('index')
+
+            return HttpResponseRedirect(reverse('index'))
     else:
         form = EventForm()
     return render(request, "kalendar/addEvent.html", {'form':form})
