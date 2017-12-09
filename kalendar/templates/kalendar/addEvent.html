@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load staticfiles%}
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static 'admin/css/changelists.css' %}" />
+  {% if cl.formset %}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}" />
+  {% endif %}
+  {% if cl.formset or action_form %}
+    <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+  {% endif %}
+  {{ media.css }}
+  {% if not actions_on_top and not actions_on_bottom %}
+    <style>
+      #changelist table thead th:first-child {width: inherit}
+    </style>
+  {% endif %}
+{% endblock %}
+
+
+{% block content %}
+    {% for poll in form %}
+    {% endfor %}
+    <h3>Fill the empty gaps</h3>
+    <form action="" method="POST">
+        {% csrf_token %}
+        Title:{{ form.title}} <br/>
+        Date:{{ form.day}} <br/>
+        Starts time:{{ form.starting_time}} <br/>
+        Ends time:{{ form.ending_time}} <br/>
+        Notes:{{ form.personal_notes}} <br/>
+
+        <input type="submit" value="Add event"/>
+    </form>
+{% endblock %}

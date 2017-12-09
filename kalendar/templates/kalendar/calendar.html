@@ -1,13 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Calendar Module</title>
-</head>
-<body>
+{% extends "base.html" %}
     {% block content %}
-  <div id="content-main">
-          <ul class="object-tools">
+    <div id="content-main">
+        <ul class="object-tools">
             <li>
                 <a href={{ previous_month }}>
                     Previous Month
@@ -19,9 +13,14 @@
                 </a>
             </li>
         </ul>
-      {{ calendar }}
+        <div>
+            {{ calendar }}
+        </div>
+        {% block button %}
+        <a href="addEvent"><div>Add an event</div></a>
+        {% endblock %}
+    </div>
 
+    {{ info }}
     {% endblock %}
-  </div>
-</body>
-</html>
+

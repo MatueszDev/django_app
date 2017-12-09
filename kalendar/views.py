@@ -3,19 +3,20 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.views.generic import ListView, TemplateView
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from .models import Event
 from utils import Calendar
 import datetime
 import calendar
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse
+from forms import EventForm
 
 
-def index(request, extra_context=None):
+def index(request, text=None):
     calendar_object = Event.objects.all()[:10]
     after_day = request.GET.get('day__gte', None)
-    extra_context = extra_context or {}
+    extra_context =  {}
 
     if not after_day:
         day = datetime.date.today()
@@ -44,8 +45,28 @@ def index(request, extra_context=None):
     html_calendar = html_calendar.replace('<td ', '<td width="100" height="100"')
     extra_context['calendar'] = mark_safe(html_calendar)
 
-
+    extra_context['text'] = text
 
     return render(request, "kalendar/calendar.html", extra_context)
+
+
+def add_event(request):
+    if request.method == 'POST':
+        form = EventForm(request.POST)
+
+        if form.is_valid():
+            form.save(commit=False)
+            '''form.title = request.title
+            form.day = request.day
+            form.starting_time = request.starting_time
+            form.ending_time = request.ending_time
+            form.personal_notes = request.personal_notes'''
+            form.save()
+
+
+            return HttpResponseRedirect('index')
+    else:
+        form = EventForm()
+    return render(request, "kalendar/addEvent.html", {'form':form})
 
 
