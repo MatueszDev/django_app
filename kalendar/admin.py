@@ -37,9 +37,9 @@ class EventAdmin(admin.ModelAdmin):
         next_month = datetime.date(year=next_month.year, month=next_month.month,
                                    day=1)  # find first day of next month
 
-        extra_context['previous_month'] = reverse('kalendar_event_changelist') + '?day__gte=' + str(
+        extra_context['previous_month'] = reverse('admin:kalendar_event_changelist') + '?day__gte=' + str(
             previous_month)
-        extra_context['next_month'] = reverse('kalendar_event_changelist') + '?day__gte=' + str(next_month)
+        extra_context['next_month'] = reverse('admin:kalendar_event_changelist') + '?day__gte=' + str(next_month)
         cal = Calendar()
         html_calendar = cal.formatmonth(day.year, day.month, withyear=True)
         html_calendar = html_calendar.replace('<td ', '<td width="100" height="100"')
