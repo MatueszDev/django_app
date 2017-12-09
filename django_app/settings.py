@@ -40,8 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+<<<<<<< HEAD:django_app/settings.py
     'user_authentication',
     'django.contrib.admin',
+=======
+    'kalendar'
+>>>>>>> MateuszBranch:django_app/settings.py
 ]
 
 MIDDLEWARE = [
