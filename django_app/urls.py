@@ -21,10 +21,8 @@ from . import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-<<<<<<< HEAD:django_app/urls.py
     url(r'', include('user_authentication.urls')),
     url(r'^$', views.main_page, name='main_page'),
-=======
-    url(r'^kalendar/', include('kalendar.urls'))
->>>>>>> MateuszBranch:django_app/urls.py
+    url(r'^kalendar/', include('kalendar.urls')),
 ]
+
