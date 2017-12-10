@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'', include('user_authentication.urls')),
     url(r'^notes/', include('notes.urls')),
-    url(r'^$', views.main_page, name='main_page'),
-    url(r'^kalendar/', include('kalendar.urls')),
+    url(r'^$', views.main_page, name='main_page')#,
+    #url(r'^kalendar/', include('kalendar.urls')),
 ]
 
