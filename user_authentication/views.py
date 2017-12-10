@@ -13,8 +13,6 @@ def user_login(request):
                 if user.is_active:
                     login(request, user)
                     return HttpResponse('You are logged in.')
-                else:
-                    return HttpResponse('Sorry, your account seems to be blocked.')
             else:
                 return HttpResponse('Please check if you provided proper username and password.')
     else:
