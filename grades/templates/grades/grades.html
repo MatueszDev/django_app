@@ -1,42 +1,66 @@
 {% extends 'grades/base.html' %}
 {% block content %}
-<div class="years">
-            <h1>Choose your group:</h1>
+<form  action="#">
+    <fieldset>
+    <legend><h1>Choose your group</h1></legend>
 
-                <ol>
-                    <li>
-                        {% for field in fields %}
-                            <h3>{{field}}</h3>
-                        <ol>
-                            {% for year in years %}
-                            <li>
-                                <h4>year {{year}}</h4>
-                                <ol>
-                                    {% for class in classes %}
-                                    <li>
-                                        <a href="grades_table.html"><div class="grades_table">{{class}}</div></a>
-                                    </li>
-                                    {% endfor %}
-                                </ol>
-                            </li>
-                            {% endfor %}
-                        </ol>
-                        {% endfor %}
-                    </li>
-                </ol>
-            {% for gradesGroup in gradesGroups %}
-            <h1>{{gradesGroup.year}}</h1><br/>
-            {% endfor %}
+        <div id="choose">
+            
+            <ol>
+                {% for field in fields %}
+                <li>
+                    
+                    <h3><a style='font-weight: bold; font-size:45px' onclick="show_fields(' {{field}} ')">{{field}}</a></h3>
+                    <ol id=' {{field}} ' style="color:blue; font-weight: bold; font-size: 25px">   
+                    </ol>
+                </li>
+                {% endfor %}
+            </ol>
         </div>
-{% endblock %}
+    </fieldset>
+</form>
 
-{% block javascript %}
+
 <script type="text/javascript">
-    function show_grades(className)
-    {
-        var className = document.getElementById("")
-    }
+
+
+
+
+function show_fields(field)
+{
+    var list = document.getElementById(field);
+    {% for year in years %}
+        var li = document.createElement('h3');
+        li.innerHTML = '<a id="{{year}}" onclick=show_groups("{{year}}") ><h3>year {{year}}:</h3></a>';
+        list.appendChild(li)
+    {% endfor %}
+
+document.field.appendChild(list)
+}
+
+
+function show_groups(year)
+{
+    var list = document.getElementById(year);
+
+    var ol = document.createElement('ol');
+    var li = document.createElement('h4');
+    li.innerHTML = 'Classes:';
+    ol.appendChild(li)
+   {% comment %}
+        list.appendChild(ol)
+   {% endcomment %}
+
+    {% for group in classes %}
+        var li = document.createElement('h4');
+        li.innerHTML = '<a href=grades_table.html>- {{group}}</a>';
+        ol.appendChild(li)
+        list.appendChild(ol)
+    {% endfor %}
+}
+
 
 </script>
 
 {% endblock %}
+
