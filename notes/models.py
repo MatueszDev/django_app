@@ -46,11 +46,11 @@ class NoteFilePdf(NoteFile):
     '''Model for files to be treated as pdf'''
     content = models.FileField(upload_to='pdfs/')
     
-    def display_file(self):
-        with open(self.content.path,'r') as pdf:
-            response = HttpResponse(pdf.read(), contenttype='application/pdf')
-            response['Content-Disposition'] = 'inline;filename='+self.content.name
-            return response
+#    def display_file(self):
+#        with open(self.content.path,'r') as pdf:
+#            response = HttpResponse(pdf.read(), contenttype='application/pdf')
+#            response['Content-Disposition'] = 'inline;filename='+self.content.name
+#            return response
 
 
 class NoteFileOther(NoteFile):

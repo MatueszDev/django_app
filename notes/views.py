@@ -16,12 +16,15 @@ def dev_imgview(request):
     objects = NoteFileImage.objects.all()
     return render(request, 'dev_fileview/dev_imgview.html', {'objects': objects})
 
-#note: dev_pdfview as of now does not work
-#displaying pdfs in browser requires javascript
+#note: displaying pdfs in a template requires javascript
 #you'll have to give me a few moments to figure that one out
+#also as of now it only displays the index 0 pdf
 def dev_pdfview(request):
     objects = NoteFilePdf.objects.all()
-    return render(request, 'dev_fileview/dev_pdfview.html', {'objects': objects})
+    with open(objects[0].content.path,'r') as pdf:
+        response = HttpResponse(pdf.read(), content_type='application/pdf')
+        response['Content-Disposition'] = 'inline;filename='+objects[0].content.name
+        return response
 
 def add_file(request):
     '''test: sorting uploaded files by their type'''
