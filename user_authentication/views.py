@@ -4,22 +4,6 @@ from django.contrib.auth import authenticate, login
 from .forms import LoginForm, UserRegistrationForm
 
 
-def user_login(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    return HttpResponse('You are logged in.')
-            else:
-                return HttpResponse('Please check if you provided proper username and password.')
-    else:
-        form = LoginForm()
-    return render(request, 'user_authentication/login.html', {'form': form})
-
-
 def register(request):
     if request.method == 'POST':
         register_form = UserRegistrationForm(request.POST)
