@@ -22,6 +22,6 @@ from . import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'', include('user_authentication.urls')),
-    url(r'', include('notes.urls')),
+    url(r'^notes/', include('notes.urls')),
     url(r'^$', views.main_page, name='main_page'),
 ]
