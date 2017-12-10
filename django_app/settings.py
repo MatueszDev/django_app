@@ -129,4 +129,4 @@ STATIC_URL = '/static/'
 
 # User-uploaded files (pictures for notes, files with code, etc.)
 
-MEDIA_ROOT = 'django_app/media/'
+MEDIA_ROOT = 'media/'
