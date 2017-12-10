@@ -1,5 +1,6 @@
-{% extends "base.html" %}
+{% extends "main_page/main_page.html" %}
 {% load staticfiles%}
+{% block title %}Add event{% endblock %}
 {% block extrastyle %}
   {{ block.super }}
   <link rel="stylesheet" type="text/css" href="{% static 'admin/css/changelists.css' %}" />

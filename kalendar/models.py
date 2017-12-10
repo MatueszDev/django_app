@@ -28,14 +28,17 @@ class Event(models.Model):
     personal_notes = models.TextField('personal_notes', blank=True, null=True)
 
 
-
     class Meta:
         verbose_name = 'scheduling'
         verbose_name_plural = 'scheduling'
 
-    def get_absolute_url(self):
-        url = reverse('admin:%s_%s_change' % (self._meta.app_label, self._meta.model_name), args=[self.id])
-        return u'<a href="%s">%s</a>' % (url, str(self.title))
+    def get_absolute_url(self, request='admin'):
+        if 'admin' not in request:
+            url = reverse('modify_event', args=[self.id])
+            return '<a href="%s">%s</a>' % (url, self.title)
+        else:
+            url = reverse('admin:%s_%s_change' % (self._meta.app_label, self._meta.model_name), args=[self.id])
+            return u'<a href="%s">%s</a>' % (url, self.title)
 
     def check_overlap(self, fixed_start, fixed_end, new_start, new_end):
         overlap = False

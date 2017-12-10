@@ -1,10 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "main_page/main_page.html" %}
+{% load staticfiles%}
+{% block title %}Modify event{% endblock %}
+<script>
+    function confirmation()
+    {
+
+    }
+
+</script>
+{% block extrastyle %}
+
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static 'admin/css/changelists.css' %}" />
+  {% if cl.formset %}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}" />
+  {% endif %}
+  {% if cl.formset or action_form %}
+    <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+  {% endif %}
+  {{ media.css }}
+  {% if not actions_on_top and not actions_on_bottom %}
+    <style>
+      #changelist table thead th:first-child {width: inherit}
+    </style>
+  {% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+    <h3>Modify your event</h3>
+    <form action="" method="POST">
+        {% csrf_token %}
+        Title:{{ form.title}} <br/>
+        Date:{{ form.day}} <br/>
+        Starts time:{{ form.starting_time}} <br/>
+        Ends time:{{ form.ending_time}} <br/>
+        Notes:{{ form.personal_notes}} <br/>
+
+        <input type="submit" value="Modify"/>
+        <input type="button" onclick="" value="Delete"/>
+    </form>
+{% endblock %}
