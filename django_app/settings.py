@@ -26,7 +26,7 @@ SECRET_KEY = 's3ads#sp8tjcopdwfdx+ljr=ugpnrm8*xou4@z%yxg^hn51mp$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['student-notebook.herokuapp.com']
+ALLOWED_HOSTS = ['student-notebook.herokuapp.com', '127.0.0.1']
 
 LOGIN_REDIRECT_URL = reverse_lazy('main_page')
 LOGIN_URL = reverse_lazy('login')
@@ -61,7 +61,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'django_app/templates'),
-                 os.path.join(BASE_DIR, 'user_authentication/templates')],
+                 os.path.join(BASE_DIR, 'user_authentication/templates'),
+                 os.path.join(BASE_DIR, 'kalendar/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
