@@ -37,4 +37,4 @@ class NoteText(models.Model):
             return f.read()#.replace('\n', '<br>')
 
     def __unicode__(self):
-        return self.name
+return self.name

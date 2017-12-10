@@ -26,7 +26,7 @@ SECRET_KEY = 's3ads#sp8tjcopdwfdx+ljr=ugpnrm8*xou4@z%yxg^hn51mp$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['student-notebook.herokuapp.com']
 
 LOGIN_REDIRECT_URL = reverse_lazy('main_page')
 LOGIN_URL = reverse_lazy('login')
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user_authentication',
     'django.contrib.admin',
+    'kalendar',
 ]
 
 MIDDLEWARE = [
@@ -123,9 +124,15 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
-
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+ 
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
 
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, 'static'),
+)
 
 # User-uploaded files (pictures for notes, files with code, etc.)
 

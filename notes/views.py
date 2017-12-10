@@ -44,4 +44,4 @@ def add_text(request):
 
     args['form'] = form
 
-    return render_to_response('add_text.html', args)
+return render_to_response('add_text.html', args)

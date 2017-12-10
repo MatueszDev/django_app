@@ -2,4 +2,4 @@
 *.swp
 *.un~
 *.sqlite3
-django_app/media/
+.idea
