@@ -137,3 +137,4 @@ STATICFILES_DIRS = (
 # User-uploaded files (pictures for notes, files with code, etc.)
 
 MEDIA_ROOT = 'media/'
+MEDIA_URL = '/media/'

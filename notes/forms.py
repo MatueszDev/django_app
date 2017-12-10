@@ -1,15 +1,21 @@
 from django import forms
-from models import NoteImage, NoteText
+from models import NoteFileImage, NoteFileText, NoteFilePdf
 
 class NoteImageForm(forms.ModelForm):
     class Meta:
-        model = NoteImage
+        model = NoteFileImage
         fields = ('name', 'author', 'subject', 'lecture_number',
-                'lecture_title', 'image')
+                'lecture_title', 'content')
 
 class NoteTextForm(forms.ModelForm):
     class Meta:
-        model = NoteText
+        model = NoteFileText
+        fields = ('name', 'author', 'subject', 'lecture_number',
+                'lecture_title', 'content')
+
+class NotePdfForm(forms.ModelForm):
+    class Meta:
+        model = NoteFilePdf
         fields = ('name', 'author', 'subject', 'lecture_number',
                 'lecture_title', 'content')
 

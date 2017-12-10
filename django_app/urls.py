@@ -17,7 +17,9 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.conf.urls import include
+from django.views.static import serve as dj_v_serve
 from . import views
+import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -25,5 +27,6 @@ urlpatterns = [
     url(r'^notes/', include('notes.urls')),
     url(r'^$', views.main_page, name='main_page'),
     url(r'^kalendar/', include('kalendar.urls')),
+    url(r'^media/(.*)$', dj_v_serve, {'document_root' : settings.MEDIA_ROOT}),
 ]
 
