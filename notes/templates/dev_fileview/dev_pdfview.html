@@ -3,10 +3,12 @@
 {% block title %}Debug pdf view{% endblock %}
 
 {% block content %}
+{% for obj in objects %}
 
  <p>
-   <!--file name: {{obj.name}} <br>
-   file content: <br--> {{obj.display_file}}
+   Currently stored PDF files:
+   <a href="{{obj.content.url}}">{{obj.name}}</a><br>
  </p>
 
+{% endfor %}
 {% endblock %}

@@ -21,10 +21,12 @@ def dev_imgview(request):
 #also as of now it only displays the index 0 pdf
 def dev_pdfview(request):
     objects = NoteFilePdf.objects.all()
-    with open(objects[0].content.path,'r') as pdf:
-        response = HttpResponse(pdf.read(), content_type='application/pdf')
-        response['Content-Disposition'] = 'inline;filename='+objects[0].content.name
-        return response
+    return render(request, 'dev_fileview/dev_pdfview.html', {'objects': objects})
+#   #   the following code is a view for displaying a specific pdf
+#    with open(objects[0].content.path,'r') as pdf:
+#        response = HttpResponse(pdf.read(), content_type='application/pdf')
+#        response['Content-Disposition'] = 'inline;filename='+objects[0].content.name
+#        return response
 
 def add_file(request):
     '''test: sorting uploaded files by their type'''
