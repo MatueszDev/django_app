@@ -1,15 +1,14 @@
 from calendar import HTMLCalendar
 from datetime import datetime
 from django import template
-from jsmin import  jsmin
-from time import mktime
 from .models import Event
 
 
 class Calendar(HTMLCalendar):
-    def __init__(self, events=None):
+    def __init__(self, events=None, request='admin'):
         super(Calendar, self).__init__()
         self.events = events
+        self.request = request
 
     def formatday(self, day, weekday, events):
         """
@@ -18,7 +17,7 @@ class Calendar(HTMLCalendar):
         events_from_day = events.filter(day__day=day)
         events_html = "<ul>"
         for event in events_from_day:
-            events_html += event.get_absolute_url() + "<br>"
+            events_html += event.get_absolute_url(self.request) + "<br>"
         events_html += "</ul>"
 
         if day == 0:
@@ -58,10 +57,4 @@ class Calendar(HTMLCalendar):
 
 
 
-class MinifyJs(template.Node):
 
-    def __init__(self, nodelist):
-        self.nodelist = nodelist
-
-    def render(self, context):
-        return jsmin(self.nodelist.render(context))
