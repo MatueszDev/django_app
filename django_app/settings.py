@@ -64,7 +64,8 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'django_app/templates'),
                  os.path.join(BASE_DIR, 'user_authentication/templates'),
-                 os.path.join(BASE_DIR, 'kalendar/templates')],
+                 os.path.join(BASE_DIR, 'kalendar/templates'),
+                 os.path.join(BASE_DIR, 'grades/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
