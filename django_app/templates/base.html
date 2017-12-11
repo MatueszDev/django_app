@@ -18,10 +18,18 @@
 	<p></p>
     {% endblock %}
 </div>
-<!--
-{% if request.user.is_authenticated %}
-    Hello, {{ request.user.first_name }}!
-{% endif %}-->
+
+{% if messages %}
+<ul class="messages">
+{% for message in messages %}
+<li class="{{ message.tags }}">
+{{ message|safe }}
+<a href="#" class="close">✖</a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+
 {% block content %}
 {% endblock %}
 

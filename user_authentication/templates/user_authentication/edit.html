@@ -1,10 +1,4 @@
 {% extends "base.html" %}
-{% load static %}
-{% block extrastyle %}{{ block.super }}
-
-{% endblock %}
-
-{% block title %}Main page{% endblock %}
 
     {% block menu %}
 	<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
@@ -26,7 +20,13 @@
     {% endblock %}
 
 {% block content %}
-<div id="main_page_center">
-      <h2 align=center>Welcome in notebook main page!</h2>
-</div>
+<p>Here you can change your account:</p>
+<form action="." method="post" enctype="multipart/form-data">
+{{ user_form.as_p }}
+{{ profile_form.as_p }}
+{% csrf_token %}
+<p><input type="submit" value="Save changes"></p>
+</form>
+<br/>
+<p>Go back to <a href="{% url "main_page" %}">main page</a></p>
 {% endblock %}
