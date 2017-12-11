@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^logout/$', logout, name='logout'),
     url(r'^logout-then-login/$', logout_then_login, name='logout_then_login'),
     url(r'^register/$', views.register, name='register'),
+    url(r'^edit/$', views.edit, name='edit'),
 ]
