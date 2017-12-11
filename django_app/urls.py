@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'', include('user_authentication.urls')),
     url(r'^$', views.main_page, name='main_page'),
+    url(r'^grades/', include('grades.urls')),
     url(r'^kalendar/', include('kalendar.urls')),
 ]
 
