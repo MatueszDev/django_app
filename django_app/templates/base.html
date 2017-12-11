@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>{% block title %}{% endblock %}</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/admin/css/base.css" />
+<link rel="stylesheet" type="text/css" href="/static/admin/css/login.css" />
+<link rel="stylesheet" type="text/css" href="{% static 'user_authentication/base_style.css' %}">
+<meta name="robots" content="NONE,NOARCHIVE" />
+</head>
+<body>
+
+<div id="page_menu">
+    {% block menu %}
+	<p></p>
+    {% endblock %}
+</div>
+<!--
+{% if request.user.is_authenticated %}
+    Hello, {{ request.user.first_name }}!
+{% endif %}-->
+{% block content %}
+{% endblock %}
+
+</body>
+</html>

@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.db import models
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Classes(models.Model):
@@ -50,17 +53,6 @@ class Year(models.Model):
         return self.year
 
 
-class Student(models.Model):
-    fieldOfStudy = models.ForeignKey(Field_of_study, on_delete=models.CASCADE )
-    year = models.ForeignKey(Year, on_delete=models.CASCADE)
-    classes = models.ManyToManyField(Classes)
-    student = str(fieldOfStudy) + " " + str(year)
-
-    def make_student(self):
-        self.save()
-
-    def __unicode__(self):
-        return self.student
 
 class Grades_group(models.Model):
     fieldOfStudy = models.ManyToManyField(Field_of_study)
@@ -74,3 +66,27 @@ class Grades_group(models.Model):
 
     def __unicode__(self):
         return self.gradesGroup
+
+
+# class Student(models.Model):
+#
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     fieldOfStudy = models.ForeignKey(Field_of_study, on_delete=models.CASCADE )
+#     year = models.ForeignKey(Year, on_delete=models.CASCADE)
+#     classes = models.ManyToManyField(Classes)
+#
+#     def make_student(self):
+#         self.save()
+#
+#     def __unicode__(self):
+#         return self.user
+#
+#
+# @receiver(post_save, sender=User)
+# def create_student(sender, instance, created, **kwargs):
+#     if created:
+#         Student.objects.create(user=instance)
+#
+# @receiver(post_save, sender=User)
+# def save_student(sender, instance, **kwargs):
+#     instance.user.save()
