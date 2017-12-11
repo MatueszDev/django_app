@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from time import mktime
 from datetime import datetime
+from django.forms import ModelForm
 
 
 class Event(models.Model):
@@ -27,14 +28,17 @@ class Event(models.Model):
     personal_notes = models.TextField('personal_notes', blank=True, null=True)
 
 
-
     class Meta:
         verbose_name = 'scheduling'
         verbose_name_plural = 'scheduling'
 
-    def get_absolute_url(self):
-        url = reverse('admin:%s_%s_change' % (self._meta.app_label, self._meta.model_name), args=[self.id])
-        return u'<a href="%s">%s</a>' % (url, str(self.starting_time))
+    def get_absolute_url(self, request='admin'):
+        if 'admin' not in request:
+            url = reverse('modify_event', args=[self.id])
+            return '<a href="%s">%s</a>' % (url, self.title)
+        else:
+            url = reverse('admin:%s_%s_change' % (self._meta.app_label, self._meta.model_name), args=[self.id])
+            return u'<a href="%s">%s</a>' % (url, self.title)
 
     def check_overlap(self, fixed_start, fixed_end, new_start, new_end):
         overlap = False
@@ -60,32 +64,12 @@ class Event(models.Model):
                         'There is an overlap with another event: ' + str(event.day) + ', ' + str(
                             event.starting_time) + '-' + str(event.ending_time))
 
-    def timestamp_to_datetime(self,timestamp):
-        if isinstance(timestamp, (str, unicode)):
 
-            if len(timestamp) == 13:
-                timestamp = int(timestamp) / 1000
-
-                return datetime.fromtimestamp(timestamp)
-            else:
-                return ""
-
-    def datetime_to_timestamp(slef,date):
-        if isinstance(date, datetime):
-
-            timestamp = mktime(datetime.timetuple())
-            json_timestamp = int(timestamp) * 1000
-
-            return '{0}'.format(json_timestamp)
-        else:
-            return ""
-    @property
-    def start_timestamp(self):
-        return Event.datetime_to_timestamp(self.starting_time)
-
-    @property
-    def end_timestamp(self):
-        return Event.datetime_to_timestamp(self.end_timestamp)
 
     def __str__(self):
         return self.title
+
+class EventModelForm(ModelForm):
+    class Meta:
+        model = Event
+        fields = ['title','day', 'starting_time', 'ending_time', 'personal_notes']
