@@ -104,3 +104,6 @@ def delete_event(request, object_id):
     Event.objects.filter(id=object_id).delete()
 
     return HttpResponseRedirect(reverse('index'))
+
+def all_event_list(request):
+    objects = Event.objects.all()

@@ -8,4 +8,5 @@ urlpatterns =[
     #url(r'^(?P<info>\w+)/$', views.index, name='index_with_arg' ),
     url(r'^modifyEvent/(?P<object_id>\d+)/$', views.modify_event, name='modify_event'),
     url(r'^delete/(?P<object_id>\d+)/$', views.delete_event, name="deletion"),
+    url(r'^allEventList', views.all_event_list, name="all_event_list"),
 ]
