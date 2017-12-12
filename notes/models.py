@@ -8,6 +8,9 @@ class Note(models.Model):
     name = models.CharField(max_length=250)
     author = models.CharField(max_length=250)
     subject = models.CharField(max_length=250)
+    lecture_number = models.IntegerField()
+    lecture_title = models.CharField(max_length=250)
+    content = models.TextField(max_length=100000)
 
     def __unicode__(self):
         return self.name

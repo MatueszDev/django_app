@@ -2,8 +2,8 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
-from .models import NoteFileText, NoteFileImage, NoteFilePdf
-from forms import NoteImageForm, NoteTextForm, NotePdfForm
+from .models import NoteFileText, NoteFileImage, NoteFilePdf, Note
+from forms import NoteImageForm, NoteTextForm, NotePdfForm, NoteForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context_processors import csrf
@@ -87,3 +87,20 @@ def add_pdf(request):
     args['form'] = form
 
     return render_to_response('add_pdf.html', args)
+
+def add_note(request):
+    if request.POST:
+        form = NoteForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+            return HttpResponseRedirect('/notes/dev_fileview')
+    else:
+        form = NoteForm(request.POST)
+
+    args = {}
+    args.update(csrf(request))
+
+    args['form'] = form
+
+    return render_to_response('add_note.html', args)
