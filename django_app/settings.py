@@ -26,15 +26,9 @@ SECRET_KEY = 's3ads#sp8tjcopdwfdx+ljr=ugpnrm8*xou4@z%yxg^hn51mp$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-<<<<<<< HEAD
-ALLOWED_HOSTS = ['student-notebook.herokuapp.com', 'localhost']
-
-=======
 
 ALLOWED_HOSTS = ['student-notebook.herokuapp.com', 'localhost']
 
-
->>>>>>> MateuszBranch
 
 LOGIN_REDIRECT_URL = reverse_lazy('main_page')
 LOGIN_URL = reverse_lazy('login')
