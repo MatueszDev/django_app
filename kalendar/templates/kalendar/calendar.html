@@ -1,8 +1,8 @@
 {% extends "main_page/main_page.html" %}
 {% block title %}Calendar{% endblock %}
     {% block content %}
-    <div id="content-main">
-        <ul class="object-tools">
+    <div id="content-main" style="padding-left:100px;padding-top:50px;">
+        <ul class="object-tools" style="padding-right:100px;">
             <li>
                 <a href={{ previous_month }}>
                     Previous Month
@@ -18,7 +18,8 @@
             {{ calendar }}
         </div>
         {% block button %}
-        <a href="addEvent"><div>Add an event</div></a>
+        <a href="addEvent"><input type="button" value="Add an event"/></a>
+        <a href="allEventList"><input type="button" value="All events list"></a>
         {% endblock %}
     </div>
 

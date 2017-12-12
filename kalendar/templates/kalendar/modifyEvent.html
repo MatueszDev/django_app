@@ -1,13 +1,12 @@
 {% extends "main_page/main_page.html" %}
 {% load staticfiles%}
+{% block extra_head %}
+<link type="text/css" rel="stylesheet" href="{% static 'css/kalendar.css' %}"/>
+{% endblock %}
+
 {% block title %}Modify event{% endblock %}
-<script>
-    function confirmation()
-    {
 
-    }
 
-</script>
 {% block extrastyle %}
 
   {{ block.super }}
@@ -28,17 +27,34 @@
 
 
 {% block content %}
-
+    <div id="response" style="padding-left:90px;">
     <h3>Modify your event</h3>
-    <form action="" method="POST">
-        {% csrf_token %}
-        Title:{{ form.title}} <br/>
-        Date:{{ form.day}} <br/>
-        Starts time:{{ form.starting_time}} <br/>
-        Ends time:{{ form.ending_time}} <br/>
-        Notes:{{ form.personal_notes}} <br/>
+        <form action="" method="POST">
+            {% csrf_token %}
+            Title:{{ form.title}} <br/><br/>
+            Date:{{ form.day}} <br/><br/>
+            Starts time:{{ form.starting_time}} <br/><br/>
+            Ends time:{{ form.ending_time}} <br/><br/>
+            Notes:{{ form.personal_notes}} <br/><br/>
 
-        <input type="submit" value="Modify"/>
-        <input type="button" onclick="" value="Delete"/>
-    </form>
+
+                <input type="submit" value="Modify"/>
+                <input type="button" style="background:red;" value="Delete" onclick="confirmation()"/>
+
+        </form>
+    </div>
+    <script>
+    function confirmation()
+    {
+        var response = document.getElementById("response");
+
+        response.innerHTML = '\
+            <h3>Are you really want delete this event?</h3>\
+            <a href="/kalendar/delete/{{id}}"> <input type="button" style="background:red;" value="Yes"/></a>\
+            <a href="/kalendar/"> <input type="button" value="No"/></a>\
+        ';
+    }
+
+    </script>
+
 {% endblock %}

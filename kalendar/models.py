@@ -66,7 +66,7 @@ class Event(models.Model):
 
 
 
-    def __str__(self):
+    def __unicode_(self):
         return self.title
 
 class EventModelForm(ModelForm):
