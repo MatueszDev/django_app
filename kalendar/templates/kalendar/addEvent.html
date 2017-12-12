@@ -20,17 +20,56 @@
 
 
 {% block content %}
-    {% for poll in form %}
-    {% endfor %}
     <h3>Fill the empty gaps</h3>
-    <form action="" method="POST">
+    <form action="" method="POST" id="form">
         {% csrf_token %}
-        Title:{{ form.title}} <br/>
+        Title:{{ form.title}}<div id="title"></div><br/>
         Date:{{ form.day}} <br/>
-        Starts time:{{ form.starting_time}} <br/>
-        Ends time:{{ form.ending_time}} <br/>
+        Starts time:{{ form.starting_time}}<div id="start"> </div> <br/>
+        Ends time:{{ form.ending_time}}<div id="end"> </div> <br/>
         Notes:{{ form.personal_notes}} <br/>
 
-        <input type="submit" value="Add event"/>
+        <!--<input type="submit" value="Add event"/>-->
+        <input type="button" onclick="check_data()" value=" "/>
     </form>
+
+<script>
+    function check_data(){
+        var title = document.getElementById("id_title").value;
+        console.log(title.length);
+        var start_time = document.getElementById("id_starting_time").value;
+        var end_time = document.getElementById("id_ending_time").value;
+        var title_respond = document.getElementById("title");
+        var start_respond =  document.getElementById("start");
+        var end_respond =  document.getElementById("end");
+        var flag = 1;
+
+        start_respond.innerHTML ="";
+        end_respond.innerHTML ="";
+        title_respond.innerHTML ="";
+
+        if( title.length == 0)
+        {
+            flag = 0;
+            title_respond.innerHTML = '<p style="color:#ff0033"> This field must be fill</p>';
+        }
+
+        var regexp = /([01][0-9]|[02][0-3]):[0-5][0-9]/;
+        if ( !((start_time.search(regexp) >= 0) ? true : false))
+        {
+            start_respond.innerHTML = '<p style="color:#ff0033"> Proper format HH:MM</p>';
+            flag = 0;
+        }
+        if ( !((end_time.search(regexp) >= 0) ? true : false))
+        {
+            end_respond.innerHTML = '<p style="color:#ff0033"> Proper format HH:MM</p>';
+            flag = 0;
+        }
+
+        if(flag)
+        {
+            document.getElementById("form").submit();
+        }
+    }
+</script>
 {% endblock %}

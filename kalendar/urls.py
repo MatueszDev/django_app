@@ -7,4 +7,5 @@ urlpatterns =[
     url(r'^addEvent/$', views.add_event, name='add_event'),
     #url(r'^(?P<info>\w+)/$', views.index, name='index_with_arg' ),
     url(r'^modifyEvent/(?P<object_id>\d+)/$', views.modify_event, name='modify_event'),
+    url(r'^delete/(?P<object_id>\d+)/$', views.delete_event, name="deletion"),
 ]

@@ -42,7 +42,7 @@ def index(request, info=''):
     extra_context['next_month'] = '?day__gte=' + str(next_month)
     cal = Calendar(request=request.get_full_path())
     html_calendar = cal.formatmonth(day.year, day.month, withyear=True)
-    html_calendar = html_calendar.replace('<td ', '<td width="100" height="100"')
+    html_calendar = html_calendar.replace('<td ', '<td width="177" height="110"')
     extra_context['calendar'] = mark_safe(html_calendar)
 
     extra_context['text'] = request.get_full_path()
@@ -97,6 +97,10 @@ def modify_event(request, object_id):
         form.fields['ending_time'].initial = object.ending_time
         form.fields['personal_notes'].initial = object.personal_notes
 
-    return render(request, "kalendar/modifyEvent.html", {'form':form})
+    return render(request, "kalendar/modifyEvent.html", {'form':form, 'id':object_id})
 
 
+def delete_event(request, object_id):
+    Event.objects.filter(id=object_id).delete()
+
+    return HttpResponseRedirect(reverse('index'))
