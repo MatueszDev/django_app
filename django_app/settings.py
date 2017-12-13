@@ -26,7 +26,9 @@ SECRET_KEY = 's3ads#sp8tjcopdwfdx+ljr=ugpnrm8*xou4@z%yxg^hn51mp$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []#['student-notebook.herokuapp.com']
+
+ALLOWED_HOSTS = ['student-notebook.herokuapp.com', 'localhost', '127.0.0.1']
+
 
 LOGIN_REDIRECT_URL = reverse_lazy('main_page')
 LOGIN_URL = reverse_lazy('login')
@@ -34,6 +36,7 @@ LOGOUT_URL = reverse_lazy('logout')
 # Application definition
 
 INSTALLED_APPS = [
+    'grades',
     'notes.apps.NotesConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
