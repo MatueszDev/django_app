@@ -37,7 +37,7 @@ class Calendar(HTMLCalendar):
         Return a formatted month as a table.
         """
 
-        events = Event.objects.filter(user=user,day__month=themonth)
+        events = Event.objects.filter(user=user,day__month=themonth, day__year=theyear)
 
 
         v = []
