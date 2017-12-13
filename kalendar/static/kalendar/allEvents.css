@@ -1,31 +1,38 @@
 ul,li{
   list-style:none !important;
+  display: inline-block;
 }
 
 .title{
-    background:#8dc6c6;
-    border-radius: 15px;
+    border: solid;
+    border-color:#8dc6c6;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
     width: 300px;
-    height: 60px;
-    padding:10px;
+    height: 50px;
     margin:auto;
     text-align:center;
+    margin-right: 20px;
 }
 .date{
-    background:#9966FF;
-    border-radius: 25px;
+    border: solid;
+    border-color:#9966FF;
     width: 300px;
-    height: 60px;
-    padding:10px;
+    height: 45px;
+    padding:8px;
     margin:auto;
     text-align:center;
+    margin-right: 20px;
 }
 .notes{
-    background: #3399FF;
-    border-radius:25px;
+    border: solid;
+    border-color: #3399FF;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
     width: 300px;
-    height: 125px;
-    padding:10px;
+    max-height: 125px;
+    padding: 8px;
     margin:auto;
     text-align:center;
+    margin-right: 20px;
 }

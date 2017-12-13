@@ -20,20 +20,23 @@
 
 
 {% block content %}
-<div style="padding-left:100px;">
-    <h3>Fill the empty gaps</h3>
-    <form action="" method="POST" id="form" >
-        {% csrf_token %}
-        Title:{{ form.title}}<div id="title"></div><br/>
-        Date:{{ form.day}} <div> </div><br/>
-        Starts time:{{ form.starting_time}}<div id="start"> </div> <br/>
-        Ends time:{{ form.ending_time}}<div id="end"> </div> <br/>
-        Notes:{{ form.personal_notes}} <br/>
 
-        <!--<input type="submit" value="Add event"/>-->
-        <input type="button" onclick="check_data()" value="Create an event"/>
-    </form>
+<div id="main_page_center">
+    <div style="padding-left:100px;">
+        <h3>Fill the empty gaps</h3>
+        <form action="" method="post" id="form" >
+            {% csrf_token %}
+            Title: {{ form.title}}<div id="title"></div><br/>
+            Date: {{ form.day}} <div> </div><br/>
+            Starts time: {{ form.starting_time}}<div id="start"> </div> <br/>
+            Ends time: {{ form.ending_time}}<div id="end"> </div> <br/>
+            Notes: {{ form.personal_notes}} <br/>
+            <!--<input type="submit" value="Add event"/>-->
+            <input type="button" onclick="check_data()" value="Create an event"/>
+        </form>
+    </div>
 </div>
+
 <script>
     function check_data(){
         var title = document.getElementById("id_title").value;

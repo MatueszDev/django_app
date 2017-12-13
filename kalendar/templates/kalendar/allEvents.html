@@ -5,17 +5,20 @@
 <link type="text/css" rel="stylesheet" href="{% static 'kalendar/allEvents.css'%}"/>
 {%endblock%}
 {% block content %}
-<ul>
-{% for object in objects %}
-    <div class="title"><h3>{{object.title}}<h3></h3></div>
-    <div class="date"><span >{{ object.day }}: &nbsp;	&nbsp;{{object.starting_time | time:"H:i"}}-{{object.ending_time | time:"H:i"}}</span></div>
-    <div class="notes">{{ object.personal_notes }}</div>
-    <!-- <li>
-        <h3>{{object.title}}</h3>
-        <p> {{ object.day }}:	&nbsp;	&nbsp; {{object.starting_time | time:"H:i"}}-{{object.ending_time | time:"H:i"}} </p>
-        <p> {{ object.personal_notes }}</p>-->
-    <br/><br/>
-
-{% endfor %}
-</ul>
+<div id="main_page_center" style="padding-left: 4%; padding-right: 1%;">
+    <ul>
+    {% for object in objects %}
+        <li>
+            <div class="title"><h3 style='font-weight: bold; font-size:18px'>{{object.title}}</h3></div>
+            <div class="date"><span >{{ object.day }}: &nbsp;	&nbsp;{{object.starting_time | time:"H:i"}}-{{object.ending_time | time:"H:i"}}</span></div>
+            <div class="notes">{{ object.personal_notes }}</div>
+            <!-- <li>
+                <h3>{{object.title}}</h3>
+                <p> {{ object.day }}:	&nbsp;	&nbsp; {{object.starting_time | time:"H:i"}}-{{object.ending_time | time:"H:i"}} </p>
+                <p> {{ object.personal_notes }}</p>-->
+            <br/>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
 {% endblock %}

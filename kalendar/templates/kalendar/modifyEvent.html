@@ -27,22 +27,24 @@
 
 
 {% block content %}
+<div id="main_page_center">
     <div id="response" style="padding-left:90px;">
     <h3>Modify your event</h3>
         <form action="" method="POST">
             {% csrf_token %}
-            Title:{{ form.title}} <br/><br/>
-            Date:{{ form.day}} <br/><br/>
-            Starts time:{{ form.starting_time}} <br/><br/>
-            Ends time:{{ form.ending_time}} <br/><br/>
-            Notes:{{ form.personal_notes}} <br/><br/>
+            Title: {{ form.title}} <br/><br/>
+            Date: {{ form.day}} <br/><br/>
+            Starts time: {{ form.starting_time}} <br/><br/>
+            Ends time: {{ form.ending_time}} <br/><br/>
+            Notes: {{ form.personal_notes}} <br/><br/>
 
-
-                <input type="submit" value="Modify"/>
-                <input type="button" style="background:red;" value="Delete" onclick="confirmation()"/>
+            <input type="submit" value="Modify"/>
+            <input type="button" style="background:red;" value="Delete" onclick="confirmation()"/>
 
         </form>
     </div>
+</div>
+
     <script>
     function confirmation()
     {

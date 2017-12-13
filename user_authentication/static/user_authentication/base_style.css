@@ -21,7 +21,7 @@ h1{
       overflow: hidden;
       background-color: #FFFFFF;
       /*border-bottom: thick solid #9E00FF;*/
-      margin-bottom: 20px;
+      margin-bottom: 70px;
       font-size: 18px;
 }
 
@@ -67,8 +67,11 @@ h1{
       min-width: 700px;
       margin-left: 10%;
       margin-right: 10%;
-      padding-top: 7%;
+      padding-top: 30px;
+      border-top: 2px solid #59acd9;
       border-left: 2px solid #59acd9;
       border-right: 2px solid #59acd9;
-      min-height: calc(100vh - 100px);
+      border-bottom: 2px solid #59acd9;
+      border-radius: 6px;
+      min-height: calc(100vh - 150px);
 }
