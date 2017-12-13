@@ -3,6 +3,7 @@ python:
     - "2.7"
 services:
     - mysql
+    - postgresql
 env:
     -DJANGO=1.11 DB=mysql
 install:
