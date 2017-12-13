@@ -41,7 +41,7 @@ class EventAdmin(admin.ModelAdmin):
             previous_month)
         extra_context['next_month'] = reverse('admin:kalendar_event_changelist') + '?day__gte=' + str(next_month)
         cal = Calendar()
-        html_calendar = cal.formatmonth(day.year, day.month, withyear=True)
+        html_calendar = cal.formatmonth(day.year, day.month, user=request.user, withyear=True)
         html_calendar = html_calendar.replace('<td ', '<td width="100" height="100"')
         extra_context['calendar'] = mark_safe(html_calendar)
         return super(EventAdmin, self).changelist_view(request, extra_context)

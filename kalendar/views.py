@@ -41,7 +41,8 @@ def index(request, info=''):
        previous_month)
     extra_context['next_month'] = '?day__gte=' + str(next_month)
     cal = Calendar(request=request.get_full_path())
-    html_calendar = cal.formatmonth(day.year, day.month, withyear=True)
+    extra_context['cos'] = request.get_full_path()
+    html_calendar = cal.formatmonth(day.year, day.month, user=request.user, withyear=True)
     html_calendar = html_calendar.replace('<td ', '<td width="177" height="110"')
     extra_context['calendar'] = mark_safe(html_calendar)
 
@@ -58,6 +59,7 @@ def add_event(request):
         if form.is_valid():
             #obj = EventModelForm(request.POST)
             obj = Event()
+            obj.user = request.user
             obj.title = form.cleaned_data['title']
             obj.day = form.cleaned_data['day']
             obj.starting_time = form.cleaned_data['starting_time']
@@ -78,7 +80,7 @@ def modify_event(request, object_id):
         form = EventForm(request.POST)
 
         if form.is_valid():
-
+            object.user = request.user
             object.title = form.cleaned_data['title']
             object.day = form.cleaned_data['day']
             object.starting_time = form.cleaned_data['starting_time']
@@ -106,4 +108,8 @@ def delete_event(request, object_id):
     return HttpResponseRedirect(reverse('index'))
 
 def all_event_list(request):
-    objects = Event.objects.all()
+    objects = Event.objects.filter(user=request.user)
+
+    data = {'objects' : objects}
+
+    return render(request, "kalendar/allEvents.html", data )
