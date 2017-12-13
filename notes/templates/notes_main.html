@@ -1,0 +1,27 @@
+{% extends "main_page/main_page.html" %}
+
+{% block title %}Lecture notes{% endblock %}
+
+{% block content %}
+
+<h1>Select the course and lecture number:</h1>
+ 
+<p id="lista">
+<!--{% for course in lectures %}
+lecture: {{course.subject}}<br>
+number of lectures: {{course.lecture_number__max}}<br>
+{% endfor %}-->
+<script type="text/javascript">
+var lista = document.getElementById("lista");
+{% for course in lectures %}
+    lista.innerHTML += "<h2>{{course.subject}}</h2>";
+    for( var iter = 1; iter <= "{{course.lecture_number__max}}"; iter++ ){
+        lista.innerHTML += '<a href="{{course.subject}}/'+iter+'">Lecture '+iter+'</a><br>';
+    }
+{% endfor %}
+
+</script>
+</p>
+
+
+{% endblock %}

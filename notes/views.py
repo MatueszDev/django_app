@@ -7,6 +7,7 @@ from forms import NoteImageForm, NoteTextForm, NotePdfForm, NoteForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context_processors import csrf
+from django.db.models import Max
 
 def dev_fileview(request):
     objects = NoteFileText.objects.all()
@@ -104,3 +105,18 @@ def add_note(request):
     args['form'] = form
 
     return render_to_response('add_note.html', args)
+
+def choose_class(request):
+    objects = Note.objects.all()
+    
+    lectures = objects.values('subject').annotate(Max('lecture_number'))
+    
+    return render(request, 'notes_main.html', {'lectures': lectures})
+
+def select_lecture(request,subject,lecture_number):
+    note = Note.objects.all()
+    objects = note.filter(subject=subject, lecture_number=lecture_number)
+    
+    return render(request, 'notes_list.html', {'objects': objects,
+                                                'subject': subject,
+                                                'lecture_number': lecture_number})
