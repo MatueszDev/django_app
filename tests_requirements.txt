@@ -1,5 +1,5 @@
 Django==1.11.7
+PostgreSQL==10.1
 psycopg2==2.6.2
 jsmin==2.2.2
-PostgreSQL==10.1
 coveralls
