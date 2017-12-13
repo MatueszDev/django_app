@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from time import mktime
 from datetime import datetime
 from django.forms import ModelForm
-
+from django.contrib.auth.models import User
 
 class Event(models.Model):
 
@@ -20,6 +20,7 @@ class Event(models.Model):
         ('event-special', 'Special'),
         ('event-important', 'Important')
     )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField('title', max_length=255)
     day = models.DateField('day')
     starting_time = models.TimeField('starting_time')
@@ -32,7 +33,8 @@ class Event(models.Model):
         verbose_name = 'scheduling'
         verbose_name_plural = 'scheduling'
 
-    def get_absolute_url(self, request='admin'):
+    def get_absolute_url(self, user, request=''):
+
         if 'admin' not in request:
             url = reverse('modify_event', args=[self.id])
             return '<a href="%s">%s</a>' % (url, self.title)
