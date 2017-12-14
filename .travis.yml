@@ -3,6 +3,7 @@ python:
     - "2.7"
 services:
     - mysql
+    - postgresql
 env:
     -DJANGO=1.11 DB=mysql
 install:
@@ -10,6 +11,6 @@ install:
 before_script:
     - mysql -e 'create database test;' -u root
 script:
-    - python django_app/manage.py test user_authentication
-#   - coverage run --source=django_app manage.py test
-#after_success: coveralls
+    - python manage.py test user_authentication notes groups kalendar grades
+    - coverage run --source=django_app,user_authentication,notes,groups,kalendar,grades manage.py test
+after_success: coveralls

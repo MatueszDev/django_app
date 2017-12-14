@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Debug file view{% endblock %}
+
+{% block content %}
+{% for obj in objects %}
+
+ <p>
+   file name: {{obj.name}} <br>
+   file content: <br> {{obj.display_file|linebreaksbr}}
+ </p>
+
+{% endfor %}
+{% endblock %}

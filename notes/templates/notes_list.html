@@ -1,0 +1,18 @@
+{% extends "main_page/main_page.html" %}
+
+{% block title %}Lecture notes{% endblock %}
+
+{% block content %}
+<div id="main_page_center">
+    <div style="width: 40%; margin: 0 auto;">
+        <h1>Subject: {{subject}}<br>Lecture number {{lecture_number}}</h1>
+         
+        <table>
+            {% for note in objects %}
+            <tr><td style="font-size: 16px;">{{note.name}}, by {{note.author}}</td></tr>
+            <tr><td>{{note.content|linebreaksbr}}</td></tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}

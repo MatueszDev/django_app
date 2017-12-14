@@ -1,0 +1,62 @@
+{% extends "main_page/main_page.html" %}
+{% load staticfiles%}
+{% block extra_head %}
+<link type="text/css" rel="stylesheet" href="{% static 'css/kalendar.css' %}"/>
+{% endblock %}
+
+{% block title %}Modify event{% endblock %}
+
+
+{% block extrastyle %}
+
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static 'admin/css/changelists.css' %}" />
+  {% if cl.formset %}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}" />
+  {% endif %}
+  {% if cl.formset or action_form %}
+    <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+  {% endif %}
+  {{ media.css }}
+  {% if not actions_on_top and not actions_on_bottom %}
+    <style>
+      #changelist table thead th:first-child {width: inherit}
+    </style>
+  {% endif %}
+{% endblock %}
+
+
+{% block content %}
+<div id="main_page_center">
+    <div id="response" style="padding-left:90px;">
+    <h3>Modify your event</h3>
+        <form action="" method="POST">
+            {% csrf_token %}
+            Title: {{ form.title}} <br/><br/>
+            Date: {{ form.day}} <br/><br/>
+            Starts time: {{ form.starting_time}} <br/><br/>
+            Ends time: {{ form.ending_time}} <br/><br/>
+            Notes: {{ form.personal_notes}} <br/><br/>
+
+            <input type="submit" value="Modify"/>
+            <input type="button" style="background:red;" value="Delete" onclick="confirmation()"/>
+
+        </form>
+    </div>
+</div>
+
+    <script>
+    function confirmation()
+    {
+        var response = document.getElementById("response");
+
+        response.innerHTML = '\
+            <h3>Are you really want delete this event?</h3>\
+            <a href="/kalendar/delete/{{id}}"> <input type="button" style="background:red;" value="Yes"/></a>\
+            <a href="/kalendar/"> <input type="button" value="No"/></a>\
+        ';
+    }
+
+    </script>
+
+{% endblock %}

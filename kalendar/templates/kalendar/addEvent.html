@@ -1,0 +1,79 @@
+{% extends "main_page/main_page.html" %}
+{% load staticfiles%}
+{% block title %}Add event{% endblock %}
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static 'admin/css/changelists.css' %}" />
+  {% if cl.formset %}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}" />
+  {% endif %}
+  {% if cl.formset or action_form %}
+    <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+  {% endif %}
+  {{ media.css }}
+  {% if not actions_on_top and not actions_on_bottom %}
+    <style>
+      #changelist table thead th:first-child {width: inherit}
+    </style>
+  {% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+<div id="main_page_center">
+    <div style="padding-left:100px;">
+        <h3>Fill the empty gaps</h3>
+        <form action="" method="post" id="form" >
+            {% csrf_token %}
+            Title: {{ form.title}}<div id="title"></div><br/>
+            Date: {{ form.day}} <div> </div><br/>
+            Starts time: {{ form.starting_time}}<div id="start"> </div> <br/>
+            Ends time: {{ form.ending_time}}<div id="end"> </div> <br/>
+            Notes: {{ form.personal_notes}} <br/>
+            <!--<input type="submit" value="Add event"/>-->
+            <input type="button" onclick="check_data()" value="Create an event"/>
+        </form>
+    </div>
+</div>
+
+<script>
+    function check_data(){
+        var title = document.getElementById("id_title").value;
+        console.log(title.length);
+        var start_time = document.getElementById("id_starting_time").value;
+        var end_time = document.getElementById("id_ending_time").value;
+        var title_respond = document.getElementById("title");
+        var start_respond =  document.getElementById("start");
+        var end_respond =  document.getElementById("end");
+        var flag = 1;
+
+        start_respond.innerHTML ="";
+        end_respond.innerHTML ="";
+        title_respond.innerHTML ="";
+
+        if( title.length == 0)
+        {
+            flag = 0;
+            title_respond.innerHTML = '<p style="color:#ff0033"> This field must be fill</p>';
+        }
+
+        var regexp = /([01][0-9]|[02][0-3]):[0-5][0-9]/;
+        if ( !((start_time.search(regexp) >= 0) ? true : false))
+        {
+            start_respond.innerHTML = '<p style="color:#ff0033"> Proper format HH:MM</p>';
+            flag = 0;
+        }
+        if ( !((end_time.search(regexp) >= 0) ? true : false))
+        {
+            end_respond.innerHTML = '<p style="color:#ff0033"> Proper format HH:MM</p>';
+            flag = 0;
+        }
+
+        if(flag)
+        {
+            document.getElementById("form").submit();
+        }
+    }
+</script>
+{% endblock %}

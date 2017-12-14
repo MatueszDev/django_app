@@ -1,0 +1,60 @@
+{% extends "main_page/main_page.html" %}
+{% block content %}
+<div id="main_page_center">
+    <form  action="#">
+        <fieldset>
+        <legend><h1 style="color:black; margin-left: 50px;">Choose your group:</h1></legend>
+
+            <div id="choose" style="color:black; margin-left: 50px;">
+                
+                <ol>
+                    {% for field in fields %}
+                    <li style='font-weight: bold; font-size:20px'>
+                        <h3<a style='font-weight: bold; font-size:20px;' onclick="show_fields(' {{field}} ')">{{field}}</a></h3>
+                        <ol id=' {{field}} ' style="color:blue; font-weight: bold; font-size: 20px;">   
+                        </ol>
+                    </li>
+                    {% endfor %}
+                </ol>
+            </div>
+        </fieldset>
+    </form>
+
+    <script type="text/javascript">
+
+    function show_fields(field)
+    {
+        var list = document.getElementById(field);
+        {% for year in years %}
+            var li = document.createElement('h3');
+            li.innerHTML = '<a id="{{year}}" onclick=show_groups("{{year}}") ><h3>year {{year}}:</h3></a>';
+            list.appendChild(li)
+        {% endfor %}
+
+        document.field.appendChild(list)
+    }
+
+    function show_groups(year)
+    {
+        var list = document.getElementById(year);
+
+        var ol = document.createElement('ol');
+        var li = document.createElement('h4');
+        li.innerHTML = 'Classes:';
+        ol.appendChild(li)
+        {% comment %}
+            list.appendChild(ol)
+        {% endcomment %}
+
+        {% for group in classes %}
+            var li = document.createElement('h4');
+            li.innerHTML = '<a href=grades_table.html>- {{group}}</a>';
+            ol.appendChild(li)
+            list.appendChild(ol)
+        {% endfor %}
+    }
+
+    </script>
+</div>
+{% endblock %}
+

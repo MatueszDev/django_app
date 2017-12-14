@@ -85,9 +85,34 @@ class ViewTest(TestCase):
         self.assertTemplateUsed(response, 'user_authentication/register.html')
 
         response = self.client.post('/register/', {'username': 'user11', 'first_name': 'John', 'last_name': 'John',
-                                                   'email': '', 'password': '12345678',
+                                                   'email': 'john2@fis.agh.edu.pl', 'password': '123423278',
                                                    'password_2': '12345678'}, follow=True)
         self.assertTemplateUsed(response, 'user_authentication/register.html')
 
+        response = self.client.post('/register/', {'username': 'user11', 'first_name': 'John', 'last_name': 'John',
+                                                   'email': 'john2@onet.pl', 'password': '12345678',
+                                                   'password_2': '12345678'}, follow=True)
+        self.assertTemplateUsed(response, 'user_authentication/register.html')
 
+    def test_main_page_if_logged_in(self):
+        self.client.login(username='user', password='12345678')
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'main_page/main_page.html')
 
+    def test_login_view_if_log_in(self):
+        self.client.login(username='user', password='12345678')
+        self.client.get('/logout')
+        response = self.client.post('/login/', {'username': 'user', 'password': '12345678'}, follow=True)
+        self.assertTemplateUsed(response, 'main_page/main_page.html')
+
+    def test_main_page_if_not_logged_in(self):
+        response = self.client.get('/', follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'registration/login.html')
+
+ #   def test_user_login_view_if_not_succes(self):
+  #      self.client.login(username='user', password='12345678')
+   #     self.client.get('/logout')
+    #    response = self.client.post('/login/', {'username': 'user', 'password': '112345'})
+     #   self.assertContains(response, 'Please check if you provided proper username and password.')

@@ -3,23 +3,25 @@
 body{
      background-color: #FFFFFF;
      font-family: "Open Sans";
+     height: 100%;
+     width: 100%;
 }
 
-h1{
+/*h1{
    color: #FFFFFF;
- }
+ }*/
 
 #page_menu{
       list-style-type: none;
       min-width: 700px;
-      min-height: 50px;
+      height: 50px;
       margin-left: 5%;
       margin-right: 5%;
       padding: 0;
       overflow: hidden;
       background-color: #FFFFFF;
       /*border-bottom: thick solid #9E00FF;*/
-      margin-bottom: 20px;
+      margin-bottom: 70px;
       font-size: 18px;
 }
 
@@ -31,13 +33,14 @@ h1{
  }
  
 #login_window_title{
+                    color: #FFFFFF;
+                    text-align: center;
                     background-color: #417690;
                     border-top-left-radius: 5px;
                     border-top-right-radius: 5px;
                     padding-top: 10px;
                     padding-left: 10px;
                     padding-bottom: 1px;
-
  }
  
 #footer{
@@ -58,6 +61,18 @@ h1{
       margin-left: 10%;
       margin-right: 10%;
       padding-top: 7%;
-/*      border-left: thick solid #ff0000;
-      border-right: thick solid #ff0000;*/
+}
+
+#main_page_center{
+      width: 80%;
+      min-width: 700px;
+      margin-left: 10%;
+      margin-right: 10%;
+      padding-top: 30px;
+      border-top: 2px solid #59acd9;
+      border-left: 2px solid #59acd9;
+      border-right: 2px solid #59acd9;
+      border-bottom: 2px solid #59acd9;
+      border-radius: 6px;
+      min-height: calc(100vh - 150px);
 }

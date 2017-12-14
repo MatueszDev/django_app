@@ -26,7 +26,9 @@ SECRET_KEY = 's3ads#sp8tjcopdwfdx+ljr=ugpnrm8*xou4@z%yxg^hn51mp$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['student-notebook.herokuapp.com']
+
+ALLOWED_HOSTS = ['student-notebook.herokuapp.com', 'localhost', '127.0.0.1', 'test-django-pite.herokuapp.com']
+
 
 LOGIN_REDIRECT_URL = reverse_lazy('main_page')
 LOGIN_URL = reverse_lazy('login')
@@ -34,6 +36,7 @@ LOGOUT_URL = reverse_lazy('logout')
 # Application definition
 
 INSTALLED_APPS = [
+    'grades',
     'notes.apps.NotesConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user_authentication',
     'django.contrib.admin',
+    'kalendar',
 ]
 
 MIDDLEWARE = [
@@ -60,7 +64,10 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'django_app/templates'),
-                 os.path.join(BASE_DIR, 'user_authentication/templates')],
+                 os.path.join(BASE_DIR, 'user_authentication/templates'),
+                 os.path.join(BASE_DIR, 'notes/templates'),
+                 os.path.join(BASE_DIR, 'kalendar/templates'),
+                 os.path.join(BASE_DIR, 'grades/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -120,10 +127,10 @@ USE_L10N = True
 USE_TZ = True
 
 
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.9/howto/static-files/
+# https://docs.djangoproject.com/en/1.11/howto/static-files/
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+ 
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
 
@@ -131,3 +138,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
 )
+
+# User-uploaded files (pictures for notes, files with code, etc.)
+
+MEDIA_ROOT = 'media/'
+MEDIA_URL = '/media/'
