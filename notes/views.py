@@ -43,7 +43,7 @@ def add_image(request):
         if form.is_valid():
             form.save()
 
-            return HttpResponseRedirect('/notes/dev_imgview')
+            return HttpResponseRedirect('/notes')
     else:
         form = NoteImageForm(request.POST)
 
@@ -60,7 +60,7 @@ def add_text(request):
         if form.is_valid():
             form.save()
 
-            return HttpResponseRedirect('/notes/dev_fileview')
+            return HttpResponseRedirect('/notes')
     else:
         form = NoteTextForm(request.POST)
 
@@ -78,7 +78,7 @@ def add_pdf(request):
         if form.is_valid():
             form.save()
 
-            return HttpResponseRedirect('/notes/dev_pdfview')
+            return HttpResponseRedirect('/notes')
     else:
         form = NotePdfForm(request.POST)
 
@@ -95,7 +95,7 @@ def add_note(request):
         if form.is_valid():
             form.save()
 
-            return HttpResponseRedirect('/notes/dev_fileview')
+            return HttpResponseRedirect('/notes')
     else:
         form = NoteForm(request.POST)
 
@@ -115,8 +115,18 @@ def choose_class(request):
 
 def select_lecture(request,subject,lecture_number):
     note = Note.objects.all()
+    text = NoteFileText.objects.all()
+    image = NoteFileImage.objects.all()
+    pdf = NoteFilePdf.objects.all()
+    
     objects = note.filter(subject=subject, lecture_number=lecture_number)
+    text_objs = text.filter(subject=subject, lecture_number=lecture_number)
+    img_objs = image.filter(subject=subject, lecture_number=lecture_number)
+    pdf_objs = pdf.filter(subject=subject, lecture_number=lecture_number)
     
     return render(request, 'notes_list.html', {'objects': objects,
-                                                'subject': subject,
-                                                'lecture_number': lecture_number})
+                                            'subject': subject,
+                                            'lecture_number': lecture_number,
+                                            'text_objs' : text_objs,
+                                            'img_objs' : img_objs,
+                                            'pdf_objs' : pdf_objs})
