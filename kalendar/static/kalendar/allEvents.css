@@ -1,6 +1,7 @@
 ul,li{
   list-style:none !important;
   display: inline-block;
+  vertical-align: middle;
 }
 
 .title{
