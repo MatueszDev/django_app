@@ -12,6 +12,7 @@ class UserEditForm(forms.ModelForm):
 class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
+        help_texts = {'date_of_birth': 'date format: YYYY-MM-DD'}
         fields = ('date_of_birth', 'subjects')
 
 
