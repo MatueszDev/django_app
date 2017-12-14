@@ -4,6 +4,7 @@ from django.test import TestCase
 from .forms import LoginForm, UserRegistrationForm
 from django.contrib.auth.models import User
 from .models import Profile
+from django.contrib.messages.api import get_messages
 from django.test import Client
 
 
@@ -113,7 +114,17 @@ class ViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'registration/login.html')
 
+    def test_register_view(self):
+        response = self.client.get('/register', follow=True)
+        self.assertTemplateUsed(response, 'user_authentication/register.html')
+
     def test_edit_view(self):
         self.client.login(username='user', password='12345678')
         response = self.client.get('/edit', follow=True)
         self.assertTemplateUsed(response, 'user_authentication/edit.html')
+
+    def test_edit_view_if_success(self):
+        self.client.login(username='user', password='12345678')
+        response = self.client.post('/edit/', {'first_name': 'John', 'last_name': 'John'}, follow=True)
+        self.assertTemplateUsed(response, 'user_authentication/edit_done.html')
+

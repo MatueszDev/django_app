@@ -1,0 +1,16 @@
+{% extends "main_page/main_page.html" %}
+
+{% block title %}Edit done{% endblock %}
+
+{% block content %}
+<div id="main_page_center">
+    <p>The changes has been done</p>
+    <form action="." method="post" enctype="multipart/form-data">
+        {{ user_form.as_p }}
+        {{ profile_form.as_p }}
+        {% csrf_token %}
+        <p><input type="submit" value="Save changes"></p>
+    </form>
+</div>
+
+{% endblock %}
