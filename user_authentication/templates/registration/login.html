@@ -14,6 +14,7 @@
                 <a href="{% url "register" %}">here</a> </p>
     	{% else %}
             <p> Hey! Sign in or sign up <a href="{% url "register" %}">here</a>.</p>
+            <p> If You are an admin, You can sign in <a href="/admin">here</a>.</p>
         {% endif %}
 
          <form action="{% url 'login' %}" method="post">
