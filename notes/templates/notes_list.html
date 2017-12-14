@@ -5,7 +5,7 @@
 {% block content %}
 <div id="main_page_center">
     <div style="width: 40%; margin: 0 auto;">
-        <h1>Subject: {{subject}}<br>Lecture number {{lecture_number}}</h1>
+        <h1 style="color: #000;">Subject: {{subject}}<br>Lecture number {{lecture_number}}: {{lecture_title}}</h1>
          
         <table>
             {% for note in objects %}
@@ -13,6 +13,30 @@
             <tr><td>{{note.content|linebreaksbr}}</td></tr>
             {% endfor %}
         </table>
+
+<div id="files">
+        <h2>Files attached for this lecture:</h2>
+        <h3>Text files</h3>
+        <ul>
+        {% for textfile in text_objs %}
+        <li><a href="{{textfile.content.url}}">{{textfile.name}}, by {{textfile.author}}</a></li>
+        {% endfor %}
+        </ul>
+        <h3>Images</h3>
+        <ul>
+        {% for imgfile in img_objs %}
+        <li><a href="{{imgfile.content.url}}">{{imgfile.name}}, by {{imgfile.author}}</a></li>
+        {% endfor %}
+        </ul>
+        <h3>PDF files</h3>
+        <ul>
+        {% for pdffile in pdf_objs %}
+        <li><a href="{{pdffile.content.url}}">{{pdffile.name}}, by {{pdffile.author}}</a></li>
+        {% endfor %}
+        </ul>   
     </div>
+    
 </div>
+<div style="float: right;"><a href='../..'>Back to lecture selection</a></div>
+</div>    
 {% endblock %}
