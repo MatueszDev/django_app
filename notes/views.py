@@ -124,9 +124,12 @@ def select_lecture(request,subject,lecture_number):
     img_objs = image.filter(subject=subject, lecture_number=lecture_number)
     pdf_objs = pdf.filter(subject=subject, lecture_number=lecture_number)
     
+    lecture_title = objects[0].lecture_title
+    
     return render(request, 'notes_list.html', {'objects': objects,
                                             'subject': subject,
                                             'lecture_number': lecture_number,
+                                            'lecture_title': lecture_title,
                                             'text_objs' : text_objs,
                                             'img_objs' : img_objs,
                                             'pdf_objs' : pdf_objs})
