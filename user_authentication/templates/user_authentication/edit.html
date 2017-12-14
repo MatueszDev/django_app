@@ -1,7 +1,7 @@
 {% extends "main_page/main_page.html" %}
 
 {% block content %}
-<div id="main_page_center">
+<div id="main_page_center" style="padding-left: 4%; padding-right: 1%;">
     <p>Here you can change your account:</p>
     <form action="." method="post" enctype="multipart/form-data">
         {{ user_form.as_p }}
