@@ -4,19 +4,24 @@ ul,li{
 }
 
 .title{
-    border: solid;
-    border-color:#8dc6c6;
+    #border: 2px solid;
+    #border-bottom: 0px;
+    #border-color: #8dc6c6;
+    background: #ddeeee;
     border-top-right-radius: 15px;
     border-top-left-radius: 15px;
     width: 300px;
     height: 50px;
+    padding-top: 1px;
     margin:auto;
     text-align:center;
     margin-right: 20px;
 }
 .date{
-    border: solid;
-    border-color:#9966FF;
+    #border-left: 2px solid;
+    #border-right: 2px solid;
+    #border-color:#6666ff;
+    background: #ccccff;
     width: 300px;
     height: 45px;
     padding:8px;
@@ -25,8 +30,10 @@ ul,li{
     margin-right: 20px;
 }
 .notes{
-    border: solid;
-    border-color: #3399FF;
+    #border: 2px solid;
+    #border-top: 0px;
+    #border-color: #3399FF;
+    background: #cce5ff;
     border-bottom-right-radius: 15px;
     border-bottom-left-radius: 15px;
     width: 300px;

@@ -12,16 +12,17 @@
 	<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
       <div class="container-fluid">
         <ul class="nav navbar-nav">
-          <!--<li><a href="#">Notice board</a></li>-->
-          <li><a href="/notes">Notes</a></li>
-          <li><a href="/grades">Grades</a></li>
-          <li><a href="/kalendar">Calendar</a></li>
-          <!--<li><a href="#">Polls</a></li>-->
+            <li><a href="/">Home</a></li>
+            <!--<li><a href="#">Notice board</a></li>-->
+            <li><a href="/notes">Notes</a></li>
+            <li><a href="/grades">Grades</a></li>
+            <li><a href="/kalendar">Calendar</a></li>
+            <!--<li><a href="#">Polls</a></li>-->
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="edit">Account</a></li>
-          <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
-          <li><a href="{% url "logout" %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            <!--<li><a href="{% url "edit" %}">Account</a></li>-->
+            <li><a href="{% url "edit" %}"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+            <li><a href="{% url "logout" %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
         </ul>
       </div>
     </nav>

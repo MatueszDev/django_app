@@ -4,26 +4,22 @@
 {% block content %}
     
 <div id="main_page_center">
-    <div id="content-main" style="padding-left:100px; padding-top:50px;">
+    <div style="padding-left:100px; padding-top:50px; padding-bottom:40px;">
         <ul class="object-tools" style="padding-right:100px;">
             <li>
-                <a href={{ previous_month }}>
-                    Previous Month
-                </a>
+                <a href={{ previous_month }}> Previous Month </a>
             </li>
             <li>
-                <a href={{ next_month }}>
-                    Next Month
-                </a>
+                <a href={{ next_month }}> Next Month </a>
             </li>
         </ul>
-        <div>
+        {% block button %}
+            <a href="addEvent"><input type="button" value="Add an event"/></a>
+            <a href="allEventList"><input type="button" value="All events list"></a>
+        {% endblock %}
+        <div style="border: 1px solid; border-radius: 10px; padding:10px; margin-right: 8%;">
             {{ calendar }}
         </div>
-        {% block button %}
-        <a href="addEvent"><input type="button" value="Add an event"/></a>
-        <a href="allEventList"><input type="button" value="All events list"></a>
-        {% endblock %}
     </div>
 </div>
 

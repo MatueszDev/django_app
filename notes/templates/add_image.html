@@ -1,15 +1,15 @@
 {% extends "main_page/main_page.html" %}
 
 {% block content %}
+<div id="main_page_center">
+    <form action="/notes/add_image/" method="post" enctype="multipart/form-data"> 
+        {%csrf_token %}
+        <ul>
+          {{form.as_ul}}
+        </ul>
 
-<form action="/notes/add_image/" method="post" enctype="multipart/form-data"> 
-{%csrf_token %}
-<ul>
-  {{form.as_ul}}
-</ul>
-
-<input type="submit" name="sumbit" value="Upload file">
-</form>
-
+        <input type="submit" name="sumbit" value="Upload file">
+    </form>
+</div>
 {% endblock %}
 
