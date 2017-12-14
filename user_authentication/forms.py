@@ -30,9 +30,9 @@ class UserRegistrationForm(forms.ModelForm):
                                help_text='Password should be at least 8 characters')
     password_2 = forms.CharField(required=True, label='Repeat password', widget=forms.PasswordInput, min_length=8)
 
-class Meta:
-    model = User
-    fields = ('username', 'first_name', 'last_name', 'email', 'password')
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password')
 
     def clean_email(self):
         if self.cleaned_data['email'].find("fis.agh.edu.pl") == -1:
