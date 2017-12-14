@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.test import TestCase
 from .forms import LoginForm, UserRegistrationForm
 from django.contrib.auth.models import User
+from .models import Profile
 from django.test import Client
 
 
@@ -48,6 +49,7 @@ class ViewTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='user', email="user@fis.agh.edu.pl", password="12345678",
                                              first_name="user", last_name="user")
+        self.profile = Profile.objects.create(user = self.user)
 
     def test_user_log_in(self):
         self.assertTrue(self.client.login(username='user', password='12345678'))
@@ -111,8 +113,7 @@ class ViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'registration/login.html')
 
- #   def test_user_login_view_if_not_succes(self):
-  #      self.client.login(username='user', password='12345678')
-   #     self.client.get('/logout')
-    #    response = self.client.post('/login/', {'username': 'user', 'password': '112345'})
-     #   self.assertContains(response, 'Please check if you provided proper username and password.')
+    def test_edit_view(self):
+        self.client.login(username='user', password='12345678')
+        response = self.client.get('/edit', follow=True)
+        self.assertTemplateUsed(response, 'user_authentication/edit.html')
