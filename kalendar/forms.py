@@ -13,3 +13,5 @@ class EventForm(forms.Form):
 
     personal_notes = forms.CharField( label='notes',widget=forms.Textarea(attrs={'placeholder': 'Optional field'}), required=False )
 
+class UploadFileFrom(forms.Form):
+    file = forms.FileField(label='Import schedule')
