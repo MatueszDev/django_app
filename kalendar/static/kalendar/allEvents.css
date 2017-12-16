@@ -2,8 +2,14 @@ ul,li{
   list-style:none !important;
   display: inline-block;
   vertical-align: middle;
+
+
 }
 
+.list {
+    width:33,333333%; float:left;
+    display:block;
+}
 .title{
     #border: 2px solid;
     #border-bottom: 0px;
@@ -12,7 +18,7 @@ ul,li{
     border-top-right-radius: 15px;
     border-top-left-radius: 15px;
     width: 300px;
-    height: 50px;
+    height: 70px;
     padding-top: 1px;
     margin:auto;
     text-align:center;

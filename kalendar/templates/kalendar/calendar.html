@@ -17,10 +17,12 @@
             <a href="addEvent"><input type="button" value="Add an event"/></a>
             <a href="allEventList"><input type="button" value="All events list"></a>
         {% endblock %}
-        <form enctype="multipart/form-data" method="post" action="import/">
+        <form enctype="multipart/form-data" method="post" action="/kalendar/import/">
             {% csrf_token %}
             {{ form }}
-            <input type="submit" value="Import"/>
+            <input type="submit" value="Import" style="display:inline block;float:left;"/>
+            <div style="float:left;color:#ff0033;">{{ message}}</div>
+            <div  style="clear:both"></div>
         </form>
         <div style="border: 1px solid; border-radius: 10px; padding:10px; margin-right: 8%;">
             {{ calendar }}

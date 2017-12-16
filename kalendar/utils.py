@@ -75,6 +75,7 @@ class Import():
                 raise IOError('The file includes wrong content')
 
     def save_events(self):
+        all_user_objects = Event.object.filter(user=self.user)
         for line in self.content[1:]:
             line = line.split(',')
 
@@ -85,6 +86,6 @@ class Import():
                 obj.day = datetime.strptime(line[5].replace('"',''), '%d.%m.%Y').strftime('%Y-%m-%d')
                 obj.starting_time = line[7].replace('"','')
                 obj.ending_time = line[8].replace('"','')
-                obj.personal_notes = '%s \n %s \n %s' % (line[9], line[11], line[12])
+                obj.personal_notes = '%s \n %s \n %s' % (line[9].replace('"',''), line[11].replace('"',''), line[12].replace('"',''))
                 obj.save()
 
