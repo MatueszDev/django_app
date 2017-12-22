@@ -6,16 +6,16 @@
 {%endblock%}
 {% block content %}
 <div id="main_page_center" style="padding-left: 4%; padding-right: 1%;">
-    <ul class="list">
+    <ul>
     {% for object in objects %}
-        <a href="/kalendar/modifyEvent/{{object.id}}"
         <li class="list">
+            <a href="/kalendar/modifyEvent/{{object.id}}">
             <div class="title"><h3 style='font-weight: bold; font-size:18px'>{{object.title}}</h3></div>
             <div class="date"><span >{{ object.day }}: &nbsp;	&nbsp;{{object.starting_time | time:"H:i"}}-{{object.ending_time | time:"H:i"}}</span></div>
             <div class="notes">{{ object.personal_notes }}</div>
             <br/>
+            </a>
         </li>
-        </a>
     {% endfor %}
     </ul>
 </div>

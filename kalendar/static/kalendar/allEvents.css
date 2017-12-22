@@ -6,8 +6,10 @@ ul,li{
 
 }
 
+
 .list {
-    width:33,333333%; float:left;
+    width:33.333%;
+    float:left;
     display:block;
 }
 .title{
@@ -17,19 +19,20 @@ ul,li{
     background: #ddeeee;
     border-top-right-radius: 15px;
     border-top-left-radius: 15px;
-    width: 300%;
-    height: 70%;
+    width: 95%;
+    height: 75px;
     padding-top: 1%;
     margin:auto;
     text-align:center;
     margin-right: 20%;
+
 }
 .date{
     #border-left: 2px solid;
     #border-right: 2px solid;
     #border-color:#6666ff;
     background: #ccccff;
-    width: 300px;
+    width: 95%;
     height: 45px;
     padding:8px;
     margin:auto;
@@ -43,7 +46,7 @@ ul,li{
     background: #cce5ff;
     border-bottom-right-radius: 15px;
     border-bottom-left-radius: 15px;
-    width: 300px;
+    width: 95%;
     max-height: 125px;
     padding: 8px;
     margin:auto;
@@ -51,6 +54,3 @@ ul,li{
     margin-right: 20px;
 }
 
-body{
-    height:100%;
-}
