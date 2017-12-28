@@ -4,8 +4,8 @@
 {% block content %}
     
 <div id="main_page_center">
-    <div style="padding-left:100px; padding-top:50px; padding-bottom:40px;">
-        <ul class="object-tools" style="padding-right:100px;">
+    <div style="padding-left:8%; padding-bottom:4%; padding-right:4%;">
+        <ul class="object-tools" style="padding-right:4%; padding-top:6%;">
             <li>
                 <a href={{ previous_month }}> Previous Month </a>
             </li>
@@ -17,7 +17,14 @@
             <a href="addEvent"><input type="button" value="Add an event"/></a>
             <a href="allEventList"><input type="button" value="All events list"></a>
         {% endblock %}
-        <div style="border: 1px solid; border-radius: 10px; padding:10px; margin-right: 8%;">
+        <form enctype="multipart/form-data" method="post" action="/kalendar/import/">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Import" style="display:inline block;float:left;"/>
+            <div style="float:left;color:#ff0033;">{{ message}}</div>
+            <div  style="clear:both"></div>
+        </form>
+        <div style="border: 1px solid; border-radius: 10px; padding:10px; margin-right: 8%; width:100%;">
             {{ calendar }}
         </div>
     </div>
