@@ -29,5 +29,6 @@ urlpatterns = [
     url(r'^grades/', include('grades.urls')),
     url(r'^kalendar/', include('kalendar.urls')),
     url(r'^media/(.*)$', dj_v_serve, {'document_root' : settings.MEDIA_ROOT}),
+    url(r'^ocr/', include('ocr.urls')),
 ]
 

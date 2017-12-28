@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'user_authentication',
     'django.contrib.admin',
     'kalendar',
+    'ocr',
 ]
 
 MIDDLEWARE = [
@@ -67,7 +68,8 @@ TEMPLATES = [
                  os.path.join(BASE_DIR, 'user_authentication/templates'),
                  os.path.join(BASE_DIR, 'notes/templates'),
                  os.path.join(BASE_DIR, 'kalendar/templates'),
-                 os.path.join(BASE_DIR, 'grades/templates')],
+                 os.path.join(BASE_DIR, 'grades/templates'),
+                 os.path.join(BASE_DIR, 'ocr/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
