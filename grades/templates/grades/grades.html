@@ -6,7 +6,9 @@
         <legend><h1 style="color:black; margin-left: 50px;">Choose your group:</h1></legend>
 
             <div id="choose" style="color:black; margin-left: 50px;">
-                
+                {% if not fields %}
+                    <h2>You don't have any groups.</h2>
+                {% else %}
                 <ol>
                     {% for field in fields %}
                     <li style='font-weight: bold; font-size:20px'>
@@ -16,6 +18,7 @@
                     </li>
                     {% endfor %}
                 </ol>
+                {% endif %}
             </div>
         </fieldset>
     </form>

@@ -37,7 +37,7 @@ class Event(models.Model):
 
         if 'admin' not in request:
             url = reverse('modify_event', args=[self.id])
-            return '<a href="%s">%s</a>' % (url, self.title)
+            return '<a href="%s">%s%s</a>' % (url, self.title[:7],'...')
         else:
             url = reverse('admin:%s_%s_change' % (self._meta.app_label, self._meta.model_name), args=[self.id])
             return u'<a href="%s">%s</a>' % (url, self.title)
