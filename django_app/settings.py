@@ -35,6 +35,12 @@ LOGIN_URL = reverse_lazy('login')
 LOGOUT_URL = reverse_lazy('logout')
 # Application definition
 
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'student.notebook.activation@gmail.com'
+EMAIL_HOST_PASSWORD = 'alfabeta'
+EMAIL_PORT = 587
+
 INSTALLED_APPS = [
     'grades',
     'notes.apps.NotesConfig',

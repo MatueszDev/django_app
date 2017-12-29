@@ -1,8 +1,8 @@
 {% extends "main_page/main_page.html" %}
-
+{% block title %}Profile edit{% endblock %}
 {% block content %}
+
 <div id="main_page_center">
-    <p>Here you can change your account:</p>
     <form action="." method="post" enctype="multipart/form-data">
         {{ user_form.as_p }}
         {{ profile_form.as_p }}
@@ -10,4 +10,5 @@
         <p><input type="submit" value="Save changes"></p>
     </form>
 </div>
+
 {% endblock %}
