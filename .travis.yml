@@ -11,6 +11,6 @@ install:
 before_script:
     - mysql -e 'create database test;' -u root
 script:
-    - python manage.py test user_authentication notes groups kalendar grades
-    - coverage run --source=django_app,user_authentication,notes,groups,kalendar,grades manage.py test
+    - python manage.py test user_authentication notes groups kalendar grades ocr
+    - coverage run --source=django_app,user_authentication,notes,groups,kalendar,grades, ocr manage.py test
 after_success: coveralls
