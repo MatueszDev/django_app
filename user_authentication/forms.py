@@ -4,23 +4,11 @@ from .models import Profile
 
 
 class UserEditForm(forms.ModelForm):
-    email = forms.CharField(required=True, max_length=64, label='Email',
-                            help_text='Please provide your student email - fis.agh.edu.pl')
+    email = forms.CharField(disabled="disabled")
 
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'email')
-
-    def clean_email(self):
-        if self.cleaned_data['email'].find("fis.agh.edu.pl") == -1:
-            raise forms.ValidationError('You provided wrong email')
-
-        email = self.cleaned_data['email']
-        try:
-            match = User.objects.get(email=email)
-        except User.DoesNotExist:
-            return email
-        raise forms.ValidationError('This email address is already in use.')
 
 
 class ProfileEditForm(forms.ModelForm):
