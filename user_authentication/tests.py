@@ -128,3 +128,7 @@ class ViewTest(TestCase):
         response = self.client.post('/edit/', {'first_name': 'John', 'last_name': 'John'}, follow=True)
         self.assertTemplateUsed(response, 'user_authentication/edit_done.html')
 
+    def test_model_str(self):
+        user = self.client.login(username='user', password='12345678')
+        self.assertEqual('True', str(user))
+
