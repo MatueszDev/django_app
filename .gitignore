@@ -3,3 +3,4 @@
 *.un~
 *.sqlite3
 .idea
+media/*
