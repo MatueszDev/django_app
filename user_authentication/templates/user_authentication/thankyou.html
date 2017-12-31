@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div id="main_page_center">
+	{% if user.username %}
+		Welcome, {{user.username}}!
+	{% else %}
+		<h4>Hello!</h4>
+	{% endif %}
+
+	<br><br>
+	<h4>An activation link has been sent to you by email, please check your mailbox to activate your account </h4>
+	<br>
+
+</div>
+
+{% endblock %}

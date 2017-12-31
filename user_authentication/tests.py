@@ -73,7 +73,7 @@ class ViewTest(TestCase):
         response = self.client.post('/register/', {'username': 'user1', 'first_name': 'John', 'last_name': 'John',
                                                    'email': 'john2@fis.agh.edu.pl', 'password': '12345678',
                                                    'password_2': '12345678'}, follow=True)
-        self.assertTemplateUsed(response, 'user_authentication/register_done.html')
+        self.assertTemplateUsed(response, 'user_authentication/thankyou.html')
         self.assertEqual(User.objects.count(), user_count + 1)
 
     def test_wrong_register(self):

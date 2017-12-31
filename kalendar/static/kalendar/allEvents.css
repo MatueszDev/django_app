@@ -2,8 +2,16 @@ ul,li{
   list-style:none !important;
   display: inline-block;
   vertical-align: middle;
+
+
 }
 
+
+.list {
+    width:33.333%;
+    float:left;
+    display:block;
+}
 .title{
     #border: 2px solid;
     #border-bottom: 0px;
@@ -11,19 +19,20 @@ ul,li{
     background: #ddeeee;
     border-top-right-radius: 15px;
     border-top-left-radius: 15px;
-    width: 300px;
-    height: 50px;
-    padding-top: 1px;
+    width: 95%;
+    height: 75px;
+    padding-top: 1%;
     margin:auto;
     text-align:center;
-    margin-right: 20px;
+    margin-right: 20%;
+
 }
 .date{
     #border-left: 2px solid;
     #border-right: 2px solid;
     #border-color:#6666ff;
     background: #ccccff;
-    width: 300px;
+    width: 95%;
     height: 45px;
     padding:8px;
     margin:auto;
@@ -37,10 +46,11 @@ ul,li{
     background: #cce5ff;
     border-bottom-right-radius: 15px;
     border-bottom-left-radius: 15px;
-    width: 300px;
+    width: 95%;
     max-height: 125px;
     padding: 8px;
     margin:auto;
     text-align:center;
     margin-right: 20px;
 }
+

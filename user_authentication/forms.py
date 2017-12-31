@@ -4,6 +4,8 @@ from .models import Profile
 
 
 class UserEditForm(forms.ModelForm):
+    email = forms.CharField(disabled="disabled")
+
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'email')
@@ -38,11 +40,18 @@ class UserRegistrationForm(forms.ModelForm):
     def clean_email(self):
         if self.cleaned_data['email'].find("fis.agh.edu.pl") == -1:
             raise forms.ValidationError('You provided wrong email')
-        return self.cleaned_data["email"]
+
+        email = self.cleaned_data['email']
+        try:
+            match = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return email
+        raise forms.ValidationError('This email address is already in use.')
 
     def clean_password_2(self):
         if self.cleaned_data['password'] != self.cleaned_data['password_2']:
             raise forms.ValidationError('Passwords do not match. Please, provide password again.')
         return self.cleaned_data['password_2']
+
 
 
