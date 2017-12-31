@@ -34,6 +34,12 @@
             <li><a href="{{pdffile.content.url}}">{{pdffile.name}}, by {{pdffile.author}}</a></li>
         {% endfor %}
         </ul>   
+        <h3>Other files</h3>
+        <ul>
+        {% for otrfile in otr_objs %}
+        <li><a href="{{otrfile.content.url}}">{{otrfile.name}}, by {{otrfile.author}}</a></li>
+        {% endfor %}
+        </ul>  
     </div>
     <div style="float: right;"><a href='../..'>Back to lecture selection</a></div>
 </div>    
