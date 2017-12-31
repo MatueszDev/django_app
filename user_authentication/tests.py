@@ -97,6 +97,11 @@ class ViewTest(TestCase):
                                                    'password_2': '12345678'}, follow=True)
         self.assertTemplateUsed(response, 'user_authentication/register.html')
 
+        response = self.client.post('/register/', {'username': 'user11', 'first_name': 'John', 'last_name': 'John',
+                                                   'email': 'user@fis.agh.edu.pl', 'password': '12345678',
+                                                   'password_2': '12345678'}, follow=True)
+        self.assertTemplateUsed(response, 'user_authentication/register.html')
+
     def test_main_page_if_logged_in(self):
         self.client.login(username='user', password='12345678')
         response = self.client.get('/')
