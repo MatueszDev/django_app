@@ -18,9 +18,8 @@ body{
       margin-left: 5%;
       margin-right: 5%;
       padding: 0;
-      overflow: hidden;
+      /*overflow: hidden;*/
       background-color: #FFFFFF;
-      /*border-bottom: thick solid #9E00FF;*/
       margin-bottom: 70px;
       font-size: 18px;
 }

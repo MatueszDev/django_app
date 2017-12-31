@@ -13,16 +13,19 @@
       <div class="container-fluid">
         <ul class="nav navbar-nav">
             <li><a href="/">Home</a></li>
-            <!--<li><a href="#">Notice board</a></li>-->
+            <li><a href="#">Notice board</a></li>
             <li><a href="/notes">Notes</a></li>
             <li><a href="/grades">Grades</a></li>
             <li><a href="/kalendar">Calendar</a></li>
-            <!--<li><a href="#">Polls</a></li>-->
+            <li><a href="#">Polls</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <!--<li><a href="{% url "edit" %}">Account</a></li>-->
-            <li><a href="{% url "edit" %}"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
-            <li><a href="{% url "password_change" %}"><span class="glyphicon glyphicon-cog"></span> Change password</a></li>
+            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-cog"></span> Settings<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li style="list-style-type: none;"><a href="{% url "edit" %}">Account settings</a></li>
+                    <li style="list-style-type: none;"><a href="{% url "password_change" %}"> Change password</a></li>
+                </ul>
+            </li>
             <li><a href="{% url "logout" %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
         </ul>
       </div>
