@@ -17,12 +17,13 @@ from django.core.urlresolvers import reverse_lazy
 import socket
 
 print "host name:" + socket.gethostname()
+print "host ip" + socket.gethostbyname(socket.gethostname())
 
 # If the host name starts with 'student-notebook', DJANGO_HOST = "production"
 if socket.gethostname().startswith('student-notebook'):
     DJANGO_HOST = "production"
-# Else if host name starts with 'test', set DJANGO_HOST = "test"
-elif socket.gethostname().startswith('test'): 
+# Else if host name starts with 'travis', set DJANGO_HOST = "testing"
+elif socket.gethostname().startswith('travis'): 
     DJANGO_HOST = "testing"
 else:
 # If host doesn't match, assume it's a development server, set DJANGO_HOST = "development"
@@ -110,7 +111,7 @@ WSGI_APPLICATION = 'django_app.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 # Define DATABASES variable for DJANGO_HOST and all others
-if DJANGO_HOST == "production":
+if DJANGO_HOST == "development":
     # Use mysql for live host
     DATABASES = {
         'default': {
