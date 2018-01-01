@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 from .models import Profile
+from django.contrib.auth.password_validation import CommonPasswordValidator, UserAttributeSimilarityValidator, \
+    NumericPasswordValidator
 
 
 class UserEditForm(forms.ModelForm):
@@ -15,7 +17,7 @@ class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
         help_texts = {'date_of_birth': 'date format: YYYY-MM-DD'}
-        fields = ('date_of_birth', 'subjects')
+        fields = ('date_of_birth',)
 
 
 class LoginForm(forms.Form):
@@ -49,9 +51,14 @@ class UserRegistrationForm(forms.ModelForm):
         raise forms.ValidationError('This email address is already in use.')
 
     def clean_password_2(self):
+        if UserAttributeSimilarityValidator().validate(self.cleaned_data['password']):
+            raise forms.ValidationError("Please choose another password")
+        if NumericPasswordValidator().validate(self.cleaned_data['password']):
+            raise forms.ValidationError("Please choose another password")
+        if CommonPasswordValidator().validate(self.cleaned_data['password']):
+            raise forms.ValidationError("Please choose another password")
         if self.cleaned_data['password'] != self.cleaned_data['password_2']:
             raise forms.ValidationError('Passwords do not match. Please, provide password again.')
-        return self.cleaned_data['password_2']
 
 
 

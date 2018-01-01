@@ -6,6 +6,7 @@ from .models import Profile
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
+from django.conf import settings
 
 
 def register(request):
@@ -18,10 +19,15 @@ def register(request):
             new_user.save()
             profile = Profile.objects.create(user=new_user)
             id = new_user.id
-            text = "Hi!\nHow are you?\nHere is the link to activate your account:\n" \
-                   "http://localhost:8000/activation/?id=%s" %id
+            text = ''
+            if settings.DJANGO_HOST == "development":
+                text = "Hi!\nHow are you?\nHere is the link to activate your account:\n" \
+                        "http://localhost:8000/activation/?id=%s" %id
+            if settings.DJANGO_HOST == "production":
+                text = "Hi!\nHow are you?\nHere is the link to activate your account:\n" \
+                       "https://student-notebook.herokuapp.com/activation/?id=%s" % id
             subject = "Activate your account at Student Notebook"
-            send_mail(subject, text, 'admin@myblog.com', [register_form.cleaned_data['email']])
+            send_mail(subject, text, 'admin@gmail.com', [register_form.cleaned_data['email']])
             return render(request, 'user_authentication/thankyou.html')
     else:
         register_form = UserRegistrationForm()

@@ -9,4 +9,3 @@ from django.conf import settings
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL)
     date_of_birth = models.DateField(blank=True, null=True)
-    subjects = models.CharField(blank=True, null=True, max_length=100)

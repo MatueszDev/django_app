@@ -50,7 +50,7 @@ class ViewTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='user', email="user@fis.agh.edu.pl", password="12345678",
                                              first_name="user", last_name="user")
-        self.profile = Profile.objects.create(user = self.user)
+        self.profile = Profile.objects.create(user=self.user)
 
     def test_user_log_in(self):
         self.assertTrue(self.client.login(username='user', password='12345678'))
@@ -71,8 +71,8 @@ class ViewTest(TestCase):
     def test_user_register(self):
         user_count = User.objects.count()
         response = self.client.post('/register/', {'username': 'user1', 'first_name': 'John', 'last_name': 'John',
-                                                   'email': 'john2@fis.agh.edu.pl', 'password': '12345678',
-                                                   'password_2': '12345678'}, follow=True)
+                                                   'email': 'john2@fis.agh.edu.pl', 'password': 'karhq72j',
+                                                   'password_2': 'karhq72j'}, follow=True)
         self.assertTemplateUsed(response, 'user_authentication/thankyou.html')
         self.assertEqual(User.objects.count(), user_count + 1)
 
@@ -97,9 +97,14 @@ class ViewTest(TestCase):
                                                    'password_2': '12345678'}, follow=True)
         self.assertTemplateUsed(response, 'user_authentication/register.html')
 
-        response = self.client.post('/register/', {'username': 'user11', 'first_name': 'John', 'last_name': 'John',
-                                                   'email': 'user@fis.agh.edu.pl', 'password': '12345678',
+        response = self.client.post('/register/', {'username': 'user1', 'first_name': 'John', 'last_name': 'John',
+                                                   'email': 'john2@fis.agh.edu.pl', 'password': '12345678',
                                                    'password_2': '12345678'}, follow=True)
+        self.assertTemplateUsed(response, 'user_authentication/register.html')
+
+        response = self.client.post('/register/', {'username': 'user1', 'first_name': 'John', 'last_name': 'John',
+                                                   'email': 'john2@fis.agh.edu.pl', 'password': 'superman',
+                                                   'password_2': 'superman'}, follow=True)
         self.assertTemplateUsed(response, 'user_authentication/register.html')
 
     def test_main_page_if_logged_in(self):
@@ -133,7 +138,6 @@ class ViewTest(TestCase):
         response = self.client.post('/edit/', {'first_name': 'John', 'last_name': 'John'}, follow=True)
         self.assertTemplateUsed(response, 'user_authentication/edit_done.html')
 
-    def test_model_str(self):
-        user = self.client.login(username='user', password='12345678')
-        self.assertEqual('True', str(user))
-
+    def test_activate_view(self):
+        response = self.client.get('/activation?id=1', follow=True)
+        self.assertTemplateUsed(response, 'user_authentication/activation.html')
