@@ -96,6 +96,11 @@ WSGI_APPLICATION = 'django_app.wsgi.application'
 
 import dj_database_url
 
+DATABASES = {
+    'default': {
+    }
+}
+
 DATABASES['default'] =  dj_database_url.config()
 
 # DATABASES = {
