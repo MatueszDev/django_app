@@ -11,10 +11,9 @@
 		<div style="padding: 20px;">
 		{% if form.errors %}
 		    <p> Your username and password are invalid. Try again or sign up
-                <a href="{% url "register" %}">here</a> </p>
+                <a href="{% url 'register' %}">here</a> </p>
     	{% else %}
-            <p> Hey! Sign in or sign up <a href="{% url "register" %}">here</a>.</p>
-            <p> If You are an admin, You can sign in <a href="/admin">here</a>.</p>
+            <p> Hey! Sign in or sign up <a href="{% url 'register' %}">here</a>.</p>
         {% endif %}
 
          <form action="{% url 'login' %}" method="post">
@@ -23,6 +22,7 @@
              <input type="hidden" name="next" value="{{ next }}" />
              <p><input type="submit" value="Login"></p>
          </form>
+            <p><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
 		</div>
     </div>
 </div>

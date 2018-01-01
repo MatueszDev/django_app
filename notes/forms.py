@@ -1,9 +1,9 @@
 from django import forms
-from models import NoteFileImage, NoteFileText, NoteFilePdf, Note
+from models import Note, NoteFileText, NoteFileImage, NoteFilePdf, NoteFileOther
 
-class NoteImageForm(forms.ModelForm):
+class NoteForm(forms.ModelForm):
     class Meta:
-        model = NoteFileImage
+        model = Note
         fields = ('name', 'author', 'subject', 'lecture_number',
                 'lecture_title', 'content')
 
@@ -13,14 +13,20 @@ class NoteTextForm(forms.ModelForm):
         fields = ('name', 'author', 'subject', 'lecture_number',
                 'lecture_title', 'content')
 
+class NoteImageForm(forms.ModelForm):
+    class Meta:
+        model = NoteFileImage
+        fields = ('name', 'author', 'subject', 'lecture_number',
+                'lecture_title', 'content')
+
 class NotePdfForm(forms.ModelForm):
     class Meta:
         model = NoteFilePdf
         fields = ('name', 'author', 'subject', 'lecture_number',
                 'lecture_title', 'content')
 
-class NoteForm(forms.ModelForm):
+class NoteOtherForm(forms.ModelForm):
     class Meta:
-        model = Note
+        model = NoteFileOther
         fields = ('name', 'author', 'subject', 'lecture_number',
                 'lecture_title', 'content')

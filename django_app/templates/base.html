@@ -23,12 +23,12 @@
 
 {% if messages %}
 <ul class="messages">
-{% for message in messages %}
-<li class="{{ message.tags }}">
-{{ message|safe }}
-<a href="#" class="close">✖</a>
-</li>
-{% endfor %}
+    {% for message in messages %}
+    <li class="{{ message.tags }}">
+        {{ message|safe }}
+        <a href="#" class="close">✖</a>
+    </li>
+    {% endfor %}
 </ul>
 {% endif %}
 
