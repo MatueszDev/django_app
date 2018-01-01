@@ -101,8 +101,8 @@ DATABASES = {
     }
 }
 
-DATABASES['default'] =  dj_database_url.config()
-
+#DATABASES['default'] =  dj_database_url.config()
+DATABASES['default'] =  dj_database_url.parse('postgres://edsecejjxdbjeo:76359de53471b19c4898f7c81d8d5dcb9e842dc932b3a6a358a8332fcffcda22@ec2-54-83-58-17.compute-1.amazonaws.com:5432/d7r2ne1uotlalc')
 # DATABASES = {
     # 'default': {
         # 'ENGINE': 'django.db.backends.sqlite3',
