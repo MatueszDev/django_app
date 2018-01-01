@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^$', views.main_page, name='main_page'),
     url(r'^grades/', include('grades.urls')),
     url(r'^kalendar/', include('kalendar.urls')),
+    url(r'^poll/', include('poll.urls')),
     url(r'^media/(.*)$', dj_v_serve, {'document_root' : settings.MEDIA_ROOT}),
 ]
 

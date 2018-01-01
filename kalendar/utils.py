@@ -95,6 +95,6 @@ class Import():
                 try:
                     obj.save()
                 except:
-                    pass
+                    continue
                 else:
                       continue
