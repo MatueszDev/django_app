@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'kalendar',
     'poll',
+    'notice_board',
 ]
 
 MIDDLEWARE = [
@@ -89,7 +90,8 @@ TEMPLATES = [
                  os.path.join(BASE_DIR, 'notes/templates'),
                  os.path.join(BASE_DIR, 'kalendar/templates'),
                  os.path.join(BASE_DIR, 'grades/templates'),
-                 os.path.join(BASE_DIR, 'poll/templates')],
+                 os.path.join(BASE_DIR, 'poll/templates'),
+                 os.path.join(BASE_DIR, 'notice_board/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

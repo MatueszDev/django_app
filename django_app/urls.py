@@ -30,5 +30,7 @@ urlpatterns = [
     url(r'^kalendar/', include('kalendar.urls')),
     url(r'^poll/', include('poll.urls')),
     url(r'^media/(.*)$', dj_v_serve, {'document_root' : settings.MEDIA_ROOT}),
+    url(r'^notice_board/', include('notice_board.urls', namespace='notice_board',
+                                   app_name='notice_board')),
 ]
 

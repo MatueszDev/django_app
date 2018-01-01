@@ -1,0 +1,19 @@
+{% extends "main_page/main_page.html" %}
+
+{% block title %}Notice Board{% endblock %}
+{% block content %}
+<div id="main_page_center">
+    <h1>Notice Board</h1>
+    {% for post in posts %}
+    <h2>
+    <a href="{{ post.get_absolute_url }}">
+        {{ post.title }}
+    </a>
+    </h2>
+    <p class="date">
+        Posted {{ post.publish }} by {{ post.author }}
+    </p>
+{{ post.body|truncatewords:30|linebreaks }}
+{% endfor %}
+</div>
+{% endblock %}
