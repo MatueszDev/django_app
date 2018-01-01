@@ -10,6 +10,7 @@ install:
     - pip install -r tests_requirements.txt
 before_script:
     - mysql -e 'create database test;' -u root
+    - mysql -e 'GRANT ALL PRIVILEGES ON test.* TO 'django'@'localhost';' -u root
 script:
     - python manage.py test user_authentication notes groups kalendar grades
     - coverage run --source=django_app,user_authentication,notes,groups,kalendar,grades manage.py test
