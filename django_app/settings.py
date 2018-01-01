@@ -19,16 +19,17 @@ import socket
 print "host name:" + socket.gethostname()
 print "host ip" + socket.gethostbyname(socket.gethostname())
 
-# If the host name starts with 'student-notebook', DJANGO_HOST = "production"
-if socket.gethostname().startswith('student-notebook'):
-    DJANGO_HOST = "production"
 # Else if host name starts with 'travis', set DJANGO_HOST = "testing"
-elif socket.gethostname().startswith('travis'): 
+if socket.gethostname().startswith('travis'): 
     DJANGO_HOST = "testing"
+# Else If the host name starts with 'student-notebook', DJANGO_HOST = "production"
+elif socket.gethostbyname(socket.gethostname()).startswith('172.'):
+    DJANGO_HOST = "production"
 else:
 # If host doesn't match, assume it's a development server, set DJANGO_HOST = "development"
     DJANGO_HOST = "development"
 
+    
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -111,7 +112,7 @@ WSGI_APPLICATION = 'django_app.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 # Define DATABASES variable for DJANGO_HOST and all others
-if DJANGO_HOST == "development":
+if DJANGO_HOST == "production":
     # Use mysql for live host
     DATABASES = {
         'default': {
