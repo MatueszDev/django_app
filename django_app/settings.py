@@ -16,6 +16,8 @@ from django.core.urlresolvers import reverse_lazy
 # Import socket to read host name
 import socket
 
+print "host name:" + socket.gethostname()
+
 # If the host name starts with 'student-notebook', DJANGO_HOST = "production"
 if socket.gethostname().startswith('student-notebook'):
     DJANGO_HOST = "production"
