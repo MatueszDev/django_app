@@ -14,16 +14,13 @@ def add_note(request):
         form = NoteForm(request.POST)
         if form.is_valid():
             form.save()
-
             return HttpResponseRedirect('/notes')
     else:
         form = NoteForm(request.POST)
 
     args = {}
     args.update(csrf(request))
-
     args['form'] = form
-
     return render_to_response('add_note.html', args)
 
 def add_file(request):
@@ -40,23 +37,18 @@ def add_file(request):
             
         if form.is_valid():
             form.save()
-
             return HttpResponseRedirect('/notes')
     else:
         form = NoteOtherForm(request.POST)
 
     args = {}
     args.update(csrf(request))
-
     args['form'] = form
-
     return render_to_response('add_file.html', args)
 
 def choose_class(request):
     objects = Note.objects.all()
-    
     lectures = objects.values('subject').annotate(Max('lecture_number'))
-    
     return render(request, 'notes_main.html', {'lectures': lectures})
 
 def select_lecture(request,subject,lecture_number):
