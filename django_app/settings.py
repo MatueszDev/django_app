@@ -96,15 +96,10 @@ WSGI_APPLICATION = 'django_app.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.path.join(BASE_DIR, 'db'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
-import dj_database_url
-
-DATABASES['default'] =  dj_database_url.config(default='postgres://edsecejjxdbjeo:76359de53471b19c4898f7c81d8d5dcb9e842dc932b3a6a358a8332fcffcda22@ec2-54-83-58-17.compute-1.amazonaws.com:5432/d7r2ne1uotlalc')
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators

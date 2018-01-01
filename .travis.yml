@@ -9,7 +9,7 @@ env:
 install:
     - pip install -r tests_requirements.txt
 before_script:
-    - psql -c 'create database test;' -U postgres
+    - mysql -e 'create database test;' -u root
 script:
     - python manage.py test user_authentication notes groups kalendar grades
     - coverage run --source=django_app,user_authentication,notes,groups,kalendar,grades manage.py test
