@@ -2,14 +2,13 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
-from django.views.generic import ListView, TemplateView
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Event, EventModelForm
 from .utils import Calendar, Import
 import datetime
 import calendar
 from django.utils.safestring import mark_safe
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.urls import reverse
 from .forms import EventForm, UploadFileFrom
 
 
