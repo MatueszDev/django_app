@@ -1,6 +1,7 @@
 *.pyc
 *.swp
 *.swo
+*.swn
 *.un~
 *.sqlite3
 .idea
