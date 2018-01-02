@@ -15,10 +15,10 @@ def index(request): #test only
     print(Scanned.objects.all())
     return render(request, 'ocr_main.html', {'scanned': Scanned.objects.all()})
 
-def scan(request): #not used, but exists in urls
-    path = 'ocr/scripts/page.jpg'
-    scanner(path)
-    return HttpResponse("scan")
+#def scan(request): #not used, but exists in urls
+#    path = 'ocr/scripts/page.jpg'
+#    scanner(path)
+#    return HttpResponse("scan")
 
 def add_image(request): 
     if request.POST:
