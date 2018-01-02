@@ -141,7 +141,11 @@ def import_events_from_unitime(request):
             except IOError:
                 request.session['info'] = 'The file includes wrong content'
                 return HttpResponseRedirect(reverse('index'))
-            return HttpResponseRedirect(reverse('index'))
+            except :
+                request.session['info'] = 'Undefined error occur, not all records has been saved'
+                return HttpResponseRedirect(reverse('index'))
+            else:
+                return HttpResponseRedirect(reverse('index'))
 
     else:
         return HttpResponseRedirect(reverse('index'))

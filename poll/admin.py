@@ -9,6 +9,15 @@ class PollAdmin(admin.ModelAdmin):
 
     list_display = ["question", "description", "publication_date"]
 
+
+class RespondAdmin(admin.ModelAdmin):
+
+    list_display = ["option", "poll"]
+
+class VoteAdmin(admin.ModelAdmin):
+
+    list_display = ["user", "poll", "choice"]
+
 admin.site.register(Poll, PollAdmin)
-admin.site.register(Respond)
-admin.site.register(Vote)
+admin.site.register(Respond, RespondAdmin)
+admin.site.register(Vote, VoteAdmin)

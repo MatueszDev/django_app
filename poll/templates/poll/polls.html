@@ -5,13 +5,20 @@
     
 <div id="main_page_center">
     <div class="polls">
+
         <p>Current available polls:</p>
+        <ul>
         {% for question in questions %}
-            {{ question.question }} <br/>
+            <li>
+                <a href="{{ question.id }}">{{ question.question }}</a> <br/>
+                <i> {{ question.description }}</i>
+            </li>
+
         {% endfor %}
+        </ul>
     </div>
-    <div>
-        <input type="button" value="Create new poll"/>
+    <div class="buttons">
+        <a href="addPoll"><input type="button" value="Create new poll"/></a>
         <input type="button" value="Delete existing poll"/>
     </div>
 </div>

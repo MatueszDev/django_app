@@ -1,0 +1,40 @@
+{% extends "main_page/main_page.html" %}
+{% load staticfiles%}
+{% block title %}Add event{% endblock %}
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static 'admin/css/changelists.css' %}" />
+  {% if cl.formset %}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}" />
+  {% endif %}
+  {% if cl.formset or action_form %}
+    <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+  {% endif %}
+  {{ media.css }}
+  {% if not actions_on_top and not actions_on_bottom %}
+    <style>
+      #changelist table thead th:first-child {width: inherit}
+    </style>
+  {% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+<div id="main_page_center">
+    <div style="padding-left:100px;">
+        <h3>Fill the empty gaps</h3>
+        <form action="/poll/addPoll/" method="post" id="form" >
+            {% csrf_token %}
+            Question: {{ form.question}} <br/>
+            Short description: {{ form.description}}<br/>
+            First answer: {{ form.default_option_1}}<br/>
+            Second answer: {{ form.default_option_2}}<br/>
+            <p><i>If you want add more answers you can do it when you create the poll.</i></p>
+            <!--<input type="submit" value="Add event"/>-->
+            <input type="submit"  value="Create a poll"/>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
