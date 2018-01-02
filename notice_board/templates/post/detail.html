@@ -4,9 +4,38 @@
 {% block content %}
 <div id="main_page_center"  style="padding-left: 4%; padding-right: 1%;">
     <h1>{{ post.title }}</h1>
+    <h3>
     <p class="date">
-        Posted {{ post.publish }} by {{ post.author }}
+        {{ post.author }}
+        {{ post.publish }}
     </p>
-{{ post.body|linebreaks }}
-    </div>
+{{ post.body }}
+</h3>
+    <br/>
+    <br/>
+
+{% for comment in comments %}
+<div class="comment">
+<p class="info">
+
+    {{ comment.name }}
+    {{ comment.created }}
+</p>
+   <p class="body_comment">
+       {{ comment.body }}
+    </p>
+
+</div>
+{% endfor %}
+
+{% if new_comment %}
+<h2>Your comment is added.</h2>
+{% else %}
+    <form action="." method="post">
+{{ comment_form.as_p }}
+{% csrf_token %}
+<p><input type="submit" value="Add comment"></p>
+</form>
+{% endif %}
+        </div>
 {% endblock %}

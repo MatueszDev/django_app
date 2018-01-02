@@ -4,17 +4,17 @@
 {% block content %}
 <div id="main_page_center"  style="padding-left: 1%; padding-right: 1%;">
     {% for post in posts %}
-    <div style="border-bottom: 1.5px solid #59acd9; padding-left: 4%; padding-right: 4%;">
     <h2>
     <a href="{{ post.get_absolute_url }}">
         {{ post.title }}
     </a>
     </h2>
     <p class="date">
-        Posted {{ post.publish }} by {{ post.author }}
+        {{ post.author }}
+        <br/>
+        {{ post.publish }}
     </p>
-    {{ post.body|truncatewords:30|linebreaks }}
-    </div>
+{{ post.body|truncatewords:30|linebreaks }}
 {% endfor %}
 </div>
 {% endblock %}
