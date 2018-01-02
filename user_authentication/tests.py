@@ -91,6 +91,7 @@ class ViewTest(TestCase):
                                                    'email': 'john2@fis.agh.edu.pl', 'password': '123423278',
                                                    'password_2': '12345678'}, follow=True)
         self.assertTemplateUsed(response, 'user_authentication/register.html')
+        self.assertTrue(response, 'Passwords do not match')
 
         response = self.client.post('/register/', {'username': 'user11', 'first_name': 'John', 'last_name': 'John',
                                                    'email': 'john2@onet.pl', 'password': '12345678',

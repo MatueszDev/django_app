@@ -50,15 +50,11 @@ class UserRegistrationForm(forms.ModelForm):
             return email
         raise forms.ValidationError('This email address is already in use.')
 
+
     def clean_password_2(self):
-        if UserAttributeSimilarityValidator().validate(self.cleaned_data['password']):
-            raise forms.ValidationError("Please choose another password")
-        if NumericPasswordValidator().validate(self.cleaned_data['password']):
-            raise forms.ValidationError("Please choose another password")
-        if CommonPasswordValidator().validate(self.cleaned_data['password']):
-            raise forms.ValidationError("Please choose another password")
+        UserAttributeSimilarityValidator().validate(self.cleaned_data['password'])
+        NumericPasswordValidator().validate(self.cleaned_data['password'])
+        CommonPasswordValidator().validate(self.cleaned_data['password'])
         if self.cleaned_data['password'] != self.cleaned_data['password_2']:
             raise forms.ValidationError('Passwords do not match. Please, provide password again.')
-
-
-
+        return self.cleaned_data['password']
