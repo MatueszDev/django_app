@@ -4,13 +4,25 @@
 {% block content %}
     
 <div id="main_page_center">
-    <div class="polls">
-
-
-    </div>
+    <h3>{% for obj in question %}{{ obj.question }} {% endfor %}?</h3>
     <div class="answers">
-
+        <ul>
+            {% for option in answers %}
+                <li>
+                    {{ option.option }}
+                    <a href="vote/{{ option.option }}"><button class="vote">+</button></a>
+                </li>
+            {% endfor %}
+        </ul>
+        <form action="/poll/{{ id }}/" method="post" id="form" >
+            {% csrf_token %}
+            {{ form.answer}}
+            <input type="submit"  value="Add"/>
+        </form>
+        <i>{{ info }}</i>
     </div>
 </div>
+<script>
 
+</script>
 {% endblock %}

@@ -13,7 +13,7 @@ class Poll(models.Model):
     publication_date = models.DateField('publication_date', default=now)
 
 
-    def __unicode_(self):
+    def __unicode__(self):
         return self.question
 
 
@@ -22,9 +22,13 @@ class Respond(models.Model):
     option = models.CharField('option', max_length=255)
     poll = models.ForeignKey(Poll)
 
-    def __unicode_(self):
+    def __unicode__(self):
         return self.option
 
+    @staticmethod
+    def number_of_answers(poll):
+        number = Respond.objects.filter(poll=poll).count()
+        return number
 
 class Vote(models.Model):
 
