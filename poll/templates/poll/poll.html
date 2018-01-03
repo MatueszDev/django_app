@@ -10,10 +10,14 @@
             {% for option in answers %}
                 <li>
                     {{ option.option }}
-                    <a href="vote/{{ option.option }}"><button class="vote">+</button></a>
+                    <a href="vote/?option={{ option.option }}"><button class="vote">+</button></a>
+                    <a href="delete/{{ option.id }}"><button class="vote">-</button></a>
                 </li>
             {% endfor %}
         </ul>
+        {% if info_2 %}
+            <i>{{ info_2 }}</i>
+        {% endif %}
         <form action="/poll/{{ id }}/" method="post" id="form" >
             {% csrf_token %}
             {{ form.answer}}

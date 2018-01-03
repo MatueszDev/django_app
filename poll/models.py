@@ -43,5 +43,5 @@ class Vote(models.Model):
 
     @staticmethod
     def count_option_votes(option):
-        number_of_votes = Vote.objects.filter(option= option).count()
+        number_of_votes = Vote.objects.filter(choice=option).count()
         return  number_of_votes
