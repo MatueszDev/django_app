@@ -11,7 +11,7 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ('title', 'body', 'author', 'slug')
-        exclude = ["slug"]
+        exclude = ["slug", "author"]
 
 
 class CommentForm(forms.ModelForm):
