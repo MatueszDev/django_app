@@ -40,7 +40,7 @@ def poll(request, object_id):
             respond_object.poll = poll[0]
             respond_object.save()
 
-        return HttpResponseRedirect(reverse('poll', kwargs={ 'object_id': object_id}) )
+        return HttpResponseRedirect(reverse('poll:poll', kwargs={ 'object_id': object_id}) )
     else:
         info_2 = request.GET.get('info-2', None)
         question = Poll.objects.filter(id=object_id)
@@ -73,7 +73,7 @@ def create_poll(request):
             respond_object_2.option = form.cleaned_data['default_option_2']
             respond_object_2.save()
 
-        return HttpResponseRedirect(reverse('index'))
+        return HttpResponseRedirect(reverse('poll:index'))
     else:
         form = PollForm()
 
