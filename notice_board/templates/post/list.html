@@ -16,5 +16,12 @@
     </p>
 {{ post.body|truncatewords:30|linebreaks }}
 {% endfor %}
+
+    <form action="." method="post">
+{{ post_form.as_p }}
+{% csrf_token %}
+<p><input type="submit" value="Add post"></p>
+</form>
+
 </div>
 {% endblock %}

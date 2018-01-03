@@ -2,15 +2,22 @@
 from __future__ import unicode_literals
 from django.shortcuts import render, get_object_or_404
 from .models import Post, Comment
-from .forms import CommentForm
+from .forms import CommentForm, PostForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 
 @login_required
-def post_list(request):
+def add_post(request):
     posts = Post.objects.all()
-    return render(request, 'post/list.html', {'posts': posts})
+    if request.method == 'POST':
+        post_form = PostForm(request.POST)
+        if post_form.is_valid():
+            new_post = post_form.save()
+            new_post.save()
+    else:
+        post_form = PostForm()
+    return render(request, 'post/list.html', {'posts': posts, 'post_form': post_form})
 
 
 @login_required
