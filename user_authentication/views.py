@@ -22,8 +22,8 @@ def register(request):
             user = User.objects.get(id=id)
             text = ''
             if settings.DJANGO_HOST == "development":
-                text = "Hi {}!".format(user)+"\nHow are you?\nHere is the link to activate your account:\n" \
-                        "http://localhost:8000/activation/?id=%s" %id
+                text = "Hi {}!\nHow are you?\nHere is the link to activate your account:\n" \
+                        "http://localhost:8000/activation/?id=%s".format(user) % id
             if settings.DJANGO_HOST == "production":
                 text = "Hi!\nHow are you?\nHere is the link to activate your account:\n" \
                        "https://student-notebook.herokuapp.com/activation/?id=%s" % id
