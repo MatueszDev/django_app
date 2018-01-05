@@ -29,4 +29,28 @@ class ViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'post/detail.html')
 
+    def test_view_list(self):
+        self.client.login(username='user', password='alamakota22')
+        response = self.client.get("/notice_board/")
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "post/list.html")
 
+    def test_edit_view(self):
+        self.client.login(username='admin', password='jkadyen3')
+        response = self.client.get(reverse('notice_board:edit_post', args={self.post.pk}), follow=True)
+        self.assertTemplateUsed(response, 'post/editpost.html')
+
+    def test_edit_view_get_request_if_owner(self):
+        self.client.login(username='admin', password='jkadyen3')
+        response = self.client.get('/notice_board/edit_post/1', follow=True)
+        self.assertTemplateUsed(response, 'post/editpost.html')
+
+    def test_edit_view_get_request_if_not_owner(self):
+        self.client.login(username='user', password='alamakota22')
+        response = self.client.get('/notice_board/edit_post/1', follow=True)
+        self.assertEqual(response.status_code, 403)
+
+    def test_delete_view(self):
+        self.client.login(username='admin', password='jkadyen3')
+        response = self.client.get(reverse('notice_board:delete_post', args={self.post.pk}), follow=True)
+        self.assertTemplateUsed(response, 'post/list.html')
