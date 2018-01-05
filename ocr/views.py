@@ -26,8 +26,6 @@ def add_image(request):
         if form.is_valid():
             tmp = scanner(request.FILES['file'])
             Scanned.objects.create(name = "test", content = tmp)
-            #scanned_instance = Scanned.objects.create(content = scanner(request.FILES['file']))
-            #form.save()
             return HttpResponseRedirect('/ocr/')
     else:
         form = UploadForm(request.POST)
