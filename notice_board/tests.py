@@ -28,3 +28,5 @@ class ViewTest(TestCase):
                                                                              self.post.slug]))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'post/detail.html')
+
+

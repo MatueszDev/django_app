@@ -37,5 +37,14 @@
 <p><input type="submit" value="Add comment"></p>
 </form>
 {% endif %}
+
+    {% if request.user.is_superuser %}
+<div class="buttons">
+    <a href="url:delete_post" post.pk><input type="button" value="Edit post"/></a>
+    <a href="{% url 'notice_board:delete_post' pk=post.pk %}"><input type="button" value="Delete post"/></a>
+    </div>
+
+</div>
+{% endif %}
         </div>
 {% endblock %}

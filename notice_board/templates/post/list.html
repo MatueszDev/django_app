@@ -15,12 +15,12 @@
     </p>
 {{ post.body|truncatewords:30|linebreaks }}
 {% endfor %}
+
 {% if request.user.is_superuser %}
-    <form action="." method="post">
-{{ post_form.as_p }}
-{% csrf_token %}
-<p><input type="submit" value="Add post"></p>
-</form>
-{% endif %}
+<div class="buttons">
+    <a href="{% url 'notice_board:add_post' %}"><input type="button" value="Create new post"/></a>
+    </div>
+
 </div>
+{% endif %}
 {% endblock %}

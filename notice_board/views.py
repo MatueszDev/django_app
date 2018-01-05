@@ -5,6 +5,13 @@ from .models import Post, Comment
 from .forms import CommentForm, PostForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.http import HttpResponse
+
+
+@login_required
+def list_post(request):
+    posts = Post.objects.all()
+    return render(request, 'post/list.html', {'posts': posts})
 
 
 @login_required
@@ -16,9 +23,11 @@ def add_post(request):
             new_post = post_form.save(commit=False)
             new_post.author = User.objects.get(username=request.user)
             new_post.save()
+
+            return render(request, 'post/list.html', {'posts': posts})
     else:
         post_form = PostForm()
-    return render(request, 'post/list.html', {'posts': posts, 'post_form': post_form})
+    return render(request, 'post/addpost.html', {'post_form': post_form})
 
 
 @login_required
@@ -38,3 +47,24 @@ def post_detail(request, year, month, day, post):
     return render(request, 'post/detail.html', {'post': post, 'comments': comments,
                                                 'comment_form': comment_form})
 
+
+@login_required
+def edit(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    posts = Post.objects.all()
+    if request.method == 'POST':
+        post_form = PostForm(request.POST, instance=post)
+        if post_form.is_valid():
+            post_form.save()
+            return render(request, 'post/list.html', {'posts': posts})
+    else:
+        post_form = PostForm(instance=post)
+        return render(request, 'post/editpost.html', {'post_form': post_form})
+
+
+@login_required
+def delete(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    posts = Post.objects.all()
+    post.delete()
+    return render(request, 'post/list.html', {'posts': posts})
