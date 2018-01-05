@@ -23,7 +23,6 @@ def add_post(request):
             new_post = post_form.save(commit=False)
             new_post.author = User.objects.get(username=request.user)
             new_post.save()
-
             return render(request, 'post/list.html', {'posts': posts})
     else:
         post_form = PostForm()
