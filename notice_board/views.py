@@ -5,7 +5,7 @@ from .models import Post, Comment
 from .forms import CommentForm, PostForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 
 
 @login_required
@@ -52,6 +52,8 @@ def post_detail(request, year, month, day, post):
 def edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
     posts = Post.objects.all()
+    if request.user.id != post.author.id:
+        return HttpResponseForbidden("Only author can edit post!")
     if request.method == 'POST':
         post_form = PostForm(request.POST, instance=post)
         if post_form.is_valid():
@@ -65,6 +67,9 @@ def edit(request, pk):
 @login_required
 def delete(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    posts = Post.objects.all()
-    post.delete()
-    return render(request, 'post/list.html', {'posts': posts})
+    if request.user.id != post.author.id:
+        return HttpResponseForbidden("Only author can delete post!")
+    else:
+        posts = Post.objects.all()
+        post.delete()
+        return render(request, 'post/list.html', {'posts': posts})
