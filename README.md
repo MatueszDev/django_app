@@ -1,4 +1,4 @@
-Aplication in Django
+Student notebook (Django project)<br>
 Heroku address: https://student-notebook.herokuapp.com/
 
 <img src="https://travis-ci.org/pite2017project/django_app.svg?branch=master" alt="build:started">
