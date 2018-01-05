@@ -1,0 +1,27 @@
+{% extends "main_page/main_page.html" %}
+{% block title %}Polls{% endblock %}
+
+{% block content %}
+    
+<div id="main_page_center" style="padding-left: 4%; padding-right: 1%;">
+    <div class="polls">
+
+        <p>Current available polls:</p>
+        <ul>
+        {% for question in questions %}
+            <li>
+                <a href="{{ question.id }}">{{ question.question }}</a> <br/>
+                <i> {{ question.description }}</i>
+            </li>
+
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="buttons">
+        <a href="addPoll"><input type="button" value="Create new poll"/></a>
+        <input type="button" value="Delete existing poll"/>
+    </div>
+</div>
+
+{% endblock %}
+

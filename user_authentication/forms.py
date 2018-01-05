@@ -1,9 +1,13 @@
 from django import forms
 from django.contrib.auth.models import User
 from .models import Profile
+from django.contrib.auth.password_validation import CommonPasswordValidator, UserAttributeSimilarityValidator, \
+    NumericPasswordValidator
 
 
 class UserEditForm(forms.ModelForm):
+    email = forms.CharField(disabled="disabled")
+
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'email')
@@ -13,7 +17,7 @@ class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
         help_texts = {'date_of_birth': 'date format: YYYY-MM-DD'}
-        fields = ('date_of_birth', 'subjects')
+        fields = ('date_of_birth',)
 
 
 class LoginForm(forms.Form):
@@ -38,11 +42,19 @@ class UserRegistrationForm(forms.ModelForm):
     def clean_email(self):
         if self.cleaned_data['email'].find("fis.agh.edu.pl") == -1:
             raise forms.ValidationError('You provided wrong email')
-        return self.cleaned_data["email"]
+
+        email = self.cleaned_data['email']
+        try:
+            match = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return email
+        raise forms.ValidationError('This email address is already in use.')
+
 
     def clean_password_2(self):
+        UserAttributeSimilarityValidator().validate(self.cleaned_data['password'])
+        NumericPasswordValidator().validate(self.cleaned_data['password'])
+        CommonPasswordValidator().validate(self.cleaned_data['password'])
         if self.cleaned_data['password'] != self.cleaned_data['password_2']:
             raise forms.ValidationError('Passwords do not match. Please, provide password again.')
-        return self.cleaned_data['password_2']
-
-
+        return self.cleaned_data['password']

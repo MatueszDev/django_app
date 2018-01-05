@@ -2,18 +2,17 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
-from django.views.generic import ListView, TemplateView
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Event, EventModelForm
-from .utils import Calendar
+from .utils import Calendar, Import
 import datetime
 import calendar
 from django.utils.safestring import mark_safe
-from django.core.urlresolvers import reverse, reverse_lazy
-from .forms import EventForm
+from django.urls import reverse
+from .forms import EventForm, UploadFileFrom
 
 
-def index(request, info=''):
+def index(request):
 
     after_day = request.GET.get('day__gte', None)
     extra_context =  {}
@@ -47,7 +46,13 @@ def index(request, info=''):
     extra_context['calendar'] = mark_safe(html_calendar)
 
     extra_context['text'] = request.get_full_path()
-    extra_context['info'] = info
+
+
+    extra_context['message'] = request.session.get('info') or ''
+    request.session['info'] = ''
+
+    form = UploadFileFrom()
+    extra_context['form'] = form
 
     return render(request, "kalendar/calendar.html", extra_context)
 
@@ -55,6 +60,7 @@ def index(request, info=''):
 def add_event(request):
     if request.method == 'POST':
         form = EventForm(request.POST)
+
 
         if form.is_valid():
             #obj = EventModelForm(request.POST)
@@ -72,6 +78,7 @@ def add_event(request):
             return HttpResponseRedirect(reverse('index'))
     else:
         form = EventForm()
+        form.fields['day'].initial = datetime.datetime.now()
     return render(request, "kalendar/addEvent.html", {'form':form})
 
 def modify_event(request, object_id):
@@ -108,8 +115,37 @@ def delete_event(request, object_id):
     return HttpResponseRedirect(reverse('index'))
 
 def all_event_list(request):
-    objects = Event.objects.filter(user=request.user)
+    objects = Event.objects.filter(user=request.user).order_by('day', 'starting_time')
+
 
     data = {'objects' : objects}
 
     return render(request, "kalendar/allEvents.html", data )
+
+def import_events_from_unitime(request):
+    if request.method == 'POST':
+        form = UploadFileFrom(request.POST, request.FILES)
+
+
+        if form.is_valid():
+            paramFile = request.FILES['file']
+
+            imp = Import(form.cleaned_data['file'],paramFile, request.user )
+            try:
+                imp.check_right_name()
+                imp.check_right_content()
+                imp.save_events()
+            except NameError:
+                request.session['info'] = "The file must be csv type"
+                return HttpResponseRedirect(reverse('index'))
+            except IOError:
+                request.session['info'] = 'The file includes wrong content'
+                return HttpResponseRedirect(reverse('index'))
+            except :
+                request.session['info'] = 'Undefined error occur, not all records has been saved'
+                return HttpResponseRedirect(reverse('index'))
+            else:
+                return HttpResponseRedirect(reverse('index'))
+
+    else:
+        return HttpResponseRedirect(reverse('index'))

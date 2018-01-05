@@ -28,7 +28,9 @@ urlpatterns = [
     url(r'^$', views.main_page, name='main_page'),
     url(r'^grades/', include('grades.urls')),
     url(r'^kalendar/', include('kalendar.urls')),
+    url(r'^poll/', include('poll.urls', namespace='poll')),
     url(r'^media/(.*)$', dj_v_serve, {'document_root' : settings.MEDIA_ROOT}),
     url(r'^ocr/', include('ocr.urls')),
+    url(r'^notice_board/', include('notice_board.urls', namespace='notice_board', app_name='notice_board')),
 ]
 

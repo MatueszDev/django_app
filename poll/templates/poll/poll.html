@@ -1,0 +1,32 @@
+{% extends "main_page/main_page.html" %}
+{% block title %}Polls{% endblock %}
+
+{% block content %}
+    
+<div id="main_page_center">
+    <h3>{% for obj in question %}{{ obj.question }} {% endfor %}?</h3>
+    <div class="answers">
+        <ul>
+            {% for option in answers %}
+                <li>
+                    {{ option.option }}
+                    <a href="vote/?option={{ option.option }}"><button class="vote">+</button></a>
+                    <a href="delete/{{ option.id }}"><button class="vote">-</button></a>
+                </li>
+            {% endfor %}
+        </ul>
+        {% if info_2 %}
+            <i>{{ info_2 }}</i>
+        {% endif %}
+        <form action="/poll/{{ id }}/" method="post" id="form" >
+            {% csrf_token %}
+            {{ form.answer}}
+            <input type="submit"  value="Add"/>
+        </form>
+        <i>{{ info }}</i>
+    </div>
+</div>
+<script>
+
+</script>
+{% endblock %}

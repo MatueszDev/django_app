@@ -1,0 +1,13 @@
+{% extends "main_page/main_page.html" %}
+{% block title %}Notice Board{% endblock %}
+{% block content %}
+
+<div id="main_page_center"  style="padding-left: 1%; padding-right: 1%;">
+    <form action="." method="post">
+        {{ post_form.as_p }}
+        {% csrf_token %}
+        <p><input type="submit" value="Save changes"></p>
+    </form>
+</div>
+
+{% endblock %}

@@ -1,6 +1,7 @@
 {% extends "main_page/main_page.html" %}
-
+{% block title %}Profile edit{% endblock %}
 {% block content %}
+
 <div id="main_page_center" style="padding-left: 4%; padding-right: 1%;">
     <p>Here you can change your account:</p>
     <form action="." method="post" enctype="multipart/form-data">
@@ -10,4 +11,5 @@
         <p><input type="submit" value="Save changes"></p>
     </form>
 </div>
+
 {% endblock %}

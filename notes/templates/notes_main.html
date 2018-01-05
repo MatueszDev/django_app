@@ -7,16 +7,10 @@
     <div style="padding-left:100px; padding-top:50px; padding-bottom:40px;">
         <ul class="object-tools" style="padding-right:100px;">
             <li>
-                <a href="{% url "add_image" %}"> Add image </a>
-            </li>
-            <li>
-                <a href="{% url "add_pdf" %}"> Add pdf </a>
-            </li>
-            <li>
-                <a href="{% url "add_text" %}"> Add text </a>
-            </li>
-            <li>
                 <a href="{% url "add_note" %}"> Add note </a>
+            </li>
+            <li>
+                <a href="{% url "add_file" %}"> Add file </a>
             </li>
         </ul>
     </div>
@@ -24,10 +18,6 @@
 
         <h1>Select the course and lecture number:</h1>
         <p id="lista">
-        <!--{% for course in lectures %}
-        lecture: {{course.subject}}<br>
-        number of lectures: {{course.lecture_number__max}}<br>
-        {% endfor %}-->
         {% if not lectures %}
             <h2>You don't have any notes.</h2>
         {% else %}
