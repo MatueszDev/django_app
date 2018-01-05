@@ -4,3 +4,6 @@ jsmin==2.2.2
 Pillow
 pytesseract
 dj_database_url
+opencv-python
+numpy
+scipy
