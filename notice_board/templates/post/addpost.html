@@ -2,7 +2,8 @@
 {% block title %}Notice Board{% endblock %}
 {% block content %}
 
-<div id="main_page_center"  style="padding-left: 1%; padding-right: 1%;">
+<div id="main_page_center"  style="padding-left: 4%; padding-right: 1%;">
+    <h1>Adding new post:</h1>
     <form action="." method="post">
         {{ post_form.as_p }}
         {% csrf_token %}

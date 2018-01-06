@@ -1,0 +1,28 @@
+#post_block{
+      background-color: #FFFFFF;
+      width: 70%;
+      min-width: 600px;
+      margin-left: 15%;
+      margin-right: 15%;
+      margin-bottom: 15px;
+      padding-left: 4%;
+      padding-right: 4%;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border: 1px solid #59acd9;
+      border-radius: 6px;
+}
+
+#post_block h1{
+    margin-bottom: -15px;
+}
+
+#post_block h2{
+    margin-bottom: -15px;
+}
+
+#post_block h4{
+    margin-top: 20px;
+    margin-bottom: -10px;
+    padding-bottom: 12px;
+}

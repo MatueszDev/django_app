@@ -2,25 +2,28 @@
 
 {% block title %}Notice Board{% endblock %}
 {% block content %}
-<div id="main_page_center"  style="padding-left: 4%; padding-right: 1%;">
-    {% for post in posts %}
-    <h2>
-    <a href="{{ post.get_absolute_url }}">
-        {{ post.title }}
-    </a>
-    </h2>
-    <p class="date">
-        {{ post.author }}
-        {{ post.publish }}
-    </p>
-{{ post.body|truncatewords:30|linebreaks }}
-{% endfor %}
 
 {% if request.user.is_superuser %}
-<div class="buttons">
-    <a href="{% url 'notice_board:add_post' %}"><input type="button" value="Create new post"/></a>
+    <div class="buttons" style="margin-left: 15%; margin-bottom: 10px;">
+        <a href="{% url 'notice_board:add_post' %}"><input type="button" value="Create new post"/></a>
     </div>
-
-</div>
 {% endif %}
+    
+{% for post in posts %}
+    <div id="post_block">
+        <h2>
+        <a href="{{ post.get_absolute_url }}">
+            {{ post.title }}
+        </a>
+        </h2>
+        <h4>
+        <p class="date">
+            {{ post.author }}
+            {{ post.publish }}
+        </p>
+        </h4>
+        {{ post.body|truncatewords:30|linebreaks }}
+    </div>
+{% endfor %}
+
 {% endblock %}

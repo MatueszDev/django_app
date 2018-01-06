@@ -2,49 +2,49 @@
 
 {% block title %}{{ post.title }}{% endblock %}
 {% block content %}
-<div id="main_page_center"  style="padding-left: 4%; padding-right: 1%;">
+<div id="post_block">
     <h1>{{ post.title }}</h1>
-    <h3>
+    <h4>
     <p class="date">
         {{ post.author }}
         {{ post.publish }}
     </p>
-{{ post.body }}
-</h3>
-    <br/>
-    <br/>
+    </h4>
+    <div style="padding-top: 5px; padding-bottom: 15px; border-bottom: solid 1px #b3b3b3;">
+        <font size="4">
+        {{ post.body }}
+        </font>
+    </div>
+    {% for comment in comments %}
+        <div class="comment">
+            <h4>
+            <p class="info">
+                {{ comment.name }}
+                commented on:
+                {{ comment.created }}
+            </p>
+            </h4>
+            <p class="body_comment">
+               {{ comment.body }}
+            </p>
+        </div>
+    {% endfor %}
 
-{% for comment in comments %}
-<div class="comment">
-<p class="info">
-
-    {{ comment.name }}
-    {{ comment.created }}
-</p>
-   <p class="body_comment">
-       {{ comment.body }}
-    </p>
-
-</div>
-{% endfor %}
-
-{% if new_comment %}
-<h2>Your comment is added.</h2>
-{% else %}
-    <form action="." method="post">
-{{ comment_form.as_p }}
-{% csrf_token %}
-<p><input type="submit" value="Add comment"></p>
-</form>
-{% endif %}
+    {% if new_comment %}
+        <h2>Your comment is added.</h2>
+    {% else %}
+        <form action="." method="post">
+        {{ comment_form.as_p }}
+        {% csrf_token %}
+        <p><input type="submit" value="Add comment"></p>
+        </form>
+    {% endif %}
 
     {% if request.user.is_superuser %}
-<div class="buttons">
-    <a href="{% url 'notice_board:edit_post' pk=post.pk %}"><input type="button" value="Edit post"/></a>
-    <a href="{% url 'notice_board:delete_post' pk=post.pk %}"><input type="button" value="Delete post"/></a>
-    </div>
-
-</div>
-{% endif %}
+        <div class="buttons">
+            <a href="{% url 'notice_board:edit_post' pk=post.pk %}"><input type="button" value="Edit post"/></a>
+            <a href="{% url 'notice_board:delete_post' pk=post.pk %}"><input type="button" value="Delete post"/></a>
         </div>
+    {% endif %}
+</div>
 {% endblock %}
