@@ -1,7 +1,7 @@
 /* Default CSS */
 
 body{
-     background-color: #FFFFFF;
+     background-color: #f6f6f6/*#FFFFFF*/;
      font-family: "Open Sans";
      height: 100%;
      width: 100%;
@@ -19,13 +19,13 @@ body{
       margin-right: 5%;
       padding: 0;
       /*overflow: hidden;*/
-      background-color: #FFFFFF;
       margin-bottom: 70px;
       font-size: 18px;
 }
 
 #login_window{
               border: thin solid #aaaaaa;
+              background-color: #FFFFFF;
               border-radius: 5px;
               width: 50%;
               margin: 0 auto;
@@ -63,15 +63,13 @@ body{
 }
 
 #main_page_center{
+      background-color: #FFFFFF;
       width: 80%;
       min-width: 700px;
       margin-left: 10%;
       margin-right: 10%;
       padding-top: 30px;
-      border-top: 2px solid #59acd9;
-      border-left: 2px solid #59acd9;
-      border-right: 2px solid #59acd9;
-      border-bottom: 2px solid #59acd9;
+      border: 1px solid #59acd9;
       border-radius: 6px;
       min-height: calc(100vh - 150px);
 }

@@ -1,7 +1,7 @@
 {% extends "main_page/main_page.html" %}
 
 {% block content %}
-<div id="main_page_center">
+<div id="main_page_center" class="paper">
     <div style="margin-left: 5%">
         <form action="/notes/add_file/" method="post" enctype="multipart/form-data"> 
             {%csrf_token %}

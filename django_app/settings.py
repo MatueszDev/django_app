@@ -19,7 +19,7 @@ import socket
 #If host name starts with 'travis', set DJANGO_HOST = "testing"
 if socket.gethostname().startswith('travis'): 
     DJANGO_HOST = "testing"
-# Else If the host ip address starts with '172.', DJANGO_HOST = "production"
+# Else If the host ip address starts with '172.' (Heroku server), DJANGO_HOST = "production"
 elif socket.gethostbyname(socket.gethostname()).startswith('172.'):
     DJANGO_HOST = "production"
 else:
@@ -112,7 +112,7 @@ WSGI_APPLICATION = 'django_app.wsgi.application'
 
 # Define DATABASES variable for DJANGO_HOST and all others
 if DJANGO_HOST == "production":
-    # Use mysql for live host
+    # Use postgresql for live host
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -177,6 +177,5 @@ STATICFILES_DIRS = (
 )
 
 # User-uploaded files (pictures for notes, files with code, etc.)
-
 MEDIA_ROOT = 'media/'
 MEDIA_URL = '/media/'
