@@ -1,63 +1,136 @@
 {% extends "main_page/main_page.html" %}
 {% block content %}
+
 <div id="main_page_center">
+    <div id="table">
     <form  action="#">
         <fieldset>
-        <legend><h1 style="color:black; margin-left: 50px;">Choose your group:</h1></legend>
-
+        <legend id="title"><h1 style="color:black; margin-left: 50px;">Choose your group:</h1></legend>
             <div id="choose" style="color:black; margin-left: 50px;">
+                {% for group in gradesGroups %}
+                    <h1>Kierunek: {{group.fieldOfStudy}}</h1>
+                    <h1>Rok: {{group.year}}</h1>
+                    {% for subject in group.classes.all %}
+                        <h1>{{subject}}</h1>
+                    {% empty %}
+                        <h3>No subjects!</h3>
+                    {% endfor %}
+
+                {% endfor %}
+
                 {% if not fields %}
-                    <h2>You don't have any groups.</h2>
+                    <h2>There are no fields to display. You shoud add some.</h2>
                 {% else %}
-                <ol>
+                <ul>
                     {% for field in fields %}
                     <li style='font-weight: bold; font-size:20px'>
-                        <h3<a style='font-weight: bold; font-size:20px;' onclick="show_fields(' {{field}} ')">{{field}}</a></h3>
-                        <ol id=' {{field}} ' style="color:blue; font-weight: bold; font-size: 20px;">   
-                        </ol>
+                        <h3><a style="font-weight: bold; font-size:20px;" onclick="show_years( '{{field}}' )">{{field}}</a></h3>
+                        <ul id='{{field}}' style="color:blue; font-weight: bold; font-size: 20px;"></ul>
                     </li>
                     {% endfor %}
-                </ol>
+                </ul>
                 {% endif %}
             </div>
         </fieldset>
     </form>
+    </div>
 
-    <script type="text/javascript">
 
-    function show_fields(field)
-    {
-        var list = document.getElementById(field);
-        {% for year in years %}
-            var li = document.createElement('h3');
-            li.innerHTML = '<a id="{{year}}" onclick=show_groups("{{year}}") ><h3>year {{year}}:</h3></a>';
-            list.appendChild(li)
-        {% endfor %}
 
-        document.field.appendChild(list)
-    }
 
-    function show_groups(year)
-    {
-        var list = document.getElementById(year);
+<script type="text/javascript">
 
-        var ol = document.createElement('ol');
-        var li = document.createElement('h4');
-        li.innerHTML = 'Classes:';
-        ol.appendChild(li)
-        {% comment %}
-            list.appendChild(ol)
-        {% endcomment %}
+var globalField='Technical Physics';
+var globalYear='year I';
+var globalSubject='MMF';
 
-        {% for group in classes %}
-            var li = document.createElement('h4');
-            li.innerHTML = '<a href=grades_table.html>- {{group}}</a>';
-            ol.appendChild(li)
-            list.appendChild(ol)
-        {% endfor %}
-    }
 
-    </script>
+function show_years(field)
+{
+    alert(field);
+    globalField = field ;
+    var list = document.getElementById(field) ;
+
+    {% for year in years %}
+        var li = document.createElement('li');
+        li.innerHTML = `<h3><a id='{{year}}' onclick="show_subjects( '{{year}}' )"> {{year}} </a></h3>` ;
+        list.appendChild(li) ;
+    {% endfor %}
+
+}
+
+
+
+function show_subjects(year)
+{
+    globalYear = year ;
+    var list = document.getElementById(year) ;
+
+    var ul = document.createElement('ul');
+    var li = document.createElement('li');
+
+    li.innerHTML = 'Classes:' ;
+    ul.appendChild(li) ;
+
+    {% for group in classes %}
+       li = document.createElement('li');
+       li.innerHTML = "<h5><a id='{{group}}' onclick=show_table('{{group}}')> {{group}} </a></h5>" ;
+       ul.appendChild(li) ;
+       list.appendChild(ul) ;
+   {% endfor %}
+
+
+}
+
+function show_table(group)
+{
+    alert("You are going to see marks from  " + globalSubject + " classes.") ;
+    $("#table").remove();
+
+    document.write
+    (`
+       <h2 id="title"></h2>
+       <table id="table_area">
+       <table id="grades_table">
+           <tr>
+               <th><h4>Student</h4></th>
+               <th><h4>Grades</h4></th>
+           </tr>
+           <tr id="row"></tr>
+       </table>
+       </table>
+
+    `);
+
+    document.getElementById("title").innerHTML = globalField +", "+ globalYear +", "+ globalSubject+":" ;
+
+
+
+
+    var table = document.getElementById('grades_table');
+
+
+    var td1 = document.createElement('td');
+    var td2 = document.createElement('td');
+    var row = document.getElementById('row');
+
+    {% for student in students %}
+        alert('{{student}}');
+        td1.innerHTML = "{{student}}" ;
+        td2.innerHTML = "[2,4, 5]";
+        row.appendChild(td1);
+        row.appendChild(td2);
+        table.appendChild(row);
+    {% endfor %}
+
+
+
+
+}
+
+
+</script>
 </div>
+
 {% endblock %}
 
