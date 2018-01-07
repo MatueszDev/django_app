@@ -2,14 +2,25 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from grades.models import Classes
+
+class Lecture(models.Model):
+    lecture_number = models.IntegerField()
+    lecture_title = models.CharField(max_length=250)
+    classes = models.ForeignKey(Classes, on_delete=models.CASCADE, null=True)
+    lecture_id = str(classes)+"/"+str(lecture_number)
+    
+    def __unicode__(self):
+        return self.lecture_id
 
 class Note(models.Model):
     '''Model for notes stored as plaintext (default)'''
     name = models.CharField(max_length=250)
     author = models.CharField(max_length=250)
-    subject = models.CharField(max_length=250)
-    lecture_number = models.IntegerField()
-    lecture_title = models.CharField(max_length=250)
+    lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE, null=True)
+    #subject = models.CharField(max_length=250)
+    #lecture_number = models.IntegerField()
+    #lecture_title = models.CharField(max_length=250)
     content = models.TextField(max_length=100000)
 
     def __unicode__(self):
@@ -20,9 +31,10 @@ class NoteFile(models.Model):
     '''General model for attached files'''
     name = models.CharField(max_length=250)
     author = models.CharField(max_length=250)
-    subject = models.CharField(max_length=250)
-    lecture_number = models.IntegerField()
-    lecture_title = models.CharField(max_length=250)
+    lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE, null=True)
+    #subject = models.CharField(max_length=250)
+    #lecture_number = models.IntegerField()
+    #lecture_title = models.CharField(max_length=250)
 
     def __unicode__(self):
         return self.name
