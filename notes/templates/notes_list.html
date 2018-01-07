@@ -4,11 +4,25 @@
 
 {% block content %}
 <div id="main_page_center" style="padding-left: 4%; padding-right: 1%;"  class="paper">
+    <div style="padding-left:100px; padding-top:50px; padding-bottom:40px;">
+    {% for lecture in lectures %}
+        <ul class="object-tools" style="padding-right:100px;">
+            <li>
+                <a href="/notes/{{lecture.classes.classes}}/{{lecture.lecture_number}}/add_note"> Add note </a>
+            </li>
+            <li>
+                <a href="/notes/{{lecture.classes.classes}}/{{lecture.lecture_number}}/add_file"> Add file </a>
+            </li>
+        </ul>
+    {% endfor %}
+    </div>
     <div style="display: block; width: 60%; float: left;">
-        <h1 style="color: #000;">Subject: {{subject}}<br>Lecture number {{lecture_number}}: {{lecture_title}}</h1>
+        {% for lecture in lectures %}
+        <h1 style="color: #000;">Subject: {{lecture.classes.classes}}<br>Lecture number {{lecture.lecture_number}}: {{lecture.lecture_title}}</h1>
+        {% endfor %}
              
         <table>
-            {% for note in objects %}
+            {% for note in notes %}
                 <tr style="background-color: #f2f2f2;"><td style="font-size: 16px;">{{note.name}}, by {{note.author}}</td></tr>
                 <tr><td>{{note.content|linebreaksbr}}</td></tr>
             {% endfor %}
@@ -18,25 +32,25 @@
         <h2>Files attached for this lecture:</h2>
         <h3>Text files:</h3>
         <ul>
-        {% for textfile in text_objs %}
+        {% for textfile in texts %}
             <li><a href="{{textfile.content.url}}">{{textfile.name}}, by {{textfile.author}}</a></li>
         {% endfor %}
         </ul>
         <h3>Images:</h3>
         <ul>
-        {% for imgfile in img_objs %}
+        {% for imgfile in imgs %}
             <li><a href="{{imgfile.content.url}}">{{imgfile.name}}, by {{imgfile.author}}</a></li>
         {% endfor %}
         </ul>
         <h3>PDF files:</h3>
         <ul>
-        {% for pdffile in pdf_objs %}
+        {% for pdffile in pdfs %}
             <li><a href="{{pdffile.content.url}}">{{pdffile.name}}, by {{pdffile.author}}</a></li>
         {% endfor %}
         </ul>   
         <h3>Other files</h3>
         <ul>
-        {% for otrfile in otr_objs %}
+        {% for otrfile in otrs %}
         <li><a href="{{otrfile.content.url}}">{{otrfile.name}}, by {{otrfile.author}}</a></li>
         {% endfor %}
         </ul>  
