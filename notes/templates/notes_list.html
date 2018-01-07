@@ -8,10 +8,10 @@
     {% for lecture in lectures %}
         <ul class="object-tools" style="padding-right:100px;">
             <li>
-                <a href="/notes/{{lecture.classes.classes}}/{{lecture.lecture_number}}/add_note"> Add note </a>
+                <a href="/notes/{{lecture.course.classes}}/{{lecture.lecture_number}}/add_note"> Add note </a>
             </li>
             <li>
-                <a href="/notes/{{lecture.classes.classes}}/{{lecture.lecture_number}}/add_file"> Add file </a>
+                <a href="/notes/{{lecture.course.classes}}/{{lecture.lecture_number}}/add_file"> Add file </a>
             </li>
         </ul>
     {% endfor %}

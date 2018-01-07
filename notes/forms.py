@@ -1,5 +1,6 @@
 from django import forms
-from models import Note, NoteFileText, NoteFileImage, NoteFilePdf, NoteFileOther
+from models import Note, Lecture
+from models import NoteFileText, NoteFileImage, NoteFilePdf, NoteFileOther
 
 class NoteForm(forms.ModelForm):
     class Meta:
@@ -30,3 +31,8 @@ class NoteOtherForm(forms.ModelForm):
         model = NoteFileOther
         fields = ('name', 'author', 'lecture', 'content')
         exclude = ['author','lecture']
+
+class LectureForm(forms.ModelForm):
+    class Meta:
+        model = Lecture
+        fields = ('course', 'lecture_number', 'lecture_title')

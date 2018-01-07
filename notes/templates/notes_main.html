@@ -3,6 +3,13 @@
 {% block title %}Lecture notes{% endblock %}
 
 {% block content %}
+
+{% if request.user.is_superuser %}
+    <div class="buttons" style="margin-left: 15%; margin-bottom: 10px;">
+        <a href="/notes/add_lecture"><input type="button" value="Add new lecture"/></a>
+    </div>
+{% endif %}
+
 <div id="main_page_center" class="paper">
     <div style="margin-left: 5%;">
 
@@ -16,11 +23,11 @@
                     var lista = document.getElementById("lista");
                     var currentcourse = "";
                     {% for lecture in lectures %}
-                        if( currentcourse != "{{lecture.classes.classes}}"){
-                            currentcourse = "{{lecture.classes.classes}}";
+                        if( currentcourse != "{{lecture.course.classes}}"){
+                            currentcourse = "{{lecture.course.classes}}";
                             lista.innerHTML += "<h2>Subject: "+currentcourse+"</h2>";
                         }
-                        lista.innerHTML += '<a href="{{lecture.classes}}/{{lecture.lecture_number}}">Lecture {{lecture.lecture_number}}</a><br>';
+                        lista.innerHTML += '<a href="{{lecture.course}}/{{lecture.lecture_number}}">[ Lecture {{lecture.lecture_number}} ]</a> ';
                     {% endfor %}
                 </script>
             </ol>
