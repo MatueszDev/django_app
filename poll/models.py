@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.utils.timezone import now
 
 
+
 class Poll(models.Model):
 
     question = models.CharField('question', max_length=255)
@@ -29,6 +30,9 @@ class Respond(models.Model):
     def number_of_answers(poll):
         number = Respond.objects.filter(poll=poll).count()
         return number
+
+
+
 
 class Vote(models.Model):
 

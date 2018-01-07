@@ -1,6 +1,9 @@
 {% extends "main_page/main_page.html" %}
 {% block title %}Polls{% endblock %}
-
+{% load static%}
+{% block extra_links %}
+<link type="text/css" rel="stylesheet" href="{% static 'css/fontello.css' %}"/>
+{% endblock %}
 {% block content %}
     
 <div id="main_page_center">
@@ -10,7 +13,8 @@
         <ul>
         {% for question in questions %}
             <li>
-                <a href="{{ question.id }}">{{ question.question }}</a> <br/>
+                <a href="{{ question.id }}">{{ question.question }}</a>
+                <a href="{{ question.id }}/delete/"><i class="icon-cancel cancel"></i></a><br/>
                 <i> {{ question.description }}</i>
             </li>
 
@@ -19,7 +23,7 @@
     </div>
     <div class="buttons">
         <a href="addPoll"><input type="button" value="Create new poll"/></a>
-        <input type="button" value="Delete existing poll"/>
+
     </div>
 </div>
 
