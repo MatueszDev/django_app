@@ -207,10 +207,6 @@ def view_question(request,classes,lecture_number,noteslug,qpk):
 @login_required
 def question_okay(request,classes,lecture_number,noteslug,qpk):
     question = NoteQuestion.objects.filter(pk=qpk)
-    print question[0].answered
     question.update(answered=True)
-#    question[0].answered = True
-#    question[0].save()
-    print question[0].answered
     
     return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number+'/')
