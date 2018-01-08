@@ -8,22 +8,22 @@
     {% for lecture in lectures %}
         <ul class="object-tools" style="padding-right:100px;">
             <li>
-                <a href="/notes/{{lecture.course.classes}}/{{lecture.lecture_number}}/add_note"> Add note </a>
+                <a href="/notes/{{lecture.slug}}/{{lecture.lecture_number}}/add_note"> Add note </a>
             </li>
             <li>
-                <a href="/notes/{{lecture.course.classes}}/{{lecture.lecture_number}}/add_file"> Add file </a>
+                <a href="/notes/{{lecture.slug}}/{{lecture.lecture_number}}/add_file"> Add file </a>
             </li>
         </ul>
     {% endfor %}
     </div>
     <div style="display: block; width: 60%; float: left;">
         {% for lecture in lectures %}
-        <h1 style="color: #000;">Subject: {{lecture.classes.classes}}<br>Lecture number {{lecture.lecture_number}}: {{lecture.lecture_title}}</h1>
+        <h1 style="color: #000;">Subject: {{lecture.course.classes}}<br>Lecture number {{lecture.lecture_number}}: {{lecture.lecture_title}}</h1>
         {% endfor %}
              
         <table>
             {% for note in notes %}
-                <tr style="background-color: #f2f2f2;"><td style="font-size: 16px;">{{note.name}}, by {{note.author}}</td></tr>
+                <tr style="background-color: #f2f2f2;"><td style="font-size: 16px;">{{note.title}}, by {{note.author}}</td></tr>
                 <tr><td>{{note.content|linebreaksbr}}</td></tr>
             {% endfor %}
         </table>

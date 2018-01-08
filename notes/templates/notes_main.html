@@ -27,7 +27,7 @@
                             currentcourse = "{{lecture.course.classes}}";
                             lista.innerHTML += "<h2>Subject: "+currentcourse+"</h2>";
                         }
-                        lista.innerHTML += '<a href="{{lecture.course}}/{{lecture.lecture_number}}">[ Lecture {{lecture.lecture_number}} ]</a> ';
+                        lista.innerHTML += '<a href="{{lecture.slug}}/{{lecture.lecture_number}}">[ Lecture {{lecture.lecture_number}} ]</a> ';
                     {% endfor %}
                 </script>
             </ol>

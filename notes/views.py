@@ -16,8 +16,8 @@ from django.db.models import Max
 
 @login_required
 def add_note(request,classes,lecture_number):
-    course = Classes.objects.filter(classes=classes)
-    lectures = Lecture.objects.filter(course=course,
+   # course = Classes.objects.filter(classes=classes)
+    lectures = Lecture.objects.filter(slug=classes,
         lecture_number=lecture_number)
     
     if request.POST:
@@ -43,9 +43,9 @@ def add_note(request,classes,lecture_number):
 
 @login_required
 def add_file(request,classes,lecture_number):
-    course = Classes.objects.filter(classes=classes)
+    #course = Classes.objects.filter(classes=classes)
     number =  lecture_number
-    lectures = Lecture.objects.filter(course=course,
+    lectures = Lecture.objects.filter(slug=classes,
         lecture_number=number)
     
     if request.POST:
@@ -81,7 +81,7 @@ def add_file(request,classes,lecture_number):
 @login_required
 def choose_class(request):
     
-    lectures_all = Lecture.objects.order_by('course')
+    lectures_all = Lecture.objects.order_by('course', 'lecture_number')
     user = User.objects.get(username=request.user)
     user_groups = user.grades_group_set.all()
     classes = []
@@ -97,10 +97,10 @@ def choose_class(request):
 @login_required
 def select_lecture(request,classes,lecture_number):
 
-    course = Classes.objects.filter(classes=classes)
-    number =  lecture_number
-    lectures = Lecture.objects.filter(course=course,
-        lecture_number=number)
+    #course = Classes.objects.filter(classes=classes)
+    #number =  lecture_number
+    lectures = Lecture.objects.filter(slug=classes,
+        lecture_number=lecture_number)
 
     notes = Note.objects.filter(lecture=lectures)
     texts = NoteFileText.objects.filter(lecture=lectures)
@@ -117,11 +117,26 @@ def select_lecture(request,classes,lecture_number):
 
 @login_required
 def add_lecture(request):
+#    lecture_numbers = Lecture.objects.values('course').annotate(
+#                                                        Max('lecture_number'))
+#    lecture_max = {}
+#    for d in lecture_numbers:
+#        course_name = Classes.objects.get(pk=d['course']).classes
+#        lecture_max[course_name] = d['lecture_number__max']
     
     if request.POST:
         lectureform = LectureForm(request.POST)
         if lectureform.is_valid():
-            lectureform.save()
+            newlecture = lectureform.save(commit=False)
+            course = Classes.objects.filter(classes=newlecture.course)
+            lecture = Lecture.objects.filter(course=course[0]).aggregate(
+                                                Max('lecture_number'))
+            newnumber = ( 1 if not lecture['lecture_number__max'] else
+                                            lecture['lecture_number__max'] )
+            
+            newlecture.lecture_number = newnumber
+            
+            newlecture.save()
 
             return HttpResponseRedirect('/notes/')
     else:
@@ -131,5 +146,6 @@ def add_lecture(request):
     args.update(csrf(request))
 
     args['form'] = lectureform
+    #args['lecture_max'] = lecture_max
 
     return render_to_response('add_lecture.html', args)

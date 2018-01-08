@@ -5,7 +5,7 @@ from models import NoteFileText, NoteFileImage, NoteFilePdf, NoteFileOther
 class NoteForm(forms.ModelForm):
     class Meta:
         model = Note
-        fields = ('name', 'author', 'lecture', 'content')
+        fields = ('title', 'author', 'lecture', 'content')
         exclude = ['author','lecture']
 
 class NoteTextForm(forms.ModelForm):
@@ -36,3 +36,4 @@ class LectureForm(forms.ModelForm):
     class Meta:
         model = Lecture
         fields = ('course', 'lecture_number', 'lecture_title')
+        exclude = ['lecture_number']
