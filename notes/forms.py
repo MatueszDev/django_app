@@ -1,5 +1,5 @@
 from django import forms
-from models import Note, Lecture
+from models import Note, Lecture, NoteQuestion, NoteReply
 from models import NoteFileText, NoteFileImage, NoteFilePdf, NoteFileOther
 
 class NoteForm(forms.ModelForm):
@@ -37,3 +37,15 @@ class LectureForm(forms.ModelForm):
         model = Lecture
         fields = ('course', 'lecture_number', 'lecture_title')
         exclude = ['lecture_number']
+
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model = NoteQuestion
+        fields = ('note', 'title', 'author', 'content', 'answered')
+        exclude = ['note', 'author','answered']
+
+class ReplyForm(forms.ModelForm):
+    class Meta:
+        model = NoteReply
+        fields = ('question', 'author', 'content')
+        exclude = ['question', 'author']

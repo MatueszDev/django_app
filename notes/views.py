@@ -3,9 +3,9 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from grades.models import Classes
-from .models import Lecture, Note
+from .models import Lecture, Note, NoteQuestion, NoteReply
 from .models import NoteFileText, NoteFileImage, NoteFilePdf, NoteFileOther
-from forms import NoteForm, LectureForm
+from forms import NoteForm, LectureForm, QuestionForm, ReplyForm
 from forms import NoteImageForm, NoteTextForm, NotePdfForm, NoteOtherForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
@@ -138,3 +138,79 @@ def add_lecture(request):
     args['form'] = lectureform
 
     return render_to_response('add_lecture.html', args)
+
+@login_required
+def add_question(request,classes,lecture_number,noteslug):
+    lectures = Lecture.objects.filter(slug=classes,
+        lecture_number=lecture_number)
+    notes = Note.objects.filter(slug=noteslug)
+    
+    if request.POST:
+        questionform = QuestionForm(request.POST)
+        if questionform.is_valid():
+            newquestion = questionform.save(commit=False)
+            newquestion.author = User.objects.get(username=request.user)
+            newquestion.note = notes[0]
+            newquestion.save()
+
+            return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number)
+    else:
+        questionform = QuestionForm(request.POST)
+
+    args = {}
+    args.update(csrf(request))
+
+    args['form'] = questionform
+    args['classes'] = classes
+    args['lecture_number'] = lecture_number
+    args['note'] = notes[0]
+
+    return render_to_response('add_question.html', args)
+
+@login_required
+def view_question(request,classes,lecture_number,noteslug,qpk):
+    lectures = Lecture.objects.filter(slug=classes,
+        lecture_number=lecture_number)
+    note = Note.objects.filter(slug=noteslug)
+    question = NoteQuestion.objects.filter(pk=qpk)
+    replies = NoteReply.objects.filter(question=question)
+    
+    if request.POST:
+        replyform = ReplyForm(request.POST)
+        if replyform.is_valid():
+            newreply = replyform.save(commit=False)
+            newreply.author = User.objects.get(username=request.user)
+            newreply.question = question[0]
+            newreply.save()
+
+            return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number
+                                        +'/'+noteslug+'/'+qpk)
+    else:
+        replyform = ReplyForm(request.POST)
+
+    args = {}
+    args.update(csrf(request))
+    
+    isauthor = (question[0].author == request.user.username)
+
+    args['form'] = replyform
+    args['classes'] = lectures[0].course.classes
+    args['lectureslug'] = classes
+    args['lecture_number'] = lecture_number
+    args['note'] = note[0]
+    args['question'] = question[0]
+    args['replies'] = replies
+    args['isauthor'] = isauthor
+
+    return render_to_response('view_question.html', args)
+
+@login_required
+def question_okay(request,classes,lecture_number,noteslug,qpk):
+    question = NoteQuestion.objects.filter(pk=qpk)
+    print question[0].answered
+    question.update(answered=True)
+#    question[0].answered = True
+#    question[0].save()
+    print question[0].answered
+    
+    return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number+'/')

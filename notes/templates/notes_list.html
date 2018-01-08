@@ -19,14 +19,19 @@
     <div style="display: block; width: 60%; float: left;">
         {% for lecture in lectures %}
         <h1 style="color: #000;">Subject: {{lecture.course.classes}}<br>Lecture number {{lecture.lecture_number}}: {{lecture.lecture_title}}</h1>
-        {% endfor %}
+        
              
         <table>
             {% for note in notes %}
-                <tr style="background-color: #f2f2f2;"><td style="font-size: 16px;">{{note.title}}, by {{note.author}}</td></tr>
-                <tr><td>{{note.content|linebreaksbr}}</td></tr>
+                <tr style="background-color: #f2f2f2; cursor: pointer;" onclick="toggleNote({{note.pk}})"><td style="font-size: 16px;">{{note.title}}, by {{note.author}}</td></tr>
+                <tr class="note{{note.pk}}" style="display: none;"><td>{{note.content|linebreaksbr}}</td></tr>
+                {% for question in note.questions.all %}
+                    <tr class="note{{note.pk}}" style="display: none;"><td><b>{{question.publish}} {{question.author}} asks:</b><br><a href="/notes/{{lecture.slug}}/{{lecture.lecture_number}}/{{note.slug}}/{{question.pk}}/">{{question.title}}</a> {% if question.answered %} <span style="color: green;"><b>✓</b></span> {% endif %}</td></tr>
+                {% endfor %}
+                <tr class="note{{note.pk}}" style="display: none;"><td><a href="/notes/{{lecture.slug}}/{{lecture.lecture_number}}/{{note.slug}}/ask">Ask a question</a></td></tr>
             {% endfor %}
         </table>
+        {% endfor %}
     </div>
     <div id="files" style="padding-left: 10px;">
         <h2>Files attached for this lecture:</h2>
@@ -56,5 +61,21 @@
         </ul>  
     </div>
     <div style="float: right;"><a href='../..'>Back to lecture selection</a></div>
+    
+    
+    <script type="text/javascript">
+        function toggleNote(pk){
+            classname = "note"+pk;
+            var contents = document.getElementsByClassName(classname);
+            for(i=0; i<contents.length; i++){
+                if(contents[i].style.display === "none"){
+                    contents[i].style.display = "block";
+                }
+                else{
+                    contents[i].style.display = "none";
+                }
+		    }
+        }
+    </script>
 </div>    
 {% endblock %}

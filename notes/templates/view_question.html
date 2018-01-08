@@ -1,0 +1,33 @@
+{% extends "main_page/main_page.html" %}
+
+{% block title %}Lecture notes: questions and answers{% endblock %}
+
+{% block content %}
+<div id="main_page_center" class="paper">
+    <div style="margin-left: 5%">
+        <h1>{{classes}} lecture {{lecture_number}}</h1>
+        <h2>Note "{{note.title}}" by {{note.author}}</h2>
+        <h3>{{question.publish}} | {{question.author}} asks: {% if question.answered %} <span style="color: green;"><b>Answer accepted</b></span> {% endif %}</h3>
+        <p>{{question.content}}</p>
+        
+        {% for reply in replies %}
+            <p><b>{{reply.publish}} | {{reply.author}}:</b></p>
+            <p>{{reply.content}}
+        {% endfor %}
+        
+        <form action="/notes/{{lectureslug}}/{{lecture_number}}/{{note.slug}}/{{question.pk}}/" method="post" enctype="multipart/form-data"> 
+            {%csrf_token %}
+            <ul>
+              {{form.as_p}}
+            </ul>
+
+            <input type="submit" name="sumbit" value="Submit reply">
+        </form>
+        {% if isauthor %}
+        <a href="/notes/{{lectureslug}}/{{lecture_number}}/{{note.slug}}/{{question.pk}}/ok/"><input type="button" value="Mark as answered"/></a>
+        {% endif %}
+    </div>
+    <div style="float: right;"><a href='../..'>Back to the lecture</a></div>
+</div>
+{% endblock %}
+

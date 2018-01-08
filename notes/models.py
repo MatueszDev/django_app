@@ -5,6 +5,7 @@ from django.db import models
 from grades.models import Classes
 from django.core.validators import MinValueValidator
 from django.utils.text import slugify
+from django.utils import timezone
 
 class Lecture(models.Model):
     lecture_number = models.PositiveIntegerField(validators=[MinValueValidator(1)])
@@ -31,6 +32,16 @@ class Note(models.Model):
     author = models.CharField(max_length=250)
     lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE, null=True)
     content = models.TextField(max_length=100000)
+    slug = models.SlugField(max_length=250)
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            slug = slugify(self.title)
+            if Note.objects.filter(slug=slug).exists():
+                self.slug = slugify(self.title) + '-{}'.format(Note.objects.count())
+            else:
+                self.slug = slugify(self.title)
+        super(Note, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.title
@@ -68,11 +79,14 @@ class NoteFileOther(NoteFile):
     
 class NoteQuestion(models.Model):
     note = models.ForeignKey(Note, related_name='questions')
+    title = models.CharField(max_length=250)
+    publish = models.DateTimeField(default=timezone.now)
     author = models.CharField(max_length=250)
     content = models.TextField(max_length=1000)
     answered = models.BooleanField(default=False)
 
 class NoteReply(models.Model):
     question = models.ForeignKey(NoteQuestion, related_name='replies')
+    publish = models.DateTimeField(default=timezone.now)
     author = models.CharField(max_length=250)
     content = models.TextField(max_length=1000)
