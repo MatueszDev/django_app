@@ -16,7 +16,6 @@ from django.db.models import Max
 
 @login_required
 def add_note(request,classes,lecture_number):
-   # course = Classes.objects.filter(classes=classes)
     lectures = Lecture.objects.filter(slug=classes,
         lecture_number=lecture_number)
     
@@ -43,7 +42,6 @@ def add_note(request,classes,lecture_number):
 
 @login_required
 def add_file(request,classes,lecture_number):
-    #course = Classes.objects.filter(classes=classes)
     number =  lecture_number
     lectures = Lecture.objects.filter(slug=classes,
         lecture_number=number)
@@ -97,8 +95,6 @@ def choose_class(request):
 @login_required
 def select_lecture(request,classes,lecture_number):
 
-    #course = Classes.objects.filter(classes=classes)
-    #number =  lecture_number
     lectures = Lecture.objects.filter(slug=classes,
         lecture_number=lecture_number)
 
@@ -117,12 +113,6 @@ def select_lecture(request,classes,lecture_number):
 
 @login_required
 def add_lecture(request):
-#    lecture_numbers = Lecture.objects.values('course').annotate(
-#                                                        Max('lecture_number'))
-#    lecture_max = {}
-#    for d in lecture_numbers:
-#        course_name = Classes.objects.get(pk=d['course']).classes
-#        lecture_max[course_name] = d['lecture_number__max']
     
     if request.POST:
         lectureform = LectureForm(request.POST)
@@ -146,6 +136,5 @@ def add_lecture(request):
     args.update(csrf(request))
 
     args['form'] = lectureform
-    #args['lecture_max'] = lecture_max
 
     return render_to_response('add_lecture.html', args)
