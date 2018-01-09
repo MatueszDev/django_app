@@ -140,3 +140,22 @@ class NoteTest(TestCase):
         path2 = self.note1.slug+"/"+str(self.question1.pk)+"/"+str(self.reply1.pk)
         response = self.client.get("/notes/"+path1+path2+"/delete/", follow=True)
         self.assertEqual(response.status_code, 200)
+        
+    def test_view_bookmarks(self):
+        self.client.login(username='test', password='azerty47')
+        response = self.client.get("/notes/bookmarks/", follow=True)
+        self.assertEqual(response.status_code, 200)
+        
+    def test_view_note_bookmark(self):
+        self.client.login(username='test', password='azerty47')
+        path1 = self.lecture1.slug+"/"+str(self.lecture1.lecture_number)+"/"
+        response = self.client.get("/notes/"+path1+self.note1.slug+"/mark/",
+                                                                 follow=True)
+        self.assertEqual(response.status_code, 200)
+        
+    def test_view_note_unmark(self):
+        self.client.login(username='test', password='azerty47')
+        path1 = self.lecture1.slug+"/"+str(self.lecture1.lecture_number)+"/"
+        response = self.client.get("/notes/"+path1+self.note1.slug+"/unmark/",
+                                                                 follow=True)
+        self.assertEqual(response.status_code, 200)
