@@ -1,0 +1,7 @@
+#main_page_center{
+  background-image: url("../img/1.jpg");
+  padding-left: 4%;
+  padding-right: 1%;
+  min-height: 50% !important;
+  background-size:cover;
+}

@@ -3,19 +3,21 @@
 {% load static%}
 {% block extra_links %}
 <link type="text/css" rel="stylesheet" href="{% static 'css/fontello.css' %}"/>
+<link type="text/css" rel="stylesheet" href="{% static 'css/polls.css' %}"/>
 {% endblock %}
 {% block content %}
     
-<div id="main_page_center" style="padding-left: 4%; padding-right: 1%;">
+<div id="main_page_center">
     <div class="polls">
 
         <p>Current available polls:</p>
         <ul>
         {% for question in questions %}
             <li>
-                <a href="{{ question.id }}">{{ question.question }}</a>
+                <a href="{{ question.id }}">{{ question.question }}</a> &nbsp;&nbsp;&nbsp;
                 <a href="{{ question.id }}/delete/"><i class="icon-cancel cancel"></i></a><br/>
-                <i> {{ question.description }}</i>
+                {%if question.description %}<i> {{ question.description }}</i> <br/>{% endif %}
+                <i>Created at {{ question.publication_date}} by {{ question.user }}</i>
             </li>
 
         {% endfor %}
