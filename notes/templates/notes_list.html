@@ -4,7 +4,7 @@
 
 {% block content %}
 <div id="main_page_center" style="padding-left: 4%; padding-right: 1%;"  class="paper">
-    <div style="padding-left:100px; padding-top:50px; padding-bottom:40px;">
+    <div style="padding-left:100px; padding-top:50px; padding-bottom:0px;">
     {% for lecture in lectures %}
         <ul class="object-tools" style="padding-right:100px;">
             <li>
@@ -16,14 +16,12 @@
         </ul>
     {% endfor %}
     </div>
-    <div style="display: block; width: 60%; float: left;">
+    <div style="display: inline-block; width: 50%; float: left; margin-left: 5%;">
         {% for lecture in lectures %}
         <h1 style="color: #000;">Subject: {{lecture.course.classes}}<br>Lecture number {{lecture.lecture_number}}: {{lecture.lecture_title}}</h1>
-        
-             
         <table>
             {% for note in notes %}
-                <tr style="background-color: #f2f2f2; cursor: pointer;" onclick="toggleNote({{note.pk}})"><td style="font-size: 16px;">{{note.title}}, by {{note.author}}</td></tr>
+                <tr style="background-color: #f0f0f0; cursor: pointer;" onclick="toggleNote({{note.pk}})"><td style="font-size: 15px;">{{note.title}}, by {{note.author}}</td></tr>
                 <tr class="note{{note.pk}}" style="display: none;"><td>{{note.content|linebreaksbr}}</td></tr>
                 {% for question in note.questions.all %}
                     <tr class="note{{note.pk}}" style="display: none;"><td><b>{{question.publish}} {{question.author}} asks:</b><br><a href="/notes/{{lecture.slug}}/{{lecture.lecture_number}}/{{note.slug}}/{{question.pk}}/">{{question.title}}</a> {% if question.answered %} <span style="color: green;"><b>✓</b></span> {% endif %}</td></tr>
@@ -33,7 +31,9 @@
         </table>
         {% endfor %}
     </div>
-    <div id="files" style="padding-left: 10px;">
+    <div class="vertical_line_middle">
+    </div>
+    <div id="files" style="display: inline-block; width: 40%; padding-left: 10px; margin-right: 5%;">
         <h2>Files attached for this lecture:</h2>
         <h3>Text files:</h3>
         <ul>
@@ -60,7 +60,9 @@
         {% endfor %}
         </ul>  
     </div>
-    <div style="float: right;"><a href='../..'>Back to lecture selection</a></div>
+    <div class="vertical_line_right">
+    </div>
+    <div style="float: right; padding-top: 50px; padding-right: 10%;"><a href='../..'><b>Back to lecture selection</b></a></div>
     
     
     <script type="text/javascript">
