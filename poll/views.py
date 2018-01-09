@@ -47,10 +47,11 @@ def poll(request, object_id):
     else:
         info_2 = request.GET.get('info-2', None)
         question = Poll.objects.filter(id=object_id)
-        answers = Respond.objects.filter(poll=question)
+        answers = Respond.objects.filter(poll=question[0])
+        votes = Vote.objects.filter(poll=question[0])
         form = AnsForm()
 
-        extra_content = {'question':question, 'answers':answers, 'form':form, 'id':object_id, 'info_2':info_2}
+        extra_content = {'question':question, 'answers':answers, 'form':form, 'id':object_id, 'info_2':info_2, 'votes':votes}
 
 
         return render(request, "poll/poll.html", extra_content)
@@ -65,6 +66,7 @@ def create_poll(request):
 
             poll_object.question = form.cleaned_data['question']
             poll_object.description = form.cleaned_data['description']
+            poll_object.user = request.user
             poll_object.save()
 
             respond_object_1 = Respond()
@@ -85,7 +87,17 @@ def create_poll(request):
 
 @login_required
 def vote(request,object_id):
-    option = request.GET.get('option')
+    try:
+        option = request.GET.get('option')
+    except:
+        text_info = "Your option was not valid."
+
+        return HttpResponseRedirect("/poll/%s/?info-2=%s" % (object_id, text_info))
+
+    poll = Poll.objects.filter(id=object_id)[0]
+
+    if Vote.objects.filter(user=request.user, poll=poll).exists():
+        Vote.objects.filter(user=request.user, poll=poll).delete()
 
     vote = Vote()
     vote.poll = Poll.objects.filter(id=object_id)[0]
@@ -93,23 +105,23 @@ def vote(request,object_id):
     vote.choice = Respond.objects.filter(poll=vote.poll, option=option)[0] #you must check it first !!!!!!!
     vote.save()
 
+
     return HttpResponseRedirect('/poll/%s/' % object_id)
 
 @login_required
 def delete_respond(request, object_id, object_id_2):
     poll = Poll.objects.filter(id=object_id)
     answer = Respond.objects.filter(id=object_id_2)
-    votes = Vote.objects.filter(choice=answer[0])
 
-    if(Respond.number_of_answers(poll[0]) <= 2):
+    if Respond.number_of_answers(poll[0]) <= 2:
         text_info = "There must stay at least two answers."
 
         return HttpResponseRedirect("/poll/%s/?info-2=%s" % (object_id, text_info))
 
-    number_of_ans = Vote.count_option_votes(answer[0])
+    if Vote.objects.filter(choice=answer).exists:
+        text_info = "You can not delete answer when someone voted."
 
-    for i in range(number_of_ans):
-        votes[i].delete()
+        return HttpResponseRedirect("/poll/%s/?info-2=%s" % (object_id, text_info))
 
     answer[0].delete()
 

@@ -12,7 +12,7 @@ class Poll(models.Model):
     question = models.CharField('question', max_length=255)
     description = models.CharField('description', default=None, max_length=150)
     publication_date = models.DateField('publication_date', default=now)
-    #user = models.ForeignKey(User, on_delete=models.CASCADE, default='')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __unicode__(self):
         return self.question
@@ -49,3 +49,6 @@ class Vote(models.Model):
     def count_option_votes(option):
         number_of_votes = Vote.objects.filter(choice=option).count()
         return  number_of_votes
+
+    def __unicode__(self):
+        return self.choice
