@@ -16,8 +16,9 @@
 
         <h1>Scanned notes:</h1>
         <p id="lista">
-        {% for notes in scanned %}
-        {{notes.id}}: {{notes.content}}<br>
+        {% for img in cropped %}
+        {{img.id}}: {{img.content}}<br>
+        <img src="{{img.content.url}}" width="500px" alt="img"/>
         {% endfor %}
         </p>
     </div>

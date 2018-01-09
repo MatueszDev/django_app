@@ -2,10 +2,12 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 import sys
+from PIL import Image
 
 
-def scan_for_drawings(img):
+def scan_for_drawings(path):
     #handling too big resolutions
+    img = np.asarray(Image.open(path))
     height, width, channels = img.shape 
     if(height > 2500 or width > 2500):
         img = cv2.pyrDown(img) 
@@ -84,10 +86,11 @@ def get_areas(img):
     hierarchy = hierarchy[0]
     return contours, hierarchy
 
+#use only for debugging
 if __name__ == "__main__":
     #uncomment line 61 for debugging
-    image = cv2.imread(str(sys.argv[1]))
-    image, crops = scan_for_drawings(image)
+    img_path = cv2.imread(str(sys.argv[1]))
+    image, crops = scan_for_drawings(img_path)
     for crop in crops:
         cv2.imshow("Show",crop)
         cv2.waitKey(30000)
