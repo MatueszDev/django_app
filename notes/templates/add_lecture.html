@@ -1,0 +1,21 @@
+{% extends "main_page/main_page.html" %}
+
+{% block title %}Lecture notes: adding lectures{% endblock %}
+
+{% block content %}
+<div id="main_page_center" class="paper">
+    <div style="margin-left: 5%">
+        <h1>Add lecture:</h1>
+        <form action="/notes/add_lecture/" method="post" enctype="multipart/form-data"> 
+            {%csrf_token %}
+            <ul>
+              {{form.as_ul}}
+            </ul>
+
+            <input type="submit" name="sumbit" value="Add lecture">
+        </form>
+    </div>
+
+</div>
+{% endblock %}
+

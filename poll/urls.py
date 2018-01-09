@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^addPoll/$', views.create_poll, name='create_poll'),
     url(r'^(?P<object_id>\d+)/vote/$', views.vote, name='vote'),
     url(r'^(?P<object_id>\d+)/delete/(?P<object_id_2>\d+)$', views.delete_respond, name='delete_respond'),
+    url(r'^(?P<object_id>\d+)/delete/$', views.delete_poll, name='delete_poll'),
 ]

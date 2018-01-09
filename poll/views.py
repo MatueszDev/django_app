@@ -109,6 +109,9 @@ def delete_respond(request, object_id, object_id_2):
 
     return HttpResponseRedirect('/poll/%s/' % object_id)
 
-def delete_poll(request):
-    pass
+def delete_poll(request, object_id):
+    poll = Poll.objects.filter(id=object_id)
+    poll[0].delete()
+
+    return HttpResponseRedirect(reverse('poll:index'))
 
