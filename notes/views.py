@@ -7,7 +7,7 @@ from .models import Lecture, Note, NoteQuestion, NoteReply
 from .models import NoteFileText, NoteFileImage, NoteFilePdf, NoteFileOther
 from forms import NoteForm, LectureForm, QuestionForm, ReplyForm
 from forms import NoteImageForm, NoteTextForm, NotePdfForm, NoteOtherForm
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
 from django.shortcuts import render_to_response
 from django.template.context_processors import csrf
 from django.contrib.auth.decorators import login_required
@@ -123,8 +123,6 @@ def add_lecture(request):
                                                 Max('lecture_number'))
             newnumber = ( 1 if not lecture['lecture_number__max'] else
                                             lecture['lecture_number__max']+1 )
-            print lecture['lecture_number__max']
-            print newnumber
             
             newlecture.lecture_number = newnumber
             
@@ -193,7 +191,7 @@ def view_question(request,classes,lecture_number,noteslug,qpk):
     args = {}
     args.update(csrf(request))
     
-    isauthor = (question[0].author == request.user.username)
+    isauthor = (question[0].author == request.user.username) or request.user.is_superuser
 
     args['form'] = replyform
     args['classes'] = lectures[0].course.classes
@@ -209,6 +207,9 @@ def view_question(request,classes,lecture_number,noteslug,qpk):
 @login_required
 def question_okay(request,classes,lecture_number,noteslug,qpk):
     question = NoteQuestion.objects.filter(pk=qpk)
-    question.update(answered=True)
+    if request.user.username==question[0].author or request.user.is_superuser:
+        question.update(answered=True)
+    else:
+        return HttpResponseForbidden("You are not permitted to change the status of this question.")
     
     return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number+'/')

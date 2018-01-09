@@ -16,11 +16,7 @@ class Lecture(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.id:
-            slug = slugify(self.course.classes)
-            if Lecture.objects.filter(slug=slug).exists():
-                self.slug = slugify(self.course.classes) + '-{}'.format(Lecture.objects.count())
-            else:
-                self.slug = slugify(self.course.classes)
+            self.slug = slugify(self.course.classes)
         super(Lecture, self).save(*args, **kwargs)
 
     def __unicode__(self):
