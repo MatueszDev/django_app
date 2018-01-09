@@ -44,7 +44,7 @@ class Note(models.Model):
 
 class NoteFile(models.Model):
     '''General model for attached files'''
-    name = models.CharField(max_length=250)
+    title = models.CharField(max_length=250)
     author = models.CharField(max_length=250)
     lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE, null=True)
 
