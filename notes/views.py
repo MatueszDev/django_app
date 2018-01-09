@@ -122,7 +122,9 @@ def add_lecture(request):
             lecture = Lecture.objects.filter(course=course[0]).aggregate(
                                                 Max('lecture_number'))
             newnumber = ( 1 if not lecture['lecture_number__max'] else
-                                            lecture['lecture_number__max'] )
+                                            lecture['lecture_number__max']+1 )
+            print lecture['lecture_number__max']
+            print newnumber
             
             newlecture.lecture_number = newnumber
             
