@@ -5,14 +5,18 @@
 {% block content %}
 <div id="main_page_center" class="paper">
     <div style="margin-left: 5%">
-        <h1>{{classes}} lecture {{lecture_number}}</h1>
+        <a href="/notes/{{lectureslug}}/{{lecture_number}}/"><h1>{{classes}} lecture {{lecture_number}}</h1></a>
         <h2>Note "{{note.title}}" by {{note.author}}</h2>
         <h3>{{question.publish}} | {{question.author}} asks: {% if question.answered %} <span style="color: green;"><b>Answer accepted</b></span> {% endif %}</h3>
         <p>{{question.content}}</p>
         
         {% for reply in replies %}
-            <p><b>{{reply.publish}} | {{reply.author}}:</b></p>
-            <p>{{reply.content}}
+            <p><b>{{reply.publish}} | {{reply.author}}:</b>
+            {% if isnoteauthor or isauthor %}
+            <a href="/notes/{{lectureslug}}/{{lecture_number}}/{{note.slug}}/{{question.pk}}/{{reply.pk}}/delete/"><button style="font-size: 12px;">Delete reply</button></a>
+            {% endif %}
+            </p>
+            <p>{{reply.content}}</p>
         {% endfor %}
         
         <form action="/notes/{{lectureslug}}/{{lecture_number}}/{{note.slug}}/{{question.pk}}/" method="post" enctype="multipart/form-data"> 
@@ -20,14 +24,16 @@
             <ul>
               {{form.as_p}}
             </ul>
-
-            <input type="submit" name="sumbit" value="Submit reply">
+            <input type="submit" name="sumbit" value="Submit reply" style="vertical-align: bottom;">
         </form>
         {% if isauthor %}
         <a href="/notes/{{lectureslug}}/{{lecture_number}}/{{note.slug}}/{{question.pk}}/ok/"><input type="button" value="Mark as answered"/></a>
         {% endif %}
-    </div>
+        {% if isnoteauthor %}
+        <a href="/notes/{{lectureslug}}/{{lecture_number}}/{{note.slug}}/{{question.pk}}/delete/"><input type="button" value="Delete thread"/></a>
+        {% endif %}
     <div style="float: right;"><a href='../..'>Back to the lecture</a></div>
+    </div>
 </div>
 {% endblock %}
 

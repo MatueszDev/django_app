@@ -191,6 +191,8 @@ def view_question(request,classes,lecture_number,noteslug,qpk):
     args.update(csrf(request))
     
     isauthor = (question[0].author == request.user.username) or request.user.is_superuser
+    
+    isnoteauthor = (note[0].author == request.user.username) or request.user.is_superuser
 
     args['form'] = replyform
     args['classes'] = lectures[0].course.classes
@@ -200,6 +202,7 @@ def view_question(request,classes,lecture_number,noteslug,qpk):
     args['question'] = question[0]
     args['replies'] = replies
     args['isauthor'] = isauthor
+    args['isnoteauthor'] = isnoteauthor
 
     return render_to_response('view_question.html', args)
 
@@ -212,6 +215,30 @@ def question_okay(request,classes,lecture_number,noteslug,qpk):
         return HttpResponseForbidden("You are not permitted to change the status of this question.")
     
     return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number+'/')
+
+@login_required
+def question_delete(request,classes,lecture_number,noteslug,qpk):
+    question = NoteQuestion.objects.filter(pk=qpk)
+    note = Note.objects.filter(slug=noteslug)
+    if request.user.username==note[0].author or request.user.is_superuser:
+        NoteReply.objects.filter(question=question).delete()
+        question.delete()
+    else:
+        return HttpResponseForbidden("You are not permitted to change the status of this question.")
+    
+    return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number+'/')
+
+@login_required
+def reply_delete(request,classes,lecture_number,noteslug,qpk,rpk):
+    question = NoteQuestion.objects.filter(pk=qpk)
+    reply = NoteReply.objects.filter(pk=rpk)
+    if request.user.username==question[0].author or request.user.is_superuser:
+        reply.delete()
+    else:
+        return HttpResponseForbidden("You are not permitted to change the status of this question.")
+    
+    return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number+'/'
+                            +noteslug+'/'+qpk+'/')
 
 @login_required
 def note_bookmark(request,classes,lecture_number,noteslug):
