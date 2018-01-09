@@ -10,8 +10,9 @@ import calendar
 from django.utils.safestring import mark_safe
 from django.urls import reverse
 from .forms import EventForm, UploadFileFrom
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def index(request):
 
     after_day = request.GET.get('day__gte', None)
@@ -57,6 +58,7 @@ def index(request):
     return render(request, "kalendar/calendar.html", extra_context)
 
 
+@login_required
 def add_event(request):
     if request.method == 'POST':
         form = EventForm(request.POST)
@@ -81,6 +83,7 @@ def add_event(request):
         form.fields['day'].initial = datetime.datetime.now()
     return render(request, "kalendar/addEvent.html", {'form':form})
 
+@login_required
 def modify_event(request, object_id):
     object = Event.objects.get(pk=object_id)
     if request.method == 'POST':
@@ -109,11 +112,13 @@ def modify_event(request, object_id):
     return render(request, "kalendar/modifyEvent.html", {'form':form, 'id':object_id})
 
 
+@login_required
 def delete_event(request, object_id):
     Event.objects.filter(id=object_id).delete()
 
     return HttpResponseRedirect(reverse('index'))
 
+@login_required
 def all_event_list(request):
     objects = Event.objects.filter(user=request.user).order_by('day', 'starting_time')
 
@@ -122,6 +127,7 @@ def all_event_list(request):
 
     return render(request, "kalendar/allEvents.html", data )
 
+@login_required
 def import_events_from_unitime(request):
     if request.method == 'POST':
         form = UploadFileFrom(request.POST, request.FILES)

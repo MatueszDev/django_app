@@ -1,6 +1,10 @@
 {% extends "main_page/main_page.html" %}
 {% block title %}Polls{% endblock %}
-
+{% load static%}
+{% block extra_links %}
+<link type="text/css" rel="stylesheet" href="{% static 'css/fontello.css' %}"/>
+<link type="text/css" rel="stylesheet" href="{% static 'css/poll.css' %}"/>
+{% endblock %}
 {% block content %}
     
 <div id="main_page_center">
@@ -10,8 +14,14 @@
             {% for option in answers %}
                 <li>
                     {{ option.option }}
-                    <a href="vote/?option={{ option.option }}"><button class="vote">+</button></a>
-                    <a href="delete/{{ option.id }}"><button class="vote">-</button></a>
+                    <a href="vote/?option={{ option.option }}"><i class="icon-thumbs-up thumbs-up"></i></a>
+                    <a href="delete/{{ option.id }}"><i class="icon-cancel cancel"></i></a>
+                    {% for vote in votes %}
+
+                        {% if  vote.choice.option == option.option  %}
+                            {{ vote.user }}
+                        {% endif %}
+                    {% endfor %}
                 </li>
             {% endfor %}
         </ul>
