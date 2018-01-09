@@ -2,17 +2,13 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
+import numpy as np
 from django.contrib import admin
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 
 class Classes(models.Model):
-    CLASSES = (
-        ('MMF I', 'Matematyczne Metody Fizyki'),
-        ('PP', 'Programowanie Proceduralne'),
-        ('MI', 'Matematyka I')
-    )
     classes = models.CharField(max_length=30)
 
     def make_class(self):
@@ -42,14 +38,13 @@ class Year(models.Model):
         return self.year
 
 
-
 class Grades_group(models.Model):
 
     fieldOfStudy = models.ForeignKey(Field_of_study, on_delete=models.CASCADE, null=True)
     year = models.ForeignKey(Year, on_delete=models.CASCADE, null=True)
     classes = models.ManyToManyField(Classes)
-    gradesGroup = str(fieldOfStudy) + " " + str(year)
     user = models.ManyToManyField(User)
+    gradesGroup = str(fieldOfStudy) + " " + str(year)
 
     def make_grades_group(self):
         self.save()
@@ -57,4 +52,26 @@ class Grades_group(models.Model):
     def __unicode__(self):
         return self.gradesGroup
 
+    def __str__(self):
+        return unicode(self).encode('utf-8')
 
+
+class Person(models.Model):
+    name = models.CharField(max_length=100, verbose_name='full name')
+
+class Grades(models.Model):
+    group = models.ForeignKey(Grades_group, on_delete=models.CASCADE, null=True)
+    _gradesDict = {}
+
+    @property
+    def gradesDict(self):
+        for subject in self.group.classes.all():
+            self._gradesDict.setdefault(subject.classes , {} )
+            for usr in self.group.user.all():
+                fullName = usr.first_name +' '+ usr.last_name
+                self._gradesDict[subject.classes][fullName] = [2,3,4]
+        print self._gradesDict
+
+    @gradesDict.setter
+    def gradesDict(self,subject,fullName, grade):
+        self._gradesDict[subject][fullName] = grade
