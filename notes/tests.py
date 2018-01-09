@@ -41,41 +41,42 @@ class NoteTest(TestCase):
 
     def test_view_notes_main(self):
         self.client.login(username='test', password='azerty47')
-        response = self.client.get("/notes/")
+        response = self.client.get("/notes/", follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "notes_main.html")
     
     def test_view_notes_list(self):
         self.client.login(username='test', password='azerty47')
         path = self.lecture1.slug+"/"+str(self.lecture1.lecture_number)+"/"
-        response = self.client.get("/notes/"+path)
+        response = self.client.get("/notes/"+path, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "notes_list.html")
     
     def test_view_add_lecture(self):
         self.client.login(username='admin', password='correcthorse')
-        response = self.client.get("/notes/add_lecture/")
+        response = self.client.get("/notes/add_lecture/", follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "add_lecture.html")
     
     def test_view_add_note(self):
         self.client.login(username='test', password='azerty47')
         path = self.lecture1.slug+"/"+str(self.lecture1.lecture_number)+"/"
-        response = self.client.get("/notes/"+path+"add_note/")
+        response = self.client.get("/notes/"+path+"add_note/", follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "add_note.html")
     
     def test_view_add_note(self):
         self.client.login(username='test', password='azerty47')
         path = self.lecture1.slug+"/"+str(self.lecture1.lecture_number)+"/"
-        response = self.client.get("/notes/"+path+"add_file/")
+        response = self.client.get("/notes/"+path+"add_file/", follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "add_file.html")
     
     def test_view_add_question(self):
         self.client.login(username='test', password='azerty47')
         path = self.lecture1.slug+"/"+str(self.lecture1.lecture_number)+"/"
-        response = self.client.get("/notes/"+path+self.note1.slug+"/ask/")
+        response = self.client.get("/notes/"+path+self.note1.slug+"/ask/",
+                                                                follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "add_question.html")
     
@@ -83,7 +84,7 @@ class NoteTest(TestCase):
         self.client.login(username='test', password='azerty47')
         path1 = self.lecture1.slug+"/"+str(self.lecture1.lecture_number)+"/"
         path2 = self.note1.slug+"/"+str(self.question1.pk)+"/"
-        response = self.client.get("/notes/"+path1+path2)
+        response = self.client.get("/notes/"+path1+path2, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "view_question.html")
     
@@ -91,19 +92,19 @@ class NoteTest(TestCase):
         self.client.login(username='test2', password='azerty47')
         path1 = self.lecture1.slug+"/"+str(self.lecture1.lecture_number)+"/"
         path2 = self.note1.slug+"/"+str(self.question1.pk)+"/ok/"
-        response = self.client.get("/notes/"+path1+path2)
+        response = self.client.get("/notes/"+path1+path2, follow=True)
         self.assertEqual(response.status_code, 403)
     
     def test_view_mark_answered_author(self):
         self.client.login(username='test', password='azerty47')
         path1 = self.lecture1.slug+"/"+str(self.lecture1.lecture_number)+"/"
         path2 = self.note1.slug+"/"+str(self.question1.pk)+"/ok/"
-        response = self.client.get("/notes/"+path1+path2)
-        self.assertEqual(response.status_code, 302)
+        response = self.client.get("/notes/"+path1+path2, follow=True)
+        self.assertEqual(response.status_code, 200)
     
     def test_view_mark_answered_superuser(self):
         self.client.login(username='admin', password='correcthorse')
         path1 = self.lecture1.slug+"/"+str(self.lecture1.lecture_number)+"/"
         path2 = self.note1.slug+"/"+str(self.question1.pk)+"/ok/"
-        response = self.client.get("/notes/"+path1+path2)
-        self.assertEqual(response.status_code, 302)
+        response = self.client.get("/notes/"+path1+path2, follow=True)
+        self.assertEqual(response.status_code, 200)
