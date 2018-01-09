@@ -37,6 +37,10 @@ class NoteTest(TestCase):
                                         title='why happen',
                                         author=self.user.username,
                                         content='I don\'t even')
+        self.reply1 = NoteReply.objects.create(question=self.question1,
+                                        author=self.user.username,
+                                        content='it could be yellow')
+                                        
         
 
     def test_view_notes_main(self):
@@ -107,4 +111,51 @@ class NoteTest(TestCase):
         path1 = self.lecture1.slug+"/"+str(self.lecture1.lecture_number)+"/"
         path2 = self.note1.slug+"/"+str(self.question1.pk)+"/ok/"
         response = self.client.get("/notes/"+path1+path2, follow=True)
+        self.assertEqual(response.status_code, 200)
+    
+    def test_view_question_delete_not_author(self):
+        self.client.login(username='test2', password='azerty47')
+        path1 = self.lecture1.slug+"/"+str(self.lecture1.lecture_number)+"/"
+        path2 = self.note1.slug+"/"+str(self.question1.pk)+"/delete/"
+        response = self.client.get("/notes/"+path1+path2, follow=True)
+        self.assertEqual(response.status_code, 403)
+    
+    def test_view_question_delete(self):
+        self.client.login(username='admin', password='correcthorse')
+        path1 = self.lecture1.slug+"/"+str(self.lecture1.lecture_number)+"/"
+        path2 = self.note1.slug+"/"+str(self.question1.pk)+"/delete/"
+        response = self.client.get("/notes/"+path1+path2, follow=True)
+        self.assertEqual(response.status_code, 200)
+    
+    def test_view_reply_delete_not_author(self):
+        self.client.login(username='test2', password='azerty47')
+        path1 = self.lecture1.slug+"/"+str(self.lecture1.lecture_number)+"/"
+        path2 = self.note1.slug+"/"+str(self.question1.pk)+"/"+str(self.reply1.pk)
+        response = self.client.get("/notes/"+path1+path2+"/delete/", follow=True)
+        self.assertEqual(response.status_code, 403)
+    
+    def test_view_reply_delete(self):
+        self.client.login(username='admin', password='correcthorse')
+        path1 = self.lecture1.slug+"/"+str(self.lecture1.lecture_number)+"/"
+        path2 = self.note1.slug+"/"+str(self.question1.pk)+"/"+str(self.reply1.pk)
+        response = self.client.get("/notes/"+path1+path2+"/delete/", follow=True)
+        self.assertEqual(response.status_code, 200)
+        
+    def test_view_bookmarks(self):
+        self.client.login(username='test', password='azerty47')
+        response = self.client.get("/notes/bookmarks/", follow=True)
+        self.assertEqual(response.status_code, 200)
+        
+    def test_view_note_bookmark(self):
+        self.client.login(username='test', password='azerty47')
+        path1 = self.lecture1.slug+"/"+str(self.lecture1.lecture_number)+"/"
+        response = self.client.get("/notes/"+path1+self.note1.slug+"/mark/",
+                                                                 follow=True)
+        self.assertEqual(response.status_code, 200)
+        
+    def test_view_note_unmark(self):
+        self.client.login(username='test', password='azerty47')
+        path1 = self.lecture1.slug+"/"+str(self.lecture1.lecture_number)+"/"
+        response = self.client.get("/notes/"+path1+self.note1.slug+"/unmark/",
+                                                                 follow=True)
         self.assertEqual(response.status_code, 200)
