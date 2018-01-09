@@ -12,7 +12,7 @@ class Poll(models.Model):
     question = models.CharField('question', max_length=255)
     description = models.CharField('description', default=None, max_length=150)
     publication_date = models.DateField('publication_date', default=now)
-
+    #user = models.ForeignKey(User, on_delete=models.CASCADE, default='')
 
     def __unicode__(self):
         return self.question

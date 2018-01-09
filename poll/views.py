@@ -6,7 +6,9 @@ from django.urls import reverse
 from .models import Poll, Respond, Vote
 from .forms import PollForm, AnsForm
 from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def index(request):
 
     questions = Poll.objects.all()
@@ -15,6 +17,7 @@ def index(request):
 
     return render(request, "poll/polls.html", extra_content)
 
+@login_required
 def poll(request, object_id):
     if request.method =='POST':
         form = AnsForm(request.POST)
@@ -52,6 +55,7 @@ def poll(request, object_id):
 
         return render(request, "poll/poll.html", extra_content)
 
+@login_required
 def create_poll(request):
     if request.method == 'POST':
         form = PollForm(request.POST)
@@ -79,6 +83,7 @@ def create_poll(request):
 
     return render(request, "poll/addPoll.html", {'form': form})
 
+@login_required
 def vote(request,object_id):
     option = request.GET.get('option')
 
@@ -90,6 +95,7 @@ def vote(request,object_id):
 
     return HttpResponseRedirect('/poll/%s/' % object_id)
 
+@login_required
 def delete_respond(request, object_id, object_id_2):
     poll = Poll.objects.filter(id=object_id)
     answer = Respond.objects.filter(id=object_id_2)
@@ -109,6 +115,7 @@ def delete_respond(request, object_id, object_id_2):
 
     return HttpResponseRedirect('/poll/%s/' % object_id)
 
+@login_required
 def delete_poll(request, object_id):
     poll = Poll.objects.filter(id=object_id)
     poll[0].delete()
