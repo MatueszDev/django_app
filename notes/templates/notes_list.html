@@ -3,6 +3,9 @@
 {% block title %}Lecture notes{% endblock %}
 
 {% block content %}
+<div class="buttons" style="margin-left: 15%; margin-bottom: 10px;">
+    <a href="/notes/bookmarks/"><input type="button" value="Bookmarks"/></a>
+</div>
 <div id="main_page_center" style="padding-left: 4%; padding-right: 1%;"  class="paper">
     <div style="padding-left:100px; padding-top:50px; padding-bottom:0px;">
     {% for lecture in lectures %}
@@ -14,10 +17,8 @@
                 <a href="/notes/{{lecture.slug}}/{{lecture.lecture_number}}/add_file"> Add file </a>
             </li>
         </ul>
-    {% endfor %}
     </div>
-    <div style="display: inline-block; width: 50%; float: left; margin-left: 5%;">
-        {% for lecture in lectures %}
+    <div style="display: inline-block; width: 45%; float: left; margin-left: 5%; padding-right: 5%">
         <h1 style="color: #000;">Subject: {{lecture.course.classes}}<br>Lecture number {{lecture.lecture_number}}: {{lecture.lecture_title}}</h1>
         <table>
             {% for note in notes %}
@@ -26,10 +27,10 @@
                 {% for question in note.questions.all %}
                     <tr class="note{{note.pk}}" style="display: none;"><td><b>{{question.publish}} {{question.author}} asks:</b><br><a href="/notes/{{lecture.slug}}/{{lecture.lecture_number}}/{{note.slug}}/{{question.pk}}/">{{question.title}}</a> {% if question.answered %} <span style="color: green;"><b>✓</b></span> {% endif %}</td></tr>
                 {% endfor %}
-                <tr class="note{{note.pk}}" style="display: none;"><td><a href="/notes/{{lecture.slug}}/{{lecture.lecture_number}}/{{note.slug}}/ask">Ask a question</a></td></tr>
+                <tr class="note{{note.pk}}" style="display: none;"><td><a href="/notes/{{lecture.slug}}/{{lecture.lecture_number}}/{{note.slug}}/ask/">Ask a question</a></td></tr>
+                <tr class="note{{note.pk}}" style="display: none;"><td><a href="/notes/{{lecture.slug}}/{{lecture.lecture_number}}/{{note.slug}}/mark/">[ bookmark ]</a></td></tr>
             {% endfor %}
         </table>
-        {% endfor %}
     </div>
     <div class="vertical_line_middle">
     </div>
@@ -38,28 +39,29 @@
         <h3>Text files:</h3>
         <ul>
         {% for textfile in texts %}
-            <li><a href="{{textfile.content.url}}">{{textfile.name}}, by {{textfile.author}}</a></li>
+            <li><a href="{{textfile.content.url}}">{{textfile.title}}, by {{textfile.author}}</a> <a href="/notes/{{lecture.slug}}/{{lecture.lecture_number}}/t/{{textfile.pk}}/mark/"><i>[bookmark]</i></a></li>
         {% endfor %}
         </ul>
         <h3>Images:</h3>
         <ul>
         {% for imgfile in imgs %}
-            <li><a href="{{imgfile.content.url}}">{{imgfile.name}}, by {{imgfile.author}}</a></li>
+            <li><a href="{{imgfile.content.url}}">{{imgfile.title}}, by {{imgfile.author}}</a> <a href="/notes/{{lecture.slug}}/{{lecture.lecture_number}}/i/{{imgfile.pk}}/mark/"><i>[bookmark]</i></a></li>
         {% endfor %}
         </ul>
         <h3>PDF files:</h3>
         <ul>
         {% for pdffile in pdfs %}
-            <li><a href="{{pdffile.content.url}}">{{pdffile.name}}, by {{pdffile.author}}</a></li>
+            <li><a href="{{pdffile.content.url}}">{{pdffile.title}}, by {{pdffile.author}}</a> <a href="/notes/{{lecture.slug}}/{{lecture.lecture_number}}/p/{{pdffile.pk}}/mark/"><i>[bookmark]</i></a></li>
         {% endfor %}
         </ul>   
         <h3>Other files</h3>
         <ul>
         {% for otrfile in otrs %}
-        <li><a href="{{otrfile.content.url}}">{{otrfile.name}}, by {{otrfile.author}}</a></li>
+        <li><a href="{{otrfile.content.url}}">{{otrfile.title}}, by {{otrfile.author}}</a> <a href="/notes/{{lecture.slug}}/{{lecture.lecture_number}}/o/{{otrfile.pk}}/mark/"><i>[bookmark]</i></a></li>
         {% endfor %}
         </ul>  
     </div>
+    {% endfor %}
     <div class="vertical_line_right">
     </div>
     <div style="float: right; padding-top: 50px; padding-right: 10%;"><a href='../..'><b>Back to lecture selection</b></a></div>

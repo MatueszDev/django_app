@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from grades.models import Classes
+from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from django.utils.text import slugify
 from django.utils import timezone
@@ -29,6 +30,7 @@ class Note(models.Model):
     lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE, null=True)
     content = models.TextField(max_length=100000)
     slug = models.SlugField(max_length=250)
+    user = models.ManyToManyField(User)
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -47,6 +49,7 @@ class NoteFile(models.Model):
     title = models.CharField(max_length=250)
     author = models.CharField(max_length=250)
     lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE, null=True)
+    user = models.ManyToManyField(User)
 
     def __unicode__(self):
         return self.name

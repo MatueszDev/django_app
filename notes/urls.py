@@ -10,4 +10,9 @@ urlpatterns = [
     url(r'^(?P<classes>[A-Za-z0-9-]+)/(?P<lecture_number>[0-9]+)/(?P<noteslug>[A-Za-z0-9-]+)/ask/$', views.add_question, name='add_question'),
     url(r'^(?P<classes>[A-Za-z0-9-]+)/(?P<lecture_number>[0-9]+)/(?P<noteslug>[A-Za-z0-9-]+)/(?P<qpk>[0-9]+)/$', views.view_question, name='view_question'),
     url(r'^(?P<classes>[A-Za-z0-9-]+)/(?P<lecture_number>[0-9]+)/(?P<noteslug>[A-Za-z0-9-]+)/(?P<qpk>[0-9]+)/ok/$', views.question_okay, name='question_okay'),
+    url(r'^bookmarks/$', views.bookmarks, name='bookmarks'),
+    url(r'^(?P<classes>[A-Za-z0-9-]+)/(?P<lecture_number>[0-9]+)/(?P<noteslug>[A-Za-z0-9-]+)/mark/$', views.note_bookmark, name='note_bookmark'),
+    url(r'^(?P<classes>[A-Za-z0-9-]+)/(?P<lecture_number>[0-9]+)/(?P<noteslug>[A-Za-z0-9-]+)/unmark/$', views.note_unmark, name='note_unmark'),
+    url(r'^(?P<classes>[A-Za-z0-9-]+)/(?P<lecture_number>[0-9]+)/(?P<filetype>[tipo])/(?P<filepk>[0-9]+)/mark/$', views.file_bookmark, name='file_bookmark'),
+    url(r'^(?P<classes>[A-Za-z0-9-]+)/(?P<lecture_number>[0-9]+)/(?P<filetype>[tipo])/(?P<filepk>[0-9]+)/unmark/$', views.file_unmark, name='file_unmark'),
 ]
