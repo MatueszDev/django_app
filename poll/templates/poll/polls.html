@@ -15,9 +15,9 @@
         {% for question in questions %}
             <li>
                 <font size="3">
-                <a href="{{ question.id }}">{{ question.question }}</a> &nbsp;&nbsp;&nbsp;
-                <a href="{{ question.id }}/delete/"><i class="icon-cancel cancel"></i></a><br/>
-                {%if question.description %} {{ question.description }} <br/>{% endif %}
+                    <a href="{{ question.id }}">{{ question.question }}</a> &nbsp;&nbsp;&nbsp;
+                    <a href="{{ question.id }}/delete/"><i class="icon-cancel cancel"></i></a><br/>
+                    {%if question.description %} {{ question.description }} <br/>{% endif %}
                 </font>
                 <h4><i>Created at {{ question.publication_date}} by {{ question.user }}</i></h4>
             </li>
