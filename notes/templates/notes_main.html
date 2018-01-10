@@ -4,18 +4,20 @@
 
 {% block content %}
 
-{% if request.user.is_superuser %}
-    <div class="buttons" style="margin-left: 15%; margin-bottom: 10px;">
+
+<div class="buttons" style="margin-left: 15%; margin-bottom: 10px;">
+    <a href="/notes/bookmarks/"><input type="button" value="Bookmarks"/></a>
+    {% if request.user.is_superuser %}
         <a href="/notes/add_lecture"><input type="button" value="Add new lecture"/></a>
-    </div>
-{% endif %}
+    {% endif %}
+</div>
 
 <div id="main_page_center" class="paper">
     <div style="margin-left: 5%;">
         <h1>Select the course and lecture number:</h1>
         <p id="lista">
         {% if not lectures %}
-            <h2>You don't have any notes.</h2>
+            <h2>You don't have any courses assigned.</h2>
         {% else %}
             <ol>
                 <script type="text/javascript">

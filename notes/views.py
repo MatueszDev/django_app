@@ -104,12 +104,11 @@ def select_lecture(request,classes,lecture_number):
     pdfs = NoteFilePdf.objects.filter(lecture=lectures)
     otrs = NoteFileOther.objects.filter(lecture=lectures)
     
-    return render(request, 'notes_list.html', {'lectures': lectures,
-                                            'notes' : notes,
-                                            'texts' : texts,
-                                            'imgs' : imgs,
-                                            'pdfs' : pdfs,
-                                            'otrs' : otrs})
+    args = {'lectures': lectures, 'notes' : notes,
+            'texts' : texts, 'imgs' : imgs,
+            'pdfs' : pdfs, 'otrs' : otrs}
+    
+    return render(request, 'notes_list.html', args)
 
 @login_required
 def add_lecture(request):
@@ -192,6 +191,8 @@ def view_question(request,classes,lecture_number,noteslug,qpk):
     args.update(csrf(request))
     
     isauthor = (question[0].author == request.user.username) or request.user.is_superuser
+    
+    isnoteauthor = (note[0].author == request.user.username) or request.user.is_superuser
 
     args['form'] = replyform
     args['classes'] = lectures[0].course.classes
@@ -201,6 +202,7 @@ def view_question(request,classes,lecture_number,noteslug,qpk):
     args['question'] = question[0]
     args['replies'] = replies
     args['isauthor'] = isauthor
+    args['isnoteauthor'] = isnoteauthor
 
     return render_to_response('view_question.html', args)
 
@@ -213,3 +215,93 @@ def question_okay(request,classes,lecture_number,noteslug,qpk):
         return HttpResponseForbidden("You are not permitted to change the status of this question.")
     
     return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number+'/')
+
+@login_required
+def question_delete(request,classes,lecture_number,noteslug,qpk):
+    question = NoteQuestion.objects.filter(pk=qpk)
+    note = Note.objects.filter(slug=noteslug)
+    if request.user.username==note[0].author or request.user.is_superuser:
+        NoteReply.objects.filter(question=question).delete()
+        question.delete()
+    else:
+        return HttpResponseForbidden("You are not permitted to change the status of this question.")
+    
+    return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number+'/')
+
+@login_required
+def reply_delete(request,classes,lecture_number,noteslug,qpk,rpk):
+    question = NoteQuestion.objects.filter(pk=qpk)
+    reply = NoteReply.objects.filter(pk=rpk)
+    if request.user.username==question[0].author or request.user.is_superuser:
+        reply.delete()
+    else:
+        return HttpResponseForbidden("You are not permitted to change the status of this question.")
+    
+    return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number+'/'
+                            +noteslug+'/'+qpk+'/')
+
+@login_required
+def note_bookmark(request,classes,lecture_number,noteslug):
+    thisuser = User.objects.get(username=request.user)
+    thisnote = Note.objects.filter(slug=noteslug)
+    
+    if len(thisnote.filter(user=thisuser))==0:
+        thisnote[0].user.add(thisuser)
+    else:
+        thisnote[0].user.remove(thisuser)
+    
+    return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number+'/')
+
+@login_required
+def note_unmark(request,classes,lecture_number,noteslug):
+    thisuser = User.objects.get(username=request.user)
+    thisnote = Note.objects.filter(slug=noteslug)
+    
+    if len(thisnote.filter(user=thisuser))==0:
+        thisnote[0].user.add(thisuser)
+    else:
+        thisnote[0].user.remove(thisuser)
+    
+    return HttpResponseRedirect('/notes/bookmarks/')
+
+@login_required
+def file_bookmark(request,classes,lecture_number,filetype,filepk):
+    filetypes = {'t': NoteFileText, 'i': NoteFileImage,
+                'p': NoteFilePdf, 'o': NoteFileOther}
+    thisuser = User.objects.get(username=request.user)
+    thisfile = filetypes[filetype].objects.filter(pk=filepk)
+    
+    if len(thisfile.filter(user=thisuser))==0:
+        thisfile[0].user.add(thisuser)
+    else:
+        thisfile[0].user.remove(thisuser)
+    
+    return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number+'/')
+
+@login_required
+def file_unmark(request,classes,lecture_number,filetype,filepk):
+    filetypes = {'t': NoteFileText, 'i': NoteFileImage,
+                'p': NoteFilePdf, 'o': NoteFileOther}
+    thisuser = User.objects.get(username=request.user)
+    thisfile = filetypes[filetype].objects.filter(pk=filepk)
+    
+    if len(thisfile.filter(user=thisuser))==0:
+        thisfile[0].user.add(thisuser)
+    else:
+        thisfile[0].user.remove(thisuser)
+    
+    return HttpResponseRedirect('/notes/bookmarks/')
+
+@login_required
+def bookmarks(request):
+    thisuser = User.objects.get(username=request.user)
+    notes = Note.objects.filter(user=thisuser).order_by('lecture','pk')
+    texts = NoteFileText.objects.filter(user=thisuser).order_by('lecture','pk')
+    imgs = NoteFileImage.objects.filter(user=thisuser).order_by('lecture','pk')
+    pdfs = NoteFilePdf.objects.filter(user=thisuser).order_by('lecture','pk')
+    otrs = NoteFileOther.objects.filter(user=thisuser).order_by('lecture','pk')
+    
+    args = { 'notes' : notes, 'texts' : texts,
+            'imgs' : imgs, 'pdfs' : pdfs, 'otrs' : otrs}
+    
+    return render(request, 'bookmarks.html', args)

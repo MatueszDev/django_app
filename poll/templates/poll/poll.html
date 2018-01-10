@@ -8,20 +8,22 @@
 {% block content %}
     
 <div id="main_page_center">
-    <h3>{% for obj in question %}{{ obj.question }} {% endfor %}?</h3>
+    <h2>{% for obj in question %}{{ obj.question }} {% endfor %}?</h2>
     <div class="answers">
         <ul>
             {% for option in answers %}
                 <li>
-                    {{ option.option }}
-                    <a href="vote/?option={{ option.option }}"><i class="icon-thumbs-up thumbs-up"></i></a>
-                    <a href="delete/{{ option.id }}"><i class="icon-cancel cancel"></i></a>
-                    {% for vote in votes %}
+                    <font size="3">
+                        {{ option.option }}
+                        <a href="vote/?option={{ option.option }}"><i class="icon-thumbs-up thumbs-up"></i></a>
+                        <a href="delete/{{ option.id }}"><i class="icon-cancel cancel"></i></a>
+                        {% for vote in votes %}
 
-                        {% if  vote.choice.option == option.option  %}
-                            {{ vote.user }}
-                        {% endif %}
-                    {% endfor %}
+                            {% if  vote.choice.option == option.option  %}
+                                {{ vote.user }}
+                            {% endif %}
+                        {% endfor %}
+                    </font>
                 </li>
             {% endfor %}
         </ul>
