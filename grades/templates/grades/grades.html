@@ -16,21 +16,16 @@
                         <h3>No subjects!</h3>
                     {% endfor %}
 
-                    {% for user in group.user.all %}
-                        <h2>{{user.first_name}} {{user.last_name}}</h2>
-                    {% empty %}
-                        <h3>No users!</h3>
-                    {% endfor %}
                 {% endfor %}
 
                 {% if not fields %}
                     <h2>There are no fields to display. You shoud add some.</h2>
                 {% else %}
                 <ul>
-                    {% for group in gradesGroups %}
+                    {% for field in fields %}
                     <li style='font-weight: bold; font-size:20px'>
-                        <h3><a style="font-weight: bold; font-size:20px;" onclick="show_years( '{{group.fieldOfStudy}}' )">{{group.fieldOfStudy}}</a></h3>
-                        <ul id='{{group.fieldOfStudy}}' style="color:blue; font-weight: bold; font-size: 20px;"></ul>
+                        <h3><a style="font-weight: bold; font-size:20px;" onclick="show_years( '{{field}}' )">{{field}}</a></h3>
+                        <ul id='{{field}}' style="color:blue; font-weight: bold; font-size: 20px;"></ul>
                     </li>
                     {% endfor %}
                 </ul>
@@ -45,19 +40,20 @@
 
 <script type="text/javascript">
 
-var globalField='none';
-var globalYear='none';
-var globalSubject='none';
+var globalField='Technical Physics';
+var globalYear='year I';
+var globalSubject='MMF';
 
 
 function show_years(field)
 {
+    alert(field);
     globalField = field ;
     var list = document.getElementById(field) ;
 
-    {% for group in gradesGroups %}
+    {% for year in years %}
         var li = document.createElement('li');
-        li.innerHTML = `<h3><a id='{{group.year}}' onclick="show_subjects( '{{group.year}}' )"> {{group.year}} </a></h3>` ;
+        li.innerHTML = `<h3><a id='{{year}}' onclick="show_subjects( '{{year}}' )"> {{year}} </a></h3>` ;
         list.appendChild(li) ;
     {% endfor %}
 
@@ -76,23 +72,19 @@ function show_subjects(year)
     li.innerHTML = 'Classes:' ;
     ul.appendChild(li) ;
 
-    {% for group in gradesGroups %}
-        {% for subject in group.classes.all %}
-            li = document.createElement('li');
-            li.innerHTML = "<h5><a id='{{subject}}' onclick=show_table('{{subject}}')> {{subject}} </a></h5>" ;
-            ul.appendChild(li) ;
-            list.appendChild(ul) ;
-        {% empty %}
-            alert('There are no subjects!')
-        {% endfor %}
+    {% for group in classes %}
+       li = document.createElement('li');
+       li.innerHTML = "<h5><a id='{{group}}' onclick=show_table('{{group}}')> {{group}} </a></h5>" ;
+       ul.appendChild(li) ;
+       list.appendChild(ul) ;
    {% endfor %}
 
 
 }
 
-function show_table(subject)
+function show_table(group)
 {
-    globalSubject = subject;
+    alert("You are going to see marks from  " + globalSubject + " classes.") ;
     $("#table").remove();
 
     document.write
@@ -107,16 +99,6 @@ function show_table(subject)
            <tr id="row"></tr>
        </table>
        </table>
-       
-        <h1>GRADES TEST:</h1>
-        {% for user in grades %}
-            <h2>{{user.group.user.all}}</h2>
-            {% for usr in user.group.user.all %}
-                <h3>{{usr.first_name}} {{usr.last_name}}</h3>
-            {% endfor %}
-            <h3>{{user.make_grades_dict()}}
-        {% endfor %}
-
 
     `);
 
