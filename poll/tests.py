@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.utils.timezone import now
 from .forms import AnsForm, PollForm
 from django.urls import reverse
+from .apps import PollConfig
 
 # Create your tests here.
 class PollTest(TestCase):
@@ -22,6 +23,7 @@ class PollTest(TestCase):
         self.assertEqual(self.poll_object.question, "How are you?")
         self.assertEqual(self.poll_object.description, "Feeling question")
         self.assertEqual(self.poll_object.user, self.user)
+        self.assertLessEqual(self.poll_object.publication_date, now())
 
 
 class RespondTest(TestCase):
@@ -120,3 +122,7 @@ class PollViewTest(TestCase):
 
 
 
+class TestPollConf(TestCase):
+
+    def test_name(self):
+        self.assertEqual(PollConfig.name, "poll")

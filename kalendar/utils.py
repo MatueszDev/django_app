@@ -21,9 +21,9 @@ class Calendar(HTMLCalendar):
         events_html += "</ul>"
 
         if day == 0:
-            return '<td class="noday">&nbsp;</td>'  # day outside month
+            return '<td class="noday" width="180" height="100">&nbsp;</td>'  # day outside month
         else:
-            return '<td class="%s">%d%s</td>' % (self.cssclasses[weekday], day, events_html)
+            return '<td class="%s" width="180" height="100">%d%s</td>' % (self.cssclasses[weekday], day, events_html)
 
     def formatweek(self, theweek, events):
         """

@@ -43,7 +43,6 @@ def index(request):
     cal = Calendar(request=request.get_full_path())
     extra_context['cos'] = request.get_full_path()
     html_calendar = cal.formatmonth(day.year, day.month, user=request.user, withyear=True)
-    html_calendar = html_calendar.replace('<td ', '<td width="180" height="100"')
     extra_context['calendar'] = mark_safe(html_calendar)
 
     extra_context['text'] = request.get_full_path()
