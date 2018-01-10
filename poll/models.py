@@ -51,4 +51,4 @@ class Vote(models.Model):
         return  number_of_votes
 
     def __unicode__(self):
-        return self.choice
+        return self.choice.option

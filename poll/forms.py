@@ -12,4 +12,5 @@ class PollForm(forms.Form):
     description = forms.CharField(label="description", max_length=255, required=False)
 
 class AnsForm(forms.Form):
+
     answer = forms.CharField(label="answer", max_length=255, widget=forms.TextInput({ "placeholder": "New answer" }))
