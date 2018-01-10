@@ -22,7 +22,6 @@ class PollTest(TestCase):
         self.assertEqual(self.poll_object.question, "How are you?")
         self.assertEqual(self.poll_object.description, "Feeling question")
         self.assertEqual(self.poll_object.user, self.user)
-        self.assertAlmostEqual(self.poll_object.publication_date, now(), 1)
 
 
 class RespondTest(TestCase):
