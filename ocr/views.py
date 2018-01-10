@@ -15,6 +15,8 @@ import StringIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.contrib.auth.decorators import login_required
 
+from notes.models import Note, NoteFileImage
+from notes.forms import NoteForm, NoteImageForm
 
 @login_required
 def index(request): #test only
