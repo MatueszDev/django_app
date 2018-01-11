@@ -60,7 +60,7 @@ class Calendar(HTMLCalendar):
 
 class Import():
     def __init__(self, file, content, user):
-        self.file = getattr(file, 'name', None)
+        self.file = getattr(file, 'name', None) or file
         self.content = content.readlines()
         self.user = user
 

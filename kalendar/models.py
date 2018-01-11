@@ -35,6 +35,9 @@ class Event(models.Model):
 
     def get_absolute_url(self, user, request=''):
 
+        if not self.id:
+            self.id = 0
+
         if 'admin' not in request:
             url = reverse('modify_event', args=[self.id])
             return '<a href="%s">%s%s</a>' % (url, self.title[:7],'...')
