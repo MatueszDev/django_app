@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 import datetime
 from django.core.files.uploadedfile import SimpleUploadedFile
 from .utils import Import, Calendar
+from django.shortcuts import reverse
 from django.core.exceptions import ValidationError
 # Create your tests here.
 
@@ -131,3 +132,45 @@ class ImportTest(TestCase):
             self.assertTrue(True)
         else:
             self.assertTrue(False)
+
+    def test_save_event(self):
+        self.import_object.save_events()
+        self.assertTrue(Event.objects.filter(user=self.user).exists())
+
+class ViewTest(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_user(username='user', email="user@fis.agh.edu.pl", password="12345678",
+                                             first_name="user", last_name="user")
+        self.client.login(username='user', password='12345678')
+        self.event_object = Event(
+            title='New event', user=self.user, day='2018-01-11', starting_time='12:30', ending_time='13:30',
+            personal_notes='I dont have'
+        )
+
+    def test_index(self):
+        response = self.client.get('/kalendar/', follow=True)
+        self.assertTemplateUsed(response, 'kalendar/calendar.html')
+        self.assertEqual(response.status_code, 200)
+
+        response_2 = self.client.get('/kalendar/?day__gte=2018-02-01')
+        #self.assertEqual(response_2.body  , '/kalendar/?day__gte=2018-02-01')
+
+    def test_name_view(self):
+
+        self.assertEqual(reverse('index'), '/kalendar/')
+        self.assertEqual(reverse('add_event'), '/kalendar/addEvent/')
+        self.assertEqual(reverse('modify_event', kwargs={ 'object_id': 1}), '/kalendar/modifyEvent/1/')
+        self.assertEqual(reverse('deletion',kwargs={ 'object_id': 1}), '/kalendar/delete/1/')
+        self.assertEqual(reverse('all_event_list'), '/kalendar/allEventList/')
+        self.assertEqual(reverse('import'), '/kalendar/import/')
+
+    def test_right_template_use(self):
+
+        response = self.client.get('/kalendar/addEvent/')
+        self.assertTemplateUsed(response, 'kalendar/addEvent.html')
+
+        response_2 = self.client.get('/kalendar/allEventList/')
+        self.assertTemplateUsed(response_2, 'kalendar/allEvents.html')
+
+        

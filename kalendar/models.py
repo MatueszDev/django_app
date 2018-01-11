@@ -4,9 +4,6 @@ from __future__ import unicode_literals
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
-from time import mktime
-from datetime import datetime
-from django.forms import ModelForm
 from django.contrib.auth.models import User
 
 class Event(models.Model):
@@ -73,8 +70,3 @@ class Event(models.Model):
 
     def __unicode__(self):
         return self.title
-
-class EventModelForm(ModelForm):
-    class Meta:
-        model = Event
-        fields = ['title','day', 'starting_time', 'ending_time', 'personal_notes']

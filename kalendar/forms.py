@@ -1,8 +1,5 @@
 from django import forms
-from django.contrib.admin.widgets import AdminDateWidget
-from django.forms.widgets import SelectDateWidget, TimeInput
-import datetime
-from django.core.exceptions import ValidationError
+from django.forms.widgets import SelectDateWidget
 
 
 class EventForm(forms.Form):

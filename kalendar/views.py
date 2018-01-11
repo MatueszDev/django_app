@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Event, EventModelForm
+from .models import Event
 from .utils import Calendar, Import
 import datetime
 import calendar
@@ -64,7 +64,6 @@ def add_event(request):
 
 
         if form.is_valid():
-            #obj = EventModelForm(request.POST)
             obj = Event()
             obj.user = request.user
             obj.title = form.cleaned_data['title']
