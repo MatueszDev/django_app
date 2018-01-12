@@ -159,3 +159,32 @@ class NoteTest(TestCase):
         response = self.client.get("/notes/"+path1+self.note1.slug+"/unmark/",
                                                                  follow=True)
         self.assertEqual(response.status_code, 200)
+
+class FormTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='test',
+                    email="test@fis.agh.edu.pl", password="azerty47",
+                    first_name="test", last_name="test")
+        self.profile = Profile.objects.create(user=self.user)
+        
+        self.user2 = User.objects.create_user(username='test2',
+                    email="test2@fis.agh.edu.pl", password="azerty47",
+                    first_name="test2", last_name="test2")
+        self.profile = Profile.objects.create(user=self.user2)
+
+        self.admin = User.objects.create_superuser(username='admin',
+                    email="admin@mail.com", password="correcthorse",
+                    first_name="admin", last_name="admin")
+        self.profile = Profile.objects.create(user=self.admin)
+
+        self.course = Classes.objects.create(classes='Some Course')
+        self.lecture1 = Lecture.objects.create(lecture_title='first',
+                                                course=self.course,
+                                                lecture_number=1)
+
+    def test_if_add_note_form_is_valid(self):
+        form = NoteForm(data={'title': 'testnote',
+                                'author': 'admin',
+                                'lecture': self.lecture1,
+                                'content': 'volcano bakemeat'})
+        self.assertTrue(form.is_valid())
