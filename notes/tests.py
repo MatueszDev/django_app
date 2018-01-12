@@ -213,3 +213,14 @@ class FormTest(TestCase):
                                 'lecture': None,
                                 'content': 'volcano bakemeat'})
         self.assertTrue(form.is_valid())
+    
+    def test_add_note_form_response(self):
+        lecture_id = self.lecture1.slug+'/'+str(self.lecture1.lecture_number)
+        url = '/notes/'+lecture_id+'/add_note/'
+        print url
+        response = self.client.post(url,
+                                {'title': 'testnote',
+                                'author': 'admin',
+                                'lecture': self.lecture1,
+                                'content': 'volcano bakemeat'}, follow=True)
+        self.assertEqual(response.status_code, 200)
