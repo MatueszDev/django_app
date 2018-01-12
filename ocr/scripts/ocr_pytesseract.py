@@ -11,8 +11,8 @@ def scanner(path):
     reload(sys)
     sys.setdefaultencoding('utf-8')
     img = np.asarray(Image.open(path))
+    height, width, channels = img.shape 
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
     _, img_gray  = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
     img_gray = cv2.medianBlur(img_gray, 3)
     img_gray = Image.fromarray(img_gray)

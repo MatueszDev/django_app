@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Max
 from ocr.views import ocr_scan, ocr_crop
+from django_app.settings import DJANGO_HOST
 
 @login_required
 def add_note(request,classes,lecture_number):
@@ -78,75 +79,84 @@ def add_file(request,classes,lecture_number):
 
 @login_required
 def add_ocr(request,classes,lecture_number):
-    number =  lecture_number
-    lectures = Lecture.objects.filter(slug=classes,
-        lecture_number=number)
-    
-    if request.POST:
-        fileform = NoteOtherForm(request.POST, request.FILES)
-        for filename,file_ in request.FILES.iteritems():
-            if file_.content_type.startswith("image/"):
-                fileform = NoteImageForm(request.POST, request.FILES)
-            else :
-                pass
-            
-        if fileform.is_valid():
-            newfile = fileform.save(commit=False)
-            newfile.author = User.objects.get(username=request.user)
-            newfile.lecture = lectures[0]
-            newfile.save()
-            returned, rnd = ocr_scan(request, newfile.id)
-            return render(request, 'show_scanned.html', {'scanned':
-                Note.objects.get(id=returned.id)})
+    if DJANGO_HOST == "development":
+        number =  lecture_number
+        lectures = Lecture.objects.filter(slug=classes,
+            lecture_number=number)
+        
+        if request.POST:
+            fileform = NoteOtherForm(request.POST, request.FILES)
+            for filename,file_ in request.FILES.iteritems():
+                if file_.content_type.startswith("image/"):
+                    fileform = NoteImageForm(request.POST, request.FILES)
+                else :
+                    pass
+                
+            if fileform.is_valid():
+                newfile = fileform.save(commit=False)
+                newfile.author = User.objects.get(username=request.user)
+                newfile.lecture = lectures[0]
+                newfile.save()
+                returned, rnd = ocr_scan(request, newfile.id)
+                return render(request, 'show_scanned.html', {'scanned':
+                    Note.objects.get(id=returned.id)})
 
+        else:
+            fileform = NoteOtherForm(request.POST)
+
+        args = {}
+        args.update(csrf(request))
+
+        args['form'] = fileform
+        args['classes'] = classes
+        args['lecture_number'] = lecture_number
+
+        return render_to_response('add_ocr.html', args)
     else:
-        fileform = NoteOtherForm(request.POST)
-
-    args = {}
-    args.update(csrf(request))
-
-    args['form'] = fileform
-    args['classes'] = classes
-    args['lecture_number'] = lecture_number
-
-    return render_to_response('add_ocr.html', args)
+        return render(request, 'notavaliable.html')
 
 @login_required
 def add_crop(request,classes,lecture_number):
-    number =  lecture_number
-    lectures = Lecture.objects.filter(slug=classes,
-        lecture_number=number)
-    
-    if request.POST:
-        fileform = NoteOtherForm(request.POST, request.FILES)
-        for filename,file_ in request.FILES.iteritems():
-            if file_.content_type.startswith("image/"):
-                fileform = NoteImageForm(request.POST, request.FILES)
-            else :
-                pass
-            
-        if fileform.is_valid():
-            newfile = fileform.save(commit=False)
-            newfile.author = User.objects.get(username=request.user)
-            newfile.lecture = lectures[0]
-            newfile.save()
-            returned, rnd = ocr_crop(request, newfile.id)
-            imgs = list()
-            for record in returned:
-                imgs.append(NoteFileImage.objects.get(id=record.id))
-            return render(request, 'show_cropped.html', {'cropped': imgs})
+    if DJANGO_HOST == "development":
+        number =  lecture_number
+        lectures = Lecture.objects.filter(slug=classes,
+            lecture_number=number)
+        
+        if request.POST:
+            fileform = NoteOtherForm(request.POST, request.FILES)
+            for filename,file_ in request.FILES.iteritems():
+                if file_.content_type.startswith("image/"):
+                    fileform = NoteImageForm(request.POST, request.FILES)
+                else :
+                    pass
+                
+            if fileform.is_valid():
+                newfile = fileform.save(commit=False)
+                newfile.author = User.objects.get(username=request.user)
+                newfile.lecture = lectures[0]
+                newfile.save()
+                try:
+                    returned, rnd = ocr_crop(request, newfile.id)
+                except:
+                    return render(request, 'images_not_found.html')
+                imgs = list()
+                for record in returned:
+                    imgs.append(NoteFileImage.objects.get(id=record.id))
+                return render(request, 'show_cropped.html', {'cropped': imgs})
 
+        else:
+            fileform = NoteOtherForm(request.POST)
+
+        args = {}
+        args.update(csrf(request))
+
+        args['form'] = fileform
+        args['classes'] = classes
+        args['lecture_number'] = lecture_number
+
+        return render_to_response('add_crop.html', args)
     else:
-        fileform = NoteOtherForm(request.POST)
-
-    args = {}
-    args.update(csrf(request))
-
-    args['form'] = fileform
-    args['classes'] = classes
-    args['lecture_number'] = lecture_number
-
-    return render_to_response('add_crop.html', args)
+        return render(request, 'notavaliable.html')
 
 @login_required
 def choose_class(request):

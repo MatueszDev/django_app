@@ -7,19 +7,11 @@
     <div style="padding-left:100px; padding-top:50px; padding-bottom:40px;">
         <ul class="object-tools" style="padding-right:100px;">
             <li>
-                <a href="{% url "add_image" %}"> Scan note </a>
-                <a href="{% url "get_drawings" %}"> Scan for drawings </a>
+                <a href="/notes/"> Go back to notes </a>
             </li>
         </ul>
     </div>
     <div style="margin-left: 5%;">
-
-        <h1>Scanned notes:</h1>
-        <p id="lista">
-        {% for notes in scanned %}
-        {{notes.id}}: {{notes.content}}<br>
-        {% endfor %}
-        </p>
     </div>
 </div>
 {% endblock %}

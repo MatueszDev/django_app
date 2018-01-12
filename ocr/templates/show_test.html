@@ -7,17 +7,17 @@
     <div style="padding-left:100px; padding-top:50px; padding-bottom:40px;">
         <ul class="object-tools" style="padding-right:100px;">
             <li>
-                <a href="/notes/"> Go back to notes </a>
+                <a href="{% url "add_image" %}"> Scan note </a>
+                <a href="{% url "get_drawings" %}"> Scan for drawings </a>
             </li>
         </ul>
     </div>
     <div style="margin-left: 5%;">
 
-        <h1>The following images were extracted and added to the database:</h1>
+        <h1>Scanned notes:</h1>
         <p id="lista">
-        {% for img in cropped %}
+        {{img.id}}: {{img.content}}<br>
         <img src="{{img.content.url}}" width="500px" alt="img"/>
-        {% endfor %}
         </p>
     </div>
 </div>
