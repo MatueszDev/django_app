@@ -4,9 +4,6 @@ from __future__ import unicode_literals
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
-from time import mktime
-from datetime import datetime
-from django.forms import ModelForm
 from django.contrib.auth.models import User
 
 class Event(models.Model):
@@ -34,6 +31,9 @@ class Event(models.Model):
         verbose_name_plural = 'scheduling'
 
     def get_absolute_url(self, user, request=''):
+
+        if not self.id:
+            self.id = 0
 
         if 'admin' not in request:
             url = reverse('modify_event', args=[self.id])
@@ -68,10 +68,5 @@ class Event(models.Model):
 
 
 
-    def __unicode_(self):
+    def __unicode__(self):
         return self.title
-
-class EventModelForm(ModelForm):
-    class Meta:
-        model = Event
-        fields = ['title','day', 'starting_time', 'ending_time', 'personal_notes']

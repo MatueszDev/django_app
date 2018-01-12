@@ -6,6 +6,10 @@ ul,li{
 
 }
 
+#main_page_center{
+  background-image: url("../cal-back.jpg");
+  background-size: cover;
+}
 
 .list {
     width:33.333%;
@@ -53,4 +57,3 @@ ul,li{
     text-align:center;
     margin-right: 20px;
 }
-
