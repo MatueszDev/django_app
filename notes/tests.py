@@ -181,6 +181,17 @@ class FormTest(TestCase):
         self.lecture1 = Lecture.objects.create(lecture_title='first',
                                                 course=self.course,
                                                 lecture_number=1)
+        self.note1 = Note.objects.create(title='this is title',
+                                        author=self.user.username,
+                                        lecture=self.lecture1,
+                                        content='big sphinx of quartz')
+        self.question1 = NoteQuestion.objects.create(note=self.note1,
+                                        title='why happen',
+                                        author=self.user.username,
+                                        content='I don\'t even')
+        self.reply1 = NoteReply.objects.create(question=self.question1,
+                                        author=self.user.username,
+                                        content='it could be yellow')
 
     def test_if_add_note_form_is_valid(self):
         form = NoteForm(data={'title': 'testnote',
@@ -225,3 +236,67 @@ class FormTest(TestCase):
                                 'content': 'volcano bakemeat'}, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'notes_list.html')
+
+#    def test_if_add_lecture_form_is_valid(self):
+#        form = LectureForm(data={'course': self.course,
+#                                'lecture_title': 'second'})
+#        print form
+#        self.assertTrue(form.is_valid())
+#    
+#    def test_if_add_lecture_form_is_invalid(self):
+#        form = LectureForm(data={'course': '',
+#                                'lecture_title': 'second'})
+#        self.assertFalse(form.is_valid())
+#        
+#        form = LectureForm(data={'course': self.course,
+#                                'lecture_title': ''})
+#        self.assertFalse(form.is_valid())
+#    
+#    def test_add_lecture_form_response(self):
+#        self.client.login(username='admin', password='correcthorse')
+#        response = self.client.post('/notes/add_lecture/',
+#                                {'course': self.course,
+#                                'lecture_title': 'second'}, follow=True)
+#        self.assertEqual(response.status_code, 200)
+#        self.assertTemplateUsed(response, 'add_lecture.html')
+        
+    def test_if_add_question_form_is_valid(self):
+        form = QuestionForm(data={'title': 'why',
+                                'content': 'why'})
+        self.assertTrue(form.is_valid())
+        
+    def test_if_add_question_form_is_invalid(self):
+        form = QuestionForm(data={'title': '',
+                                'content': 'why'})
+        self.assertFalse(form.is_valid())
+        
+        form = QuestionForm(data={'title': 'why',
+                                'content': ''})
+        self.assertFalse(form.is_valid())
+    
+    def test_add_question_form_response(self):
+        self.client.login(username='admin', password='correcthorse')
+        lecture_id = self.lecture1.slug+'/'+str(self.lecture1.lecture_number)
+        url = '/notes/'+lecture_id+'/'+self.note1.slug+'/ask/'
+        response = self.client.post(url,
+                                {'title': 'why',
+                                'content': 'why'}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'notes_list.html')
+        
+    def test_if_add_reply_form_is_valid(self):
+        form = ReplyForm(data={'content': 'why'})
+        self.assertTrue(form.is_valid())
+        
+    def test_if_add_reply_form_is_invalid(self):
+        form = ReplyForm(data={'content': ''})
+        self.assertFalse(form.is_valid())
+    
+    def test_add_reply_form_response(self):
+        self.client.login(username='admin', password='correcthorse')
+        lecture_id = self.lecture1.slug+'/'+str(self.lecture1.lecture_number)
+        url = lecture_id+'/'+self.note1.slug+'/'+str(self.question1.pk)+'/'
+        response = self.client.post('/notes/'+url,
+                                {'content': 'why'}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'view_question.html')
