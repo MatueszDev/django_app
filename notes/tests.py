@@ -188,3 +188,16 @@ class FormTest(TestCase):
                                 'lecture': self.lecture1,
                                 'content': 'volcano bakemeat'})
         self.assertTrue(form.is_valid())
+    
+    def test_if_add_note_form_is_invalid(self):
+        form = NoteForm(data={'title': '',
+                                'author': 'admin',
+                                'lecture': self.lecture1,
+                                'content': 'volcano bakemeat'})
+        self.assertFalse(form.is_valid())
+        
+        form = NoteForm(data={'title': 'testnote',
+                                'author': 'admin',
+                                'lecture': self.lecture1,
+                                'content': ''})
+        self.assertFalse(form.is_valid())
