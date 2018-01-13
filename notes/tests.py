@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from user_authentication.models import Profile
 from django.core.urlresolvers import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
+from io import BytesIO
 
 class NoteTest(TestCase):
     def setUp(self):
@@ -303,9 +304,36 @@ class FormTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'view_question.html')
     
-    def test_add_file_form_response(self):
+    def test_add_text_file_form_response(self):
         self.client.login(username='admin', password='correcthorse')
         myfile = SimpleUploadedFile("file.txt", b"file_contents")
+        lecture_id = self.lecture1.slug+'/'+str(self.lecture1.lecture_number)
+        url = '/notes/'+lecture_id+'/add_file/'
+        response = self.client.post(url,
+                                {'title': 'testfile',
+                                'author': 'admin',
+                                'lecture': self.lecture1,
+                                'content': myfile}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'notes_main.html')
+    
+    def test_add_img_file_form_response(self):
+        self.client.login(username='admin', password='correcthorse')
+        lecture_id = self.lecture1.slug+'/'+str(self.lecture1.lecture_number)
+        url = '/notes/'+lecture_id+'/add_file/'
+        with open('/home/versil/dj/django_app/static/main_page/notebook-wood-desk.png') as myfile:
+            response = self.client.post(url,
+                                    {'title': 'testfile',
+                                    'author': 'admin',
+                                    'lecture': self.lecture1,
+                                    'content': myfile}, follow=True)
+            self.assertEqual(response.status_code, 200)
+            self.assertTemplateUsed(response, 'notes_main.html')
+    
+    def test_add_pdf_file_form_response(self):
+        self.client.login(username='admin', password='correcthorse')
+        myfile = BytesIO(b'binarydata')
+        myfile.name = 'testimg.pdf'
         lecture_id = self.lecture1.slug+'/'+str(self.lecture1.lecture_number)
         url = '/notes/'+lecture_id+'/add_file/'
         response = self.client.post(url,
