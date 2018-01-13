@@ -44,8 +44,11 @@ class NoteTest(TestCase):
         self.reply1 = NoteReply.objects.create(question=self.question1,
                                         author=self.user.username,
                                         content='it could be yellow')
-                                        
-        
+        myfile = SimpleUploadedFile("file.txt", b"file_contents")
+        self.file1 = NoteFileText.objects.create(title='some file',
+                                        author=self.user.username,
+                                        lecture=self.lecture1,
+                                        content=myfile)
 
     def test_view_notes_main(self):
         self.client.login(username='test', password='azerty47')
@@ -164,44 +167,6 @@ class NoteTest(TestCase):
                                                                  follow=True)
         self.assertEqual(response.status_code, 200)
 
-class FormTest(TestCase):
-    def setUp(self):
-        self.user = User.objects.create_user(username='test',
-                    email="test@fis.agh.edu.pl", password="azerty47",
-                    first_name="test", last_name="test")
-        self.profile = Profile.objects.create(user=self.user)
-        
-        self.user2 = User.objects.create_user(username='test2',
-                    email="test2@fis.agh.edu.pl", password="azerty47",
-                    first_name="test2", last_name="test2")
-        self.profile = Profile.objects.create(user=self.user2)
-
-        self.admin = User.objects.create_superuser(username='admin',
-                    email="admin@mail.com", password="correcthorse",
-                    first_name="admin", last_name="admin")
-        self.profile = Profile.objects.create(user=self.admin)
-
-        self.course = Classes.objects.create(classes='Some Course')
-        self.lecture1 = Lecture.objects.create(lecture_title='first',
-                                                course=self.course,
-                                                lecture_number=1)
-        self.note1 = Note.objects.create(title='this is title',
-                                        author=self.user.username,
-                                        lecture=self.lecture1,
-                                        content='big sphinx of quartz')
-        self.question1 = NoteQuestion.objects.create(note=self.note1,
-                                        title='why happen',
-                                        author=self.user.username,
-                                        content='I don\'t even')
-        self.reply1 = NoteReply.objects.create(question=self.question1,
-                                        author=self.user.username,
-                                        content='it could be yellow')
-        myfile = SimpleUploadedFile("file.txt", b"file_contents")
-        self.file1 = NoteFileText.objects.create(title='some file',
-                                        author=self.user.username,
-                                        lecture=self.lecture1,
-                                        content=myfile)
-
     def test_if_add_note_form_is_valid(self):
         form = NoteForm(data={'title': 'testnote',
                                 'author': 'admin',
@@ -251,15 +216,15 @@ class FormTest(TestCase):
 #                                'lecture_title': 'second'})
 #        print form
 #        self.assertTrue(form.is_valid())
-#    
-#    def test_if_add_lecture_form_is_invalid(self):
-#        form = LectureForm(data={'course': '',
-#                                'lecture_title': 'second'})
-#        self.assertFalse(form.is_valid())
-#        
-#        form = LectureForm(data={'course': self.course,
-#                                'lecture_title': ''})
-#        self.assertFalse(form.is_valid())
+    
+    def test_if_add_lecture_form_is_invalid(self):
+        form = LectureForm(data={'course': '',
+                                'lecture_title': 'second'})
+        self.assertFalse(form.is_valid())
+        
+        form = LectureForm(data={'course': self.course,
+                                'lecture_title': ''})
+        self.assertFalse(form.is_valid())
     
     def test_add_lecture_form_response(self):
         self.client.login(username='admin', password='correcthorse')
@@ -363,4 +328,5 @@ class FormTest(TestCase):
         path1 = self.lecture1.slug+"/"+str(self.lecture1.lecture_number)+"/"
         response = self.client.get("/notes/"+path1+"t/"+str(self.file1.pk)+
                                     "/mark/", follow=True)
+        self.assertIsInstance(self.file1,NoteFileText)
         self.assertEqual(response.status_code, 200)

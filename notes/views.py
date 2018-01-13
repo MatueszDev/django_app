@@ -18,7 +18,6 @@ from django.db.models import Max
 def add_note(request,classes,lecture_number):
     lectures = Lecture.objects.filter(slug=classes,
         lecture_number=lecture_number)
-    
     if request.POST:
         noteform = NoteForm(request.POST)
         if noteform.is_valid():
@@ -26,18 +25,14 @@ def add_note(request,classes,lecture_number):
             newnote.author = User.objects.get(username=request.user)
             newnote.lecture = lectures[0]
             newnote.save()
-
             return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number)
     else:
         noteform = NoteForm(request.POST)
-
     args = {}
     args.update(csrf(request))
-
     args['form'] = noteform
     args['classes'] = classes
     args['lecture_number'] = lecture_number
-
     return render_to_response('add_note.html', args)
 
 @login_required
@@ -45,7 +40,6 @@ def add_file(request,classes,lecture_number):
     number =  lecture_number
     lectures = Lecture.objects.filter(slug=classes,
         lecture_number=number)
-    
     if request.POST:
         fileform = NoteOtherForm(request.POST, request.FILES)
         for filename,file_ in request.FILES.iteritems():
@@ -56,29 +50,23 @@ def add_file(request,classes,lecture_number):
                 fileform = NoteImageForm(request.POST, request.FILES)
             elif file_.content_type.startswith("application/pdf"):
                 fileform = NotePdfForm(request.POST, request.FILES)
-            
         if fileform.is_valid():
             newfile = fileform.save(commit=False)
             newfile.author = User.objects.get(username=request.user)
             newfile.lecture = lectures[0]
             newfile.save()
-
             return HttpResponseRedirect('/notes')
     else:
         fileform = NoteOtherForm(request.POST)
-
     args = {}
     args.update(csrf(request))
-
     args['form'] = fileform
     args['classes'] = classes
     args['lecture_number'] = lecture_number
-
     return render_to_response('add_file.html', args)
 
 @login_required
 def choose_class(request):
-    
     lectures_all = Lecture.objects.order_by('course', 'lecture_number')
     user = User.objects.get(username=request.user)
     user_groups = user.grades_group_set.all()
@@ -88,26 +76,20 @@ def choose_class(request):
             classes.append(c)
     classes = list(set(classes))
     lectures = lectures_all.filter(course__in=classes)
-    
-    
     return render(request, 'notes_main.html', {'lectures': lectures})
 
 @login_required
 def select_lecture(request,classes,lecture_number):
-
     lectures = Lecture.objects.filter(slug=classes,
         lecture_number=lecture_number)
-
     notes = Note.objects.filter(lecture=lectures)
     texts = NoteFileText.objects.filter(lecture=lectures)
     imgs = NoteFileImage.objects.filter(lecture=lectures)
     pdfs = NoteFilePdf.objects.filter(lecture=lectures)
     otrs = NoteFileOther.objects.filter(lecture=lectures)
-    
     args = {'lectures': lectures, 'notes' : notes,
             'texts' : texts, 'imgs' : imgs,
             'pdfs' : pdfs, 'otrs' : otrs}
-    
     return render(request, 'notes_list.html', args)
 
 @login_required
@@ -122,20 +104,14 @@ def add_lecture(request):
                                                 Max('lecture_number'))
             newnumber = ( 1 if not lecture['lecture_number__max'] else
                                             lecture['lecture_number__max']+1 )
-            
             newlecture.lecture_number = newnumber
-            
             newlecture.save()
-
             return HttpResponseRedirect('/notes/')
     else:
         lectureform = LectureForm(request.POST)
-
     args = {}
     args.update(csrf(request))
-
     args['form'] = lectureform
-
     return render_to_response('add_lecture.html', args)
 
 @login_required
@@ -143,7 +119,6 @@ def add_question(request,classes,lecture_number,noteslug):
     lectures = Lecture.objects.filter(slug=classes,
         lecture_number=lecture_number)
     notes = Note.objects.filter(slug=noteslug)
-    
     if request.POST:
         questionform = QuestionForm(request.POST)
         if questionform.is_valid():
@@ -151,19 +126,15 @@ def add_question(request,classes,lecture_number,noteslug):
             newquestion.author = User.objects.get(username=request.user)
             newquestion.note = notes[0]
             newquestion.save()
-
             return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number)
     else:
         questionform = QuestionForm(request.POST)
-
     args = {}
     args.update(csrf(request))
-
     args['form'] = questionform
     args['classes'] = classes
     args['lecture_number'] = lecture_number
     args['note'] = notes[0]
-
     return render_to_response('add_question.html', args)
 
 @login_required
@@ -173,7 +144,6 @@ def view_question(request,classes,lecture_number,noteslug,qpk):
     note = Note.objects.filter(slug=noteslug)
     question = NoteQuestion.objects.filter(pk=qpk)
     replies = NoteReply.objects.filter(question=question)
-    
     if request.POST:
         replyform = ReplyForm(request.POST)
         if replyform.is_valid():
@@ -186,14 +156,10 @@ def view_question(request,classes,lecture_number,noteslug,qpk):
                                         +'/'+noteslug+'/'+qpk)
     else:
         replyform = ReplyForm(request.POST)
-
     args = {}
     args.update(csrf(request))
-    
     isauthor = (question[0].author == request.user.username) or request.user.is_superuser
-    
     isnoteauthor = (note[0].author == request.user.username) or request.user.is_superuser
-
     args['form'] = replyform
     args['classes'] = lectures[0].course.classes
     args['lectureslug'] = classes
@@ -203,7 +169,6 @@ def view_question(request,classes,lecture_number,noteslug,qpk):
     args['replies'] = replies
     args['isauthor'] = isauthor
     args['isnoteauthor'] = isnoteauthor
-
     return render_to_response('view_question.html', args)
 
 @login_required
@@ -213,7 +178,6 @@ def question_okay(request,classes,lecture_number,noteslug,qpk):
         question.update(answered=True)
     else:
         return HttpResponseForbidden("You are not permitted to change the status of this question.")
-    
     return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number+'/')
 
 @login_required
@@ -225,7 +189,6 @@ def question_delete(request,classes,lecture_number,noteslug,qpk):
         question.delete()
     else:
         return HttpResponseForbidden("You are not permitted to change the status of this question.")
-    
     return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number+'/')
 
 @login_required
@@ -236,7 +199,6 @@ def reply_delete(request,classes,lecture_number,noteslug,qpk,rpk):
         reply.delete()
     else:
         return HttpResponseForbidden("You are not permitted to change the status of this question.")
-    
     return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number+'/'
                             +noteslug+'/'+qpk+'/')
 
@@ -244,24 +206,20 @@ def reply_delete(request,classes,lecture_number,noteslug,qpk,rpk):
 def note_bookmark(request,classes,lecture_number,noteslug):
     thisuser = User.objects.get(username=request.user)
     thisnote = Note.objects.filter(slug=noteslug)
-    
     if len(thisnote.filter(user=thisuser))==0:
         thisnote[0].user.add(thisuser)
     else:
         thisnote[0].user.remove(thisuser)
-    
     return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number+'/')
 
 @login_required
 def note_unmark(request,classes,lecture_number,noteslug):
     thisuser = User.objects.get(username=request.user)
     thisnote = Note.objects.filter(slug=noteslug)
-    
     if len(thisnote.filter(user=thisuser))==0:
         thisnote[0].user.add(thisuser)
     else:
         thisnote[0].user.remove(thisuser)
-    
     return HttpResponseRedirect('/notes/bookmarks/')
 
 @login_required
@@ -270,12 +228,10 @@ def file_bookmark(request,classes,lecture_number,filetype,filepk):
                 'p': NoteFilePdf, 'o': NoteFileOther}
     thisuser = User.objects.get(username=request.user)
     thisfile = filetypes[filetype].objects.filter(pk=filepk)
-    
     if len(thisfile.filter(user=thisuser))==0:
         thisfile[0].user.add(thisuser)
     else:
         thisfile[0].user.remove(thisuser)
-    
     return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number+'/')
 
 @login_required
@@ -284,12 +240,10 @@ def file_unmark(request,classes,lecture_number,filetype,filepk):
                 'p': NoteFilePdf, 'o': NoteFileOther}
     thisuser = User.objects.get(username=request.user)
     thisfile = filetypes[filetype].objects.filter(pk=filepk)
-    
     if len(thisfile.filter(user=thisuser))==0:
         thisfile[0].user.add(thisuser)
     else:
         thisfile[0].user.remove(thisuser)
-    
     return HttpResponseRedirect('/notes/bookmarks/')
 
 @login_required
@@ -300,8 +254,6 @@ def bookmarks(request):
     imgs = NoteFileImage.objects.filter(user=thisuser).order_by('lecture','pk')
     pdfs = NoteFilePdf.objects.filter(user=thisuser).order_by('lecture','pk')
     otrs = NoteFileOther.objects.filter(user=thisuser).order_by('lecture','pk')
-    
     args = { 'notes' : notes, 'texts' : texts,
             'imgs' : imgs, 'pdfs' : pdfs, 'otrs' : otrs}
-    
     return render(request, 'bookmarks.html', args)
