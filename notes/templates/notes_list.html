@@ -3,44 +3,83 @@
 {% block title %}Lecture notes{% endblock %}
 
 {% block content %}
-<div id="main_page_center" style="padding-left: 4%; padding-right: 1%;">
-    <div style="display: block; width: 60%; float: left;">
-        <h1 style="color: #000;">Subject: {{subject}}<br>Lecture number {{lecture_number}}: {{lecture_title}}</h1>
-             
+<div class="buttons" style="margin-left: 15%; margin-bottom: 10px;">
+    <a href="/notes/bookmarks/"><input type="button" value="Bookmarks"/></a>
+</div>
+<div id="main_page_center" style="padding-left: 4%; padding-right: 1%;"  class="paper">
+    <div style="padding-left:100px; padding-top:50px; padding-bottom:0px;">
+    {% for lecture in lectures %}
+        <ul class="object-tools" style="padding-right:100px;">
+            <li>
+                <a href="/notes/{{lecture.slug}}/{{lecture.lecture_number}}/add_note"> Add note </a>
+            </li>
+            <li>
+                <a href="/notes/{{lecture.slug}}/{{lecture.lecture_number}}/add_file"> Add file </a>
+            </li>
+        </ul>
+    </div>
+    <div style="display: inline-block; width: 45%; float: left; margin-left: 5%; padding-right: 5%">
+        <h1 style="color: #000;">Subject: {{lecture.course.classes}}<br>Lecture number {{lecture.lecture_number}}: {{lecture.lecture_title}}</h1>
         <table>
-            {% for note in objects %}
-                <tr style="background-color: #f2f2f2;"><td style="font-size: 16px;">{{note.name}}, by {{note.author}}</td></tr>
-                <tr><td>{{note.content|linebreaksbr}}</td></tr>
+            {% for note in notes %}
+                <tr style="background-color: #f0f0f0; cursor: pointer;" onclick="toggleNote({{note.pk}})"><td style="font-size: 15px;">{{note.title}}, by {{note.author}}</td></tr>
+                <tr class="note{{note.pk}}" style="display: none;"><td>{{note.content|linebreaksbr}}</td></tr>
+                {% for question in note.questions.all %}
+                    <tr class="note{{note.pk}}" style="display: none;"><td><b>{{question.publish}} {{question.author}} asks:</b><br><a href="/notes/{{lecture.slug}}/{{lecture.lecture_number}}/{{note.slug}}/{{question.pk}}/">{{question.title}}</a> {% if question.answered %} <span style="color: green;"><b>✓</b></span> {% endif %}</td></tr>
+                {% endfor %}
+                <tr class="note{{note.pk}}" style="display: none;"><td><a href="/notes/{{lecture.slug}}/{{lecture.lecture_number}}/{{note.slug}}/ask/">Ask a question</a></td></tr>
+                <tr class="note{{note.pk}}" style="display: none;"><td><a href="/notes/{{lecture.slug}}/{{lecture.lecture_number}}/{{note.slug}}/mark/">[ bookmark ]</a></td></tr>
             {% endfor %}
         </table>
     </div>
-    <div id="files" style="padding-left: 10px;">
+    <div class="vertical_line_middle">
+    </div>
+    <div id="files" style="display: inline-block; width: 40%; padding-left: 10px; margin-right: 5%;">
         <h2>Files attached for this lecture:</h2>
         <h3>Text files:</h3>
         <ul>
-        {% for textfile in text_objs %}
-            <li><a href="{{textfile.content.url}}">{{textfile.name}}, by {{textfile.author}}</a></li>
+        {% for textfile in texts %}
+            <li><a href="{{textfile.content.url}}">{{textfile.title}}, by {{textfile.author}}</a> <a href="/notes/{{lecture.slug}}/{{lecture.lecture_number}}/t/{{textfile.pk}}/mark/"><i>[bookmark]</i></a></li>
         {% endfor %}
         </ul>
         <h3>Images:</h3>
         <ul>
-        {% for imgfile in img_objs %}
-            <li><a href="{{imgfile.content.url}}">{{imgfile.name}}, by {{imgfile.author}}</a></li>
+        {% for imgfile in imgs %}
+            <li><a href="{{imgfile.content.url}}">{{imgfile.title}}, by {{imgfile.author}}</a> <a href="/notes/{{lecture.slug}}/{{lecture.lecture_number}}/i/{{imgfile.pk}}/mark/"><i>[bookmark]</i></a></li>
         {% endfor %}
         </ul>
         <h3>PDF files:</h3>
         <ul>
-        {% for pdffile in pdf_objs %}
-            <li><a href="{{pdffile.content.url}}">{{pdffile.name}}, by {{pdffile.author}}</a></li>
+        {% for pdffile in pdfs %}
+            <li><a href="{{pdffile.content.url}}">{{pdffile.title}}, by {{pdffile.author}}</a> <a href="/notes/{{lecture.slug}}/{{lecture.lecture_number}}/p/{{pdffile.pk}}/mark/"><i>[bookmark]</i></a></li>
         {% endfor %}
         </ul>   
         <h3>Other files</h3>
         <ul>
-        {% for otrfile in otr_objs %}
-        <li><a href="{{otrfile.content.url}}">{{otrfile.name}}, by {{otrfile.author}}</a></li>
+        {% for otrfile in otrs %}
+        <li><a href="{{otrfile.content.url}}">{{otrfile.title}}, by {{otrfile.author}}</a> <a href="/notes/{{lecture.slug}}/{{lecture.lecture_number}}/o/{{otrfile.pk}}/mark/"><i>[bookmark]</i></a></li>
         {% endfor %}
         </ul>  
     </div>
-    <div style="float: right;"><a href='../..'>Back to lecture selection</a></div>
+    {% endfor %}
+    <div class="vertical_line_right">
+    </div>
+    <div style="float: right; padding-top: 50px; padding-right: 10%;"><a href='../..'><b>Back to lecture selection</b></a></div>
+    
+    
+    <script type="text/javascript">
+        function toggleNote(pk){
+            classname = "note"+pk;
+            var contents = document.getElementsByClassName(classname);
+            for(i=0; i<contents.length; i++){
+                if(contents[i].style.display === "none"){
+                    contents[i].style.display = "block";
+                }
+                else{
+                    contents[i].style.display = "none";
+                }
+		    }
+        }
+    </script>
 </div>    
 {% endblock %}

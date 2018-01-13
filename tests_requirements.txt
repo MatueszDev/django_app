@@ -2,10 +2,6 @@ Django==1.11.7
 jsmin==2.2.2
 pillow
 coveralls
-
-pytesseract
-opencv-python
 numpy
-scipy
 psycopg2
 dj_database_url

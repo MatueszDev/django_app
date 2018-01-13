@@ -1,10 +1,12 @@
 {% extends "main_page/main_page.html" %}
 
+{% block title %}Lecture notes: adding notes{% endblock %}
+
 {% block content %}
-<div id="main_page_center">
+<div id="main_page_center" class="paper">
     <div style="margin-left: 5%">
-        <h1>Add note:</h1>
-        <form action="/notes/add_note/" method="post" enctype="multipart/form-data"> 
+        <h1>Add note to {{classes}} lecture {{lecture_number}}:</h1>
+        <form action="/notes/{{classes}}/{{lecture_number}}/add_note/" method="post" enctype="multipart/form-data"> 
             {%csrf_token %}
             <ul>
               {{form.as_ul}}
@@ -13,6 +15,9 @@
             <input type="submit" name="sumbit" value="Submit note">
         </form>
     </div>
+    <script type="text/javascript">
+    document.getElementById("id_title").style.width = "380px";
+    </script>
 </div>
 {% endblock %}
 

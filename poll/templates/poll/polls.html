@@ -1,17 +1,25 @@
 {% extends "main_page/main_page.html" %}
 {% block title %}Polls{% endblock %}
-
+{% load static%}
+{% block extra_links %}
+<link type="text/css" rel="stylesheet" href="{% static 'css/fontello.css' %}"/>
+<link type="text/css" rel="stylesheet" href="{% static 'css/polls.css' %}"/>
+{% endblock %}
 {% block content %}
     
-<div id="main_page_center" style="padding-left: 4%; padding-right: 1%;">
+<div id="main_page_center">
     <div class="polls">
 
-        <p>Current available polls:</p>
+        <h2><p>Current available polls:</p></h2>
         <ul>
         {% for question in questions %}
             <li>
-                <a href="{{ question.id }}">{{ question.question }}</a> <br/>
-                <i> {{ question.description }}</i>
+                <font size="3">
+                    <a href="{{ question.id }}">{{ question.question }}</a> &nbsp;&nbsp;&nbsp;
+                    <a href="{{ question.id }}/delete/"><i class="icon-cancel cancel"></i></a><br/>
+                    {%if question.description %} {{ question.description }} <br/>{% endif %}
+                </font>
+                <h4><i>Created at {{ question.publication_date}} by {{ question.user }}</i></h4>
             </li>
 
         {% endfor %}
@@ -19,7 +27,7 @@
     </div>
     <div class="buttons">
         <a href="addPoll"><input type="button" value="Create new poll"/></a>
-        <input type="button" value="Delete existing poll"/>
+
     </div>
 </div>
 
