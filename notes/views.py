@@ -12,7 +12,7 @@ from django.shortcuts import render_to_response
 from django.template.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.db.models import Max
+from django.db.models import Max, Q
 
 @login_required
 def add_note(request,classes,lecture_number):
@@ -255,3 +255,15 @@ def bookmarks(request):
     args = { 'notes' : notes, 'texts' : texts,
             'imgs' : imgs, 'pdfs' : pdfs, 'otrs' : otrs}
     return render(request, 'bookmarks.html', args)
+
+def search(request):
+    notes = Note.objects.order_by('lecture','pk')
+    terms = request.POST.get(key='searchbar').split(' ')
+    q = Q()
+    for term in terms:
+        q |= Q(title__icontains=term)
+    notes_filtered = notes.filter(q)
+    args = {}
+    args.update(csrf(request))
+    args['notes'] = notes_filtered
+    return render(request, 'search.html', args)
