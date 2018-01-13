@@ -61,6 +61,8 @@ class VoteTest(TestCase):
     def test_number_of_votes_not_equal_0(self):
         self.assertNotEqual(Vote.count_all_votes(), 0)
 
+    def test_number_of_option_votes(self):
+        self.assertEqual(Vote.count_option_votes(self.respond_object), 1)
 
 class AnsFormTest(TestCase):
 
