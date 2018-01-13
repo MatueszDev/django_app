@@ -99,6 +99,7 @@ class PollViewTest(TestCase):
         self.poll_object = Poll.objects.create(question="How are you?", description="Feeling question", user=self.user)
         self.respond_object = Respond.objects.create(poll=self.poll_object, option="New option")
         self.vote_object = Vote.objects.create(poll=self.poll_object, choice=self.respond_object, user=self.user)
+        self.client.login(username='user', password='12345678')
 
     def test_name_view(self):
 
@@ -114,27 +115,52 @@ class PollViewTest(TestCase):
         self.assertEqual(response.request['REQUEST_METHOD'], 'POST')
 
     def test_index_view(self):
-        self.client.login(username='user', password='12345678')
         response = self.client.get('/poll/', follow=True)
         self.assertTemplateUsed(response, 'poll/polls.html')
 
     def test_add_poll_view(self):
-        self.client.login(username='user', password='12345678')
         response = self.client.get('/poll/addPoll/', follow=True)
         self.assertEqual(response.status_code, 200)
 
     def test_poll(self):
-        self.client.login(username='user', password='12345678')
         self.assertEqual(1, self.poll_object.id)
         response = self.client.get('/poll/%s/'%self.poll_object.id, follow=True)
         self.assertTemplateUsed(response, 'poll/poll.html')
 
+        response = self.client.post('/poll/%s/'% self.poll_object.id, {'answer': 'newly'}, follow=True)
+        self.assertTrue(Respond.objects.filter(option='newly').exists())
+        for i in range(14):
+            self.client.post('/poll/%s/' % self.poll_object.id, {'answer': 'newly_%s' % i}, follow=True)
+        response = self.client.post('/poll/%s/'% self.poll_object.id, {'answer': 'brand new'}, follow=True)
+        self.assertEqual(response.context['info'], 'Numbers of answers can not be grater than 15, if you want add another answers delete previous one.')
+
     def test_vote(self):
-        self.client.login(username='user', password='12345678')
         text = self.respond_object.option
         response = self.client.get('/poll/%s/vote/?option=%s' %(self.poll_object.id, text), follow=True)
         self.assertTemplateUsed(response, 'poll/poll.html')
-        
+
+    def test_delete_respond(self):
+        response = self.client.get('/poll/%s/delete/%s' % (self.poll_object.id, self.respond_object.id), follow=True)
+        self.assertTemplateUsed(response, 'poll/poll.html')
+        self.assertEqual(response.context['info_2'],"There must stay at least two answers." )
+
+        respond_object_1 = Respond.objects.create(poll=self.poll_object, option="New option1")
+        respond_object_2= Respond.objects.create(poll=self.poll_object, option="New option2")
+        response = self.client.get('/poll/%s/delete/%s' % (self.poll_object.id, self.respond_object.id), follow=True)
+        self.assertEqual(response.context['info_2'], "You can not delete answer when someone voted.")
+        self.assertEqual(respond_object_2.id, 3)
+        response = self.client.get('/poll/%s/delete/%s' % (self.poll_object.id, respond_object_2.id), follow=True)
+        self.assertEqual(response.context['info_2'], None)
+
+    def test_delete_poll(self):
+        response = self.client.get('/poll/%s/delete/'% self.poll_object.id, follow = True)
+        self.assertTemplateUsed(response, 'poll/polls.html')
+        self.assertFalse(Poll.objects.filter(question=self.poll_object).exists())
+
+    def test_create_poll(self):
+        response = self.client.post('/poll/addPoll/', {'question': 'ok', 'description': None,'default_option_1': 'first', 'default_option_2':'second'}, follow=True)
+        self.assertTemplateUsed(response, 'poll/polls.html')
+        self.assertTrue(Poll.objects.filter(question="ok").exists())
 
 class TestPollConf(TestCase):
 

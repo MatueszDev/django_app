@@ -118,7 +118,7 @@ def delete_respond(request, object_id, object_id_2):
 
         return HttpResponseRedirect("/poll/%s/?info-2=%s" % (object_id, text_info))
 
-    if Vote.objects.filter(choice=answer).exists:
+    if Vote.objects.filter(choice=answer[0]).exists():
         text_info = "You can not delete answer when someone voted."
 
         return HttpResponseRedirect("/poll/%s/?info-2=%s" % (object_id, text_info))
