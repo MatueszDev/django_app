@@ -327,14 +327,15 @@ class FormTest(TestCase):
         self.client.login(username='admin', password='correcthorse')
         lecture_id = self.lecture1.slug+'/'+str(self.lecture1.lecture_number)
         url = '/notes/'+lecture_id+'/add_file/'
-        with open('/home/versil/dj/django_app/static/main_page/notebook-wood-desk.png') as myfile:
-            response = self.client.post(url,
-                                    {'title': 'testfile',
-                                    'author': 'admin',
-                                    'lecture': self.lecture1,
-                                    'content': myfile}, follow=True)
-            self.assertEqual(response.status_code, 200)
-            self.assertTemplateUsed(response, 'notes_main.html')
+        myfile = SimpleUploadedFile(name='foo.gif', 
+                   content=b'GIF87a\x01\x00\x01\x00\x80\x01\x00\x00\x00\x00ccc,\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02D\x01\x00')
+        response = self.client.post(url,
+                                {'title': 'testfile',
+                                'author': 'admin',
+                                'lecture': self.lecture1,
+                                'content': myfile}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'notes_main.html')
     
     def test_add_pdf_file_form_response(self):
         self.client.login(username='admin', password='correcthorse')
