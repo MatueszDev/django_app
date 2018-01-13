@@ -52,7 +52,7 @@ class NoteFile(models.Model):
     user = models.ManyToManyField(User)
 
     def __unicode__(self):
-        return self.name
+        return self.title
 
 class NoteFileText(NoteFile):
     '''Model for files to be treated as text'''
