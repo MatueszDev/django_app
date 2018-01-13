@@ -17,7 +17,7 @@ if(DJANGO_HOST == "development"):
 
 @login_required
 def index(request): #test only
-    return render(request, 'ocr_main.html', {'scanned': Scanned.objects.all()})
+    return render(request, 'ocr_main.html')
 
 @login_required
 def ocr_scan(request, id): 
