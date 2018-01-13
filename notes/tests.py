@@ -2,11 +2,13 @@
 from __future__ import unicode_literals
 from django.test import TestCase
 from .forms import NoteForm, LectureForm, QuestionForm, ReplyForm
+from forms import NoteImageForm, NoteTextForm, NotePdfForm, NoteOtherForm
 from grades.models import Classes
 from .models import Lecture, Note, NoteQuestion, NoteReply
 from django.contrib.auth.models import User
 from user_authentication.models import Profile
 from django.core.urlresolvers import reverse
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 class NoteTest(TestCase):
     def setUp(self):
@@ -300,3 +302,16 @@ class FormTest(TestCase):
                                 {'content': 'why'}, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'view_question.html')
+    
+    def test_add_file_form_response(self):
+        self.client.login(username='admin', password='correcthorse')
+        myfile = SimpleUploadedFile("file.txt", b"file_contents")
+        lecture_id = self.lecture1.slug+'/'+str(self.lecture1.lecture_number)
+        url = '/notes/'+lecture_id+'/add_file/'
+        response = self.client.post(url,
+                                {'title': 'testfile',
+                                'author': 'admin',
+                                'lecture': self.lecture1,
+                                'content': myfile}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'notes_main.html')
