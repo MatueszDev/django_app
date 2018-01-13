@@ -4,6 +4,6 @@ from . import views
 
 urlpatterns = [
     url('^$', views.index, name='index'),
-#    url('^scan$', views.scan, name='scan'),
-    url(r'^add_image/$', views.add_image, name='add_image'),
+    url(r'^ocr_scan/$', views.ocr_scan, name='ocr_scan'),
+    url(r'^ocr_crop/$', views.ocr_crop, name='ocr_crop'),
 ]

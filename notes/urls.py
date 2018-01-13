@@ -17,4 +17,8 @@ urlpatterns = [
     url(r'^(?P<classes>[A-Za-z0-9-]+)/(?P<lecture_number>[0-9]+)/(?P<noteslug>[A-Za-z0-9-]+)/unmark/$', views.note_unmark, name='note_unmark'),
     url(r'^(?P<classes>[A-Za-z0-9-]+)/(?P<lecture_number>[0-9]+)/(?P<filetype>[tipo])/(?P<filepk>[0-9]+)/mark/$', views.file_bookmark, name='file_bookmark'),
     url(r'^(?P<classes>[A-Za-z0-9-]+)/(?P<lecture_number>[0-9]+)/(?P<filetype>[tipo])/(?P<filepk>[0-9]+)/unmark/$', views.file_unmark, name='file_unmark'),
+    url(r'^(?P<classes>[A-Za-z0-9-]+)/(?P<lecture_number>[0-9]+)/add_ocr/$',
+        views.add_ocr, name='add_ocr'),
+    url(r'^(?P<classes>[A-Za-z0-9-]+)/(?P<lecture_number>[0-9]+)/add_crop/$',
+        views.add_crop, name='add_crop'),
 ]

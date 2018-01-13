@@ -12,6 +12,13 @@
         </ul>
     </div>
     <div style="margin-left: 5%;">
+
+        <h1>The following images were extracted and added to the database:</h1>
+        <p id="lista">
+        {% for img in cropped %}
+        <img src="{{img.content.url}}" width="500px" alt="img"/>
+        {% endfor %}
+        </p>
     </div>
 </div>
 {% endblock %}

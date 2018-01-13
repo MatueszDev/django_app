@@ -12,6 +12,19 @@
         </ul>
     </div>
     <div style="margin-left: 5%;">
+
+        <h1>You just scanned:</h1>
+        <p id="lista">
+        <h2>{{scanned.title}}</h2>
+        {{scanned.content}}<br>
+        </p>
+        It has been added to the database. You can find it in Notes.
+        <form action="/notes/" method="post"> 
+            {%csrf_token %}
+            <ul>
+              {{form.as_ul}}
+            </ul>
+        </form>
     </div>
 </div>
 {% endblock %}
