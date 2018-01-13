@@ -13,6 +13,6 @@ class EventAdmin(admin.ModelAdmin):
     list_display = ['title','day', 'starting_time', 'ending_time', 'personal_notes']
     change_list_template = 'admin/kalendar/change_list.html'
 
-    
+
 
 admin.site.register(Event, EventAdmin)

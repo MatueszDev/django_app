@@ -23,6 +23,10 @@ class Respond(models.Model):
     option = models.CharField('option', max_length=255)
     poll = models.ForeignKey(Poll)
 
+    def __init__(self,*args, **kwargs):
+        super(Respond, self).__init__(*args, **kwargs)
+        self.number_of_votes = 0
+
     def __unicode__(self):
         return self.option
 
