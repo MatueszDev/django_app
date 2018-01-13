@@ -4,7 +4,8 @@ from django.test import TestCase
 from .forms import NoteForm, LectureForm, QuestionForm, ReplyForm
 from forms import NoteImageForm, NoteTextForm, NotePdfForm, NoteOtherForm
 from grades.models import Classes
-from .models import Lecture, Note, NoteQuestion, NoteReply
+from .models import Lecture, Note, NoteQuestion, NoteReply, NoteFile
+from .models import NoteFileText, NoteFileImage, NoteFilePdf, NoteFileOther
 from django.contrib.auth.models import User
 from user_authentication.models import Profile
 from django.core.urlresolvers import reverse
@@ -195,6 +196,11 @@ class FormTest(TestCase):
         self.reply1 = NoteReply.objects.create(question=self.question1,
                                         author=self.user.username,
                                         content='it could be yellow')
+        myfile = SimpleUploadedFile("file.txt", b"file_contents")
+        self.file1 = NoteFileText.objects.create(title='some file',
+                                        author=self.user.username,
+                                        lecture=self.lecture1,
+                                        content=myfile)
 
     def test_if_add_note_form_is_valid(self):
         form = NoteForm(data={'title': 'testnote',
@@ -343,3 +349,17 @@ class FormTest(TestCase):
                                 'content': myfile}, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'notes_main.html')
+        
+    def test_view_file_bookmark(self):
+        self.client.login(username='test', password='azerty47')
+        path1 = self.lecture1.slug+"/"+str(self.lecture1.lecture_number)+"/"
+        response = self.client.get("/notes/"+path1+"t/"+str(self.file1.pk)+
+                                    "/mark/", follow=True)
+        self.assertEqual(response.status_code, 200)
+        
+    def test_view_note_unmark(self):
+        self.client.login(username='test', password='azerty47')
+        path1 = self.lecture1.slug+"/"+str(self.lecture1.lecture_number)+"/"
+        response = self.client.get("/notes/"+path1+"t/"+str(self.file1.pk)+
+                                    "/mark/", follow=True)
+        self.assertEqual(response.status_code, 200)
