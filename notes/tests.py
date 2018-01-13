@@ -323,18 +323,18 @@ class FormTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'notes_main.html')
     
-    def test_add_img_file_form_response(self):
-        self.client.login(username='admin', password='correcthorse')
-        lecture_id = self.lecture1.slug+'/'+str(self.lecture1.lecture_number)
-        url = '/notes/'+lecture_id+'/add_file/'
-        with open('/home/versil/dj/django_app/static/main_page/notebook-wood-desk.png') as myfile:
-            response = self.client.post(url,
-                                    {'title': 'testfile',
-                                    'author': 'admin',
-                                    'lecture': self.lecture1,
-                                    'content': myfile}, follow=True)
-            self.assertEqual(response.status_code, 200)
-            self.assertTemplateUsed(response, 'notes_main.html')
+#    def test_add_img_file_form_response(self):
+#        self.client.login(username='admin', password='correcthorse')
+#        lecture_id = self.lecture1.slug+'/'+str(self.lecture1.lecture_number)
+#        url = '/notes/'+lecture_id+'/add_file/'
+#        with open('/home/versil/dj/django_app/static/main_page/notebook-wood-desk.png') as myfile:
+#            response = self.client.post(url,
+#                                    {'title': 'testfile',
+#                                    'author': 'admin',
+#                                    'lecture': self.lecture1,
+#                                    'content': myfile}, follow=True)
+#            self.assertEqual(response.status_code, 200)
+#            self.assertTemplateUsed(response, 'notes_main.html')
     
     def test_add_pdf_file_form_response(self):
         self.client.login(username='admin', password='correcthorse')
