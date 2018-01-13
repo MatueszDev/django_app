@@ -4,11 +4,13 @@ from django.test import TestCase
 from .forms import NoteForm, LectureForm, QuestionForm, ReplyForm
 from forms import NoteImageForm, NoteTextForm, NotePdfForm, NoteOtherForm
 from grades.models import Classes
-from .models import Lecture, Note, NoteQuestion, NoteReply
+from .models import Lecture, Note, NoteQuestion, NoteReply, NoteFile
+from .models import NoteFileText, NoteFileImage, NoteFilePdf, NoteFileOther
 from django.contrib.auth.models import User
 from user_authentication.models import Profile
 from django.core.urlresolvers import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
+from io import BytesIO
 
 class NoteTest(TestCase):
     def setUp(self):
@@ -194,6 +196,11 @@ class FormTest(TestCase):
         self.reply1 = NoteReply.objects.create(question=self.question1,
                                         author=self.user.username,
                                         content='it could be yellow')
+        myfile = SimpleUploadedFile("file.txt", b"file_contents")
+        self.file1 = NoteFileText.objects.create(title='some file',
+                                        author=self.user.username,
+                                        lecture=self.lecture1,
+                                        content=myfile)
 
     def test_if_add_note_form_is_valid(self):
         form = NoteForm(data={'title': 'testnote',
@@ -253,14 +260,14 @@ class FormTest(TestCase):
 #        form = LectureForm(data={'course': self.course,
 #                                'lecture_title': ''})
 #        self.assertFalse(form.is_valid())
-#    
-#    def test_add_lecture_form_response(self):
-#        self.client.login(username='admin', password='correcthorse')
-#        response = self.client.post('/notes/add_lecture/',
-#                                {'course': self.course,
-#                                'lecture_title': 'second'}, follow=True)
-#        self.assertEqual(response.status_code, 200)
-#        self.assertTemplateUsed(response, 'add_lecture.html')
+    
+    def test_add_lecture_form_response(self):
+        self.client.login(username='admin', password='correcthorse')
+        response = self.client.post('/notes/add_lecture/',
+                                {'course': self.course,
+                                'lecture_title': 'second'}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'add_lecture.html')
         
     def test_if_add_question_form_is_valid(self):
         form = QuestionForm(data={'title': 'why',
@@ -303,7 +310,7 @@ class FormTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'view_question.html')
     
-    def test_add_file_form_response(self):
+    def test_add_text_file_form_response(self):
         self.client.login(username='admin', password='correcthorse')
         myfile = SimpleUploadedFile("file.txt", b"file_contents")
         lecture_id = self.lecture1.slug+'/'+str(self.lecture1.lecture_number)
@@ -315,3 +322,45 @@ class FormTest(TestCase):
                                 'content': myfile}, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'notes_main.html')
+    
+    def test_add_img_file_form_response(self):
+        self.client.login(username='admin', password='correcthorse')
+        lecture_id = self.lecture1.slug+'/'+str(self.lecture1.lecture_number)
+        url = '/notes/'+lecture_id+'/add_file/'
+        myfile = SimpleUploadedFile(name='foo.gif', 
+                   content=b'GIF87a\x01\x00\x01\x00\x80\x01\x00\x00\x00\x00ccc,\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02D\x01\x00')
+        response = self.client.post(url,
+                                {'title': 'testfile',
+                                'author': 'admin',
+                                'lecture': self.lecture1,
+                                'content': myfile}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'notes_main.html')
+    
+    def test_add_pdf_file_form_response(self):
+        self.client.login(username='admin', password='correcthorse')
+        myfile = BytesIO(b'binarydata')
+        myfile.name = 'testimg.pdf'
+        lecture_id = self.lecture1.slug+'/'+str(self.lecture1.lecture_number)
+        url = '/notes/'+lecture_id+'/add_file/'
+        response = self.client.post(url,
+                                {'title': 'testfile',
+                                'author': 'admin',
+                                'lecture': self.lecture1,
+                                'content': myfile}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'notes_main.html')
+        
+    def test_view_file_bookmark(self):
+        self.client.login(username='test', password='azerty47')
+        path1 = self.lecture1.slug+"/"+str(self.lecture1.lecture_number)+"/"
+        response = self.client.get("/notes/"+path1+"t/"+str(self.file1.pk)+
+                                    "/mark/", follow=True)
+        self.assertEqual(response.status_code, 200)
+        
+    def test_view_note_unmark(self):
+        self.client.login(username='test', password='azerty47')
+        path1 = self.lecture1.slug+"/"+str(self.lecture1.lecture_number)+"/"
+        response = self.client.get("/notes/"+path1+"t/"+str(self.file1.pk)+
+                                    "/mark/", follow=True)
+        self.assertEqual(response.status_code, 200)
