@@ -173,4 +173,4 @@ class ViewTest(TestCase):
         response_2 = self.client.get('/kalendar/allEventList/')
         self.assertTemplateUsed(response_2, 'kalendar/allEvents.html')
 
-        
+

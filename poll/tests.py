@@ -96,6 +96,9 @@ class PollViewTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='user', email="user@fis.agh.edu.pl", password="12345678",
                                              first_name="user", last_name="user")
+        self.poll_object = Poll.objects.create(question="How are you?", description="Feeling question", user=self.user)
+        self.respond_object = Respond.objects.create(poll=self.poll_object, option="New option")
+        self.vote_object = Vote.objects.create(poll=self.poll_object, choice=self.respond_object, user=self.user)
 
     def test_name_view(self):
 
@@ -120,7 +123,18 @@ class PollViewTest(TestCase):
         response = self.client.get('/poll/addPoll/', follow=True)
         self.assertEqual(response.status_code, 200)
 
+    def test_poll(self):
+        self.client.login(username='user', password='12345678')
+        self.assertEqual(1, self.poll_object.id)
+        response = self.client.get('/poll/%s/'%self.poll_object.id, follow=True)
+        self.assertTemplateUsed(response, 'poll/poll.html')
 
+    def test_vote(self):
+        self.client.login(username='user', password='12345678')
+        text = self.respond_object.option
+        response = self.client.get('/poll/%s/vote/?option=%s' %(self.poll_object.id, text), follow=True)
+        self.assertTemplateUsed(response, 'poll/poll.html')
+        
 
 class TestPollConf(TestCase):
 
