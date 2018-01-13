@@ -126,7 +126,7 @@ def add_question(request,classes,lecture_number,noteslug):
             newquestion.author = User.objects.get(username=request.user)
             newquestion.note = notes[0]
             newquestion.save()
-            return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number)
+            return HttpResponseRedirect('../..')
     else:
         questionform = QuestionForm(request.POST)
     args = {}
@@ -152,8 +152,7 @@ def view_question(request,classes,lecture_number,noteslug,qpk):
             newreply.question = question[0]
             newreply.save()
 
-            return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number
-                                        +'/'+noteslug+'/'+qpk)
+            return HttpResponseRedirect('.')
     else:
         replyform = ReplyForm(request.POST)
     args = {}
@@ -178,7 +177,7 @@ def question_okay(request,classes,lecture_number,noteslug,qpk):
         question.update(answered=True)
     else:
         return HttpResponseForbidden("You are not permitted to change the status of this question.")
-    return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number+'/')
+    return HttpResponseRedirect('../../..')
 
 @login_required
 def question_delete(request,classes,lecture_number,noteslug,qpk):
@@ -189,7 +188,7 @@ def question_delete(request,classes,lecture_number,noteslug,qpk):
         question.delete()
     else:
         return HttpResponseForbidden("You are not permitted to change the status of this question.")
-    return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number+'/')
+    return HttpResponseRedirect('../../..')
 
 @login_required
 def reply_delete(request,classes,lecture_number,noteslug,qpk,rpk):
@@ -199,8 +198,7 @@ def reply_delete(request,classes,lecture_number,noteslug,qpk,rpk):
         reply.delete()
     else:
         return HttpResponseForbidden("You are not permitted to change the status of this question.")
-    return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number+'/'
-                            +noteslug+'/'+qpk+'/')
+    return HttpResponseRedirect('../..')
 
 @login_required
 def note_bookmark(request,classes,lecture_number,noteslug):
@@ -210,7 +208,7 @@ def note_bookmark(request,classes,lecture_number,noteslug):
         thisnote[0].user.add(thisuser)
     else:
         thisnote[0].user.remove(thisuser)
-    return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number+'/')
+    return HttpResponseRedirect('../..')
 
 @login_required
 def note_unmark(request,classes,lecture_number,noteslug):
@@ -232,7 +230,7 @@ def file_bookmark(request,classes,lecture_number,filetype,filepk):
         thisfile[0].user.add(thisuser)
     else:
         thisfile[0].user.remove(thisuser)
-    return HttpResponseRedirect('/notes/'+classes+'/'+lecture_number+'/')
+    return HttpResponseRedirect('../../..')
 
 @login_required
 def file_unmark(request,classes,lecture_number,filetype,filepk):
