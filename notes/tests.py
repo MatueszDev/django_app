@@ -260,14 +260,14 @@ class FormTest(TestCase):
 #        form = LectureForm(data={'course': self.course,
 #                                'lecture_title': ''})
 #        self.assertFalse(form.is_valid())
-#    
-#    def test_add_lecture_form_response(self):
-#        self.client.login(username='admin', password='correcthorse')
-#        response = self.client.post('/notes/add_lecture/',
-#                                {'course': self.course,
-#                                'lecture_title': 'second'}, follow=True)
-#        self.assertEqual(response.status_code, 200)
-#        self.assertTemplateUsed(response, 'add_lecture.html')
+    
+    def test_add_lecture_form_response(self):
+        self.client.login(username='admin', password='correcthorse')
+        response = self.client.post('/notes/add_lecture/',
+                                {'course': self.course,
+                                'lecture_title': 'second'}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'add_lecture.html')
         
     def test_if_add_question_form_is_valid(self):
         form = QuestionForm(data={'title': 'why',
