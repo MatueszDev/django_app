@@ -10,6 +10,12 @@
     {% if request.user.is_superuser %}
         <a href="/notes/add_lecture"><input type="button" value="Add new lecture"/></a>
     {% endif %}
+    <span style="float: right; margin-right: 12%;">
+    <form action="/notes/search/" method="POST" id="searchform">
+    {%csrf_token %}
+    <input type="text" id="id_searchbar" name="searchbar">
+    <input type="submit" value="Search for a note"/></form>
+    </span>
 </div>
 
 <div id="main_page_center" class="paper">
