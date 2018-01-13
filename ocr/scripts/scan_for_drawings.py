@@ -7,6 +7,7 @@ from PIL import Image
 def scan_for_drawings(path):
     #handling too big resolutions
     img = np.asarray(Image.open(path))
+    #img = cv2.imread(path)
     height, width, channels = img.shape 
     if(height > 2500 or width > 2500):
         img = cv2.pyrDown(img) 
