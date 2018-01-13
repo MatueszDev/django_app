@@ -2,8 +2,6 @@
 from __future__ import unicode_literals
 from django.shortcuts import render
 from django.http import HttpResponse
-from ocr.scripts.ocr_pytesseract import scanner
-from ocr.scripts.scan_for_drawings import scan_for_drawings
 from django.http import HttpResponseRedirect
 from .forms import UploadForm
 from django.template.context_processors import csrf
@@ -14,8 +12,11 @@ from .models import Cropped
 import StringIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.contrib.auth.decorators import login_required
-
 from notes.models import Note, NoteFileImage
+from django_app.settings import DJANGO_HOST
+if(DJANGO_HOST == "development"):
+    from ocr.scripts.ocr_pytesseract import scanner
+    from ocr.scripts.scan_for_drawings import scan_for_drawings
 
 @login_required
 def index(request): #test only
