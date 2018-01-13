@@ -143,7 +143,7 @@ class ViewTest(TestCase):
         self.user = User.objects.create_user(username='user', email="user@fis.agh.edu.pl", password="12345678",
                                              first_name="user", last_name="user")
         self.client.login(username='user', password='12345678')
-        self.event_object = Event(
+        self.event_object = Event.objects.create(
             title='New event', user=self.user, day='2018-01-11', starting_time='12:30', ending_time='13:30',
             personal_notes='I dont have'
         )
@@ -154,7 +154,7 @@ class ViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         response_2 = self.client.get('/kalendar/?day__gte=2018-02-01')
-        #self.assertEqual(response_2.body  , '/kalendar/?day__gte=2018-02-01')
+        self.assertEqual(response_2.context['text']  , '/kalendar/?day__gte=2018-02-01')
 
     def test_name_view(self):
 
@@ -173,4 +173,15 @@ class ViewTest(TestCase):
         response_2 = self.client.get('/kalendar/allEventList/')
         self.assertTemplateUsed(response_2, 'kalendar/allEvents.html')
 
+        response_3 = self.client.get('/kalendar/modifyEvent/%s/' % self.event_object.id)
+        self.assertTemplateUsed(response_3, 'kalendar/modifyEvent.html')
 
+
+    def test_add_event(self):
+        response = self.client.post('/kalendar/addEvent/', { 'title':'New event 2','day':'2018-01-13', 'starting_time':'12:30', 'ending_time':'13:30',
+            'personal_notes':'I dont have'}, follow=True)
+        self.assertTemplateUsed(response, 'kalendar/calendar.html')
+        self.assertTrue(Event.objects.filter(title='New event 2').exists())
+
+        response = self.client.get('/kalendar/addEvent/', follow=True)
+        self.assertEqual(response.status_code, 200)
