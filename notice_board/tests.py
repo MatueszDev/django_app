@@ -63,11 +63,29 @@ class ViewTest(TestCase):
         response = self.client.get(reverse('notice_board:delete_post', args={self.post.pk}), follow=True)
         self.assertTemplateUsed(response, 'post/list.html')
 
+    def test_add_post_view_if_success(self):
+        self.client.login(username='admin', password='jkadyen3')
+        response = self.client.post("/notice_board/add_post/", {'title': 'aaa',
+                                                                'body': 'dasdasdsdsad'},
+                                    follow=True)
+        self.assertTemplateUsed(response, 'post/list.html')
+
     def test_add_post_view(self):
         self.client.login(username='admin', password='jkadyen3')
-        response = self.client.get("/notice_board/add_post/", {'title': 'aaa',
-                                                               'body': 'dasdasdsdsad',
-                                                               'author': 'admin',
-                                                               'slug': 'aaa'},
-                                   follow=True)
+        response = self.client.get("/notice_board/add_post/", follow=True)
         self.assertTemplateUsed(response, 'post/addpost.html')
+
+    def test_edit_view_if_success(self):
+        self.client.login(username='admin', password='jkadyen3')
+        response = self.client.post('/notice_board/edit_post/1', {'title': 'aaa',
+                                                                  'body': 'dasdasdsdsad'}, follow=True)
+        self.assertTemplateUsed(response, 'post/editpost.html')
+
+    def test_add_comment_view_if_success(self):
+        self.client.login(username='user', password='alamakota22')
+        response = self.client.post(reverse('notice_board:post_detail', args=[self.post.publish.year,
+                                                                             self.post.publish.strftime('%m'),
+                                                                             self.post.publish.strftime('%d'),
+                                                                             self.post.slug]), {'body': 'asd'},
+                                    follow=True)
+        self.assertTemplateUsed(response, 'post/detail.html')
