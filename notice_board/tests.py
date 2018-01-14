@@ -6,6 +6,14 @@ from .models import Post, Comment
 from django.contrib.auth.models import User
 from user_authentication.models import Profile
 from django.core.urlresolvers import reverse
+from django.apps import apps
+from notice_board.apps import NoticeBoardConfig
+
+
+class NoticeBoardConfigTest(TestCase):
+    def test_apps(self):
+        self.assertEqual(NoticeBoardConfig.name, 'notice_board')
+        self.assertEqual(apps.get_app_config('notice_board').name, 'notice_board')
 
 
 class ViewTest(TestCase):
@@ -58,6 +66,8 @@ class ViewTest(TestCase):
     def test_add_post_view(self):
         self.client.login(username='admin', password='jkadyen3')
         response = self.client.get("/notice_board/add_post/", {'title': 'aaa',
-                                   'body': 'dasdasdsdsad', 'author': 'admin', 'slug': 'aaa'},
+                                                               'body': 'dasdasdsdsad',
+                                                               'author': 'admin',
+                                                               'slug': 'aaa'},
                                    follow=True)
         self.assertTemplateUsed(response, 'post/addpost.html')
