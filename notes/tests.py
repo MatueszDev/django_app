@@ -330,3 +330,10 @@ class NoteTest(TestCase):
                                     "/mark/", follow=True)
         self.assertIsInstance(self.file1,NoteFileText)
         self.assertEqual(response.status_code, 200)
+    
+    def test_search_response(self):
+        self.client.login(username='admin', password='correcthorse')
+        response = self.client.post('/notes/search/',
+                                {'searchbar': 'title'}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'search.html')

@@ -43,7 +43,6 @@ def add_file(request,classes,lecture_number):
     if request.POST:
         fileform = NoteOtherForm(request.POST, request.FILES)
         for filename,file_ in request.FILES.iteritems():
-            print file_.content_type
             if file_.content_type.startswith("text/"):
                 fileform = NoteTextForm(request.POST, request.FILES)
             elif file_.content_type.startswith("image/"):
@@ -258,12 +257,14 @@ def bookmarks(request):
 
 def search(request):
     notes = Note.objects.order_by('lecture','pk')
-    terms = request.POST.get(key='searchbar').split(' ')
+    terms = request.POST.get(key='searchbar')
+    terms_list = terms.split(' ')
     q = Q()
-    for term in terms:
+    for term in terms_list:
         q |= Q(title__icontains=term)
     notes_filtered = notes.filter(q)
     args = {}
     args.update(csrf(request))
     args['notes'] = notes_filtered
+    args['terms'] = terms
     return render(request, 'search.html', args)
