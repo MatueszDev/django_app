@@ -6,3 +6,5 @@ numpy
 psycopg2
 dj_database_url
 pytesseract
+scipy
+opencv-python
