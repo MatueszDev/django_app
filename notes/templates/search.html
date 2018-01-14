@@ -22,7 +22,7 @@
                 <tr style="background-color: #f0f0f0; cursor: pointer;" onclick="toggleNote({{note.pk}})"><td style="font-size: 15px;">{{note.title}}, by {{note.author}}</td></tr>
                 <tr class="note{{note.pk}}" style="display: none;"><td>{{note.content|linebreaksbr}}</td></tr>
                 {% for question in note.questions.all %}
-                    <tr class="note{{note.pk}}" style="display: none;"><td><b>{{question.publish}} {{question.author}} asks:</b><br><a href="/notes/{{lecture.slug}}/{{lecture.lecture_number}}/{{note.slug}}/{{question.pk}}/">{{question.title}}</a> {% if question.answered %} <span style="color: green;"><b>✓</b></span> {% endif %}</td></tr>
+                    <tr class="note{{note.pk}}" style="display: none;"><td><b>{{question.publish}} {{question.author}} asks:</b><br><a href="/notes/{{note.lecture.slug}}/{{note.lecture.lecture_number}}/{{note.slug}}/{{question.pk}}/">{{question.title}}</a> {% if question.answered %} <span style="color: green;"><b>✓</b></span> {% endif %}</td></tr>
                 {% endfor %}
                 <tr class="note{{note.pk}}" style="display: none;"><td><a href="/notes/{{note.lecture.slug}}/{{note.lecture.lecture_number}}/{{note.slug}}/ask">Ask a question</a></td></tr>
                 <tr class="note{{note.pk}}" style="display: none;"><td><a href="/notes/{{note.lecture.slug}}/{{note.lecture.lecture_number}}/{{note.slug}}/mark/">[ bookmark ]</a></td></tr>
