@@ -54,3 +54,10 @@ class ViewTest(TestCase):
         self.client.login(username='admin', password='jkadyen3')
         response = self.client.get(reverse('notice_board:delete_post', args={self.post.pk}), follow=True)
         self.assertTemplateUsed(response, 'post/list.html')
+
+    def test_add_post_view(self):
+        self.client.login(username='admin', password='jkadyen3')
+        response = self.client.get("/notice_board/add_post/", {'title': 'aaa',
+                                   'body': 'dasdasdsdsad', 'author': 'admin', 'slug': 'aaa'},
+                                   follow=True)
+        self.assertTemplateUsed(response, 'post/addpost.html')
