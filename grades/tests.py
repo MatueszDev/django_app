@@ -36,6 +36,25 @@ class GroupTest(TestCase):
         self.assertTrue(isinstance(test_instance, Classes))
         self.assertEqual(test_instance.__unicode__(), test_instance.classes)
 
+    def test_field_save(self):
+        test_instance = self.create_field('field')
+        test_instance.make_field_of_study()
+        test_instance = Field_of_study.objects.get(pk=test_instance.pk)
+        self.assertEqual(test_instance.fieldOfStudy, 'field')
+
+    def test_year_save(self):
+        test_instance = self.create_year('year 1')
+        test_instance.make_year()
+        test_instance = Year.objects.get(pk=test_instance.pk)
+        self.assertEqual(test_instance.year, 'year 1')
+
+    def test_class_save(self):
+        test_instance = self.create_class('test class')
+        test_instance.make_class()
+        test_instance = Classes.objects.get(pk=test_instance.pk)
+        self.assertEqual(test_instance.classes, 'test class')
+
+
 
 #apps
     def test_app(self):
