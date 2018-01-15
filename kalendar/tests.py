@@ -10,6 +10,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from .utils import Import, Calendar
 from django.shortcuts import reverse
 from django.core.exceptions import ValidationError
+from .apps import KalendarConfig
 # Create your tests here.
 
 class TestEvent(TestCase):
@@ -147,6 +148,10 @@ class ViewTest(TestCase):
             title='New event', user=self.user, day='2018-01-11', starting_time='12:30', ending_time='13:30',
             personal_notes='I dont have'
         )
+        self.event_object_2 = Event.objects.create(
+            title='New event 321', user=self.user, day='2018-01-13', starting_time='12:30', ending_time='13:30',
+            personal_notes='I dont have'
+        )
 
     def test_index(self):
         response = self.client.get('/kalendar/', follow=True)
@@ -185,3 +190,26 @@ class ViewTest(TestCase):
 
         response = self.client.get('/kalendar/addEvent/', follow=True)
         self.assertEqual(response.status_code, 200)
+
+    def test_modify_event(self):
+        response = self.client.post('/kalendar/modifyEvent/%s/'% self.event_object.id,
+                                    {'title': 'modified',
+                                     'day':'2018-01-15',
+                                     'starting_time':'14:30',
+                                     'ending_time':'15:30',
+                                     'personal_notes':'I dont have',},
+                                    follow=True)
+
+        self.assertTrue(Event.objects.filter(title='modified').exists())
+        self.assertTrue(Event.objects.filter(day='2018-01-15').exists())
+        self.assertTemplateUsed(response, 'kalendar/calendar.html')
+
+    def test_delete_event(self):
+        response = self.client.get('/kalendar/delete/%s/'% self.event_object.id)
+        self.assertFalse(Event.objects.filter(title='New event').exists())
+
+
+class AppsTest(TestCase):
+
+    def test_Kalendar_Config(self):
+        self.assertEqual(KalendarConfig.name, "kalendar")
