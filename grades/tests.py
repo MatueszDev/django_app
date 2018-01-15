@@ -36,16 +36,11 @@ class GroupTest(TestCase):
         self.assertTrue(isinstance(test_instance, Classes))
         self.assertEqual(test_instance.__unicode__(), test_instance.classes)
 
-    # def test_grades_group_creation(self):
-    #     test_instance = self.create_grades_group()
-    #     self.assertTrue(isinstance(test_instance.fieldOfStudy, models.fields.related.ForeignKey))
-    #     self.assertEqual(test_instance.__unicode__(), test_instance.gradesGroup)
 
-    # def test_if_year_input_is_string(self):
-    #     self.assertTrue(isinstance(test_instance, str))
-    #
-    # def test_if_year_input_is_not_string(self):
-    #     self.assertFalse(isinstance(test_instance, str))
+#apps
+    def test_app(self):
+        self.assertEqual(GradesConfig.name, 'grades')
+        self.assertEqual(apps.get_app_config('grades').name, 'grades')
 
 
 
