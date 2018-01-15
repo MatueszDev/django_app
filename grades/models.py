@@ -46,9 +46,6 @@ class Grades_group(models.Model):
     user = models.ManyToManyField(User)
     gradesGroup = str(fieldOfStudy) + " " + str(year)
 
-    def make_grades_group(self):
-        self.save()
-
     def __unicode__(self):
         return self.gradesGroup
 
