@@ -38,7 +38,7 @@ class Event(models.Model):
         if 'admin' not in request:
             url = reverse('modify_event', args=[self.id])
             return '<a href="%s">%s%s</a>' % (url, self.title[:7],'...')
-        
+
 
     def check_overlap(self, fixed_start, fixed_end, new_start, new_end):
         overlap = False
