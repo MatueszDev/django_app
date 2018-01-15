@@ -87,14 +87,14 @@ def get_areas(img):
     return contours, hierarchy
 
 #use only for debugging
-if __name__ == "__main__":
-    #uncomment line 61 for debugging
-    img_path = cv2.imread(str(sys.argv[1]))
-    image, crops = scan_for_drawings(img_path)
-    for crop in crops:
-        cv2.imshow("Show",crop)
-        cv2.waitKey(30000)
-        cv2.destroyAllWindows()
-    cv2.imshow("Show", image)
-    cv2.waitKey(30000)
-    cv2.destroyAllWindows()
+#if __name__ == "__main__":
+#    #uncomment line 61 for debugging
+#    img_path = cv2.imread(str(sys.argv[1]))
+#    image, crops = scan_for_drawings(img_path)
+#    for crop in crops:
+#        cv2.imshow("Show",crop)
+#        cv2.waitKey(30000)
+#        cv2.destroyAllWindows()
+#    cv2.imshow("Show", image)
+#    cv2.waitKey(30000)
+#    cv2.destroyAllWindows()

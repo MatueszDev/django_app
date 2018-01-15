@@ -6,7 +6,7 @@
 <div id="main_page_center" class="paper">
     <div style="margin-left: 5%">
         <h1>Add file to {{classes}} lecture {{lecture_number}}:</h1>
-        <form action="/notes/{{classes}}/{{lecture_number}}/add_crop/" method="post" enctype="multipart/form-data"> 
+        <form action="/ocr/{{classes}}/{{lecture_number}}/add_ocr/" method="post" enctype="multipart/form-data"> 
             {%csrf_token %}
             <ul>
               {{form.as_ul}}

@@ -119,6 +119,8 @@ class PollViewTest(TestCase):
     def test_index_view(self):
         response = self.client.get('/poll/', follow=True)
         self.assertTemplateUsed(response, 'poll/polls.html')
+        response = self.client.get('/poll/', follow=True)
+        self.assertTemplateUsed(response, 'poll/polls.html')
 
     def test_add_poll_view(self):
         response = self.client.get('/poll/addPoll/', follow=True)

@@ -7,33 +7,102 @@ from django.urls import reverse
 from scripts.ocr_pytesseract import scanner
 from scripts.scan_for_drawings import scan_for_drawings
 
+from django.apps import apps 
+from ocr.apps import OcrConfig
+import cv2
+import numpy as np
+
+from notes.forms import NoteImageForm
+
+
+from grades.models import Classes
+from notes.models import Lecture, NoteFileImage
+
+from ocr.views import ocr_script_database_helper, crop_script_database_helper
+
+from django.core.files.uploadedfile import SimpleUploadedFile
 # Create your tests here.
 
-class OcrViewsTest(TestCase):
+class OcrUrlsTest(TestCase):
 
     def setUp(self):
-        self.user = User.objects.create_user(username='user', email="user@fis.agh.edu.pl", password="12345678", first_name="user", last_name="user")
+        self.user = User.objects.create_user(username='user', email="user@fis.agh.edu.pl", password="12345678", 
+                first_name="user", last_name="user")
+        self.client.login(username='user', password='12345678')
 
     def test_views_response(self):
         response = self.client.get(reverse('ocr:index'), follow = True)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(reverse('ocr:ocr_scan'), '/ocr/ocr_scan/')
-        self.assertEqual(reverse('ocr:ocr_crop'), '/ocr/ocr_crop/')
+        self.assertEqual(reverse('ocr:add_ocr', kwargs = {'classes': 'wot',
+            'lecture_number': 2}), '/ocr/wot/2/add_ocr/')
+        self.assertEqual(reverse('ocr:add_crop', kwargs = {'classes': 'wot',
+            'lecture_number': 2}), '/ocr/wot/2/add_crop/')
 
-class ocr_pytesseract(TestCase):
+class OcrViewsTest(TestCase):
 
     def setUp(self):
-        self.path = 'ocr/sample_files/test_text.jpg'
+        self.user = User.objects.create_user(username='user', email="user@fis.agh.edu.pl", password="12345678", 
+                first_name="user", last_name="user")
+        self.client.login(username='user', password='12345678')
+        self.course = Classes.objects.create(classes='wot')
+        self.lecture1 = Lecture.objects.create(lecture_title='first',
+                                                course=self.course,
+                                                lecture_number=1)
+        self.path = 'ocr/sample_files/sample_extract.png'
+
+    def test_main_view(self): 
+        response = self.client.get('/ocr/', follow=True)
+        self.assertTemplateUsed(response, 'ocr_main.html')
+
+    def test_add_ocr(self):
+        response = self.client.get('/ocr/lect/1/add_ocr/', follow=True)
+        self.assertTemplateUsed(response, 'add_ocr.html')
+    
+    def test_add_crop(self):
+        response = self.client.get('/ocr/lect/1/add_crop/', follow=True)
+        self.assertTemplateUsed(response, 'add_crop.html')
+
+#    def test_unavailable(self):
+#        response = self.client.get('/ocr/wot/1/add_ocr/')
+#        self.assertTemplateUsed(response, 'unavailable.html')
+
+class Ocr(TestCase):
+
+    def setUp(self):
+        self.path = 'ocr/sample_files/sample_text.jpg'
 
     def test_returned_text(self):
         result = scanner(self.path)
         self.assertEqual(result, "I'm a normal text\nI'm a bold text")
 
-#class scan_for_drawings(TestCase):
-#
-#    def setUp(self):
-#        self.path = 'ocr/sample_files/testfile_extract.jpg'
-#
-#    def test_returned_images(self):
-#        result = scan_for_drawings(self.path)
-#        self.assertEqual(result, "I'm a normal text\nI'm a bold text")
+class Extract(TestCase):
+
+    def setUp(self):
+        self.path = 'ocr/sample_files/sample_extract.png'
+        self.path_big = 'ocr/sample_files/sample_big.jpg'
+        self.path_text = 'ocr/sample_files/sample_text.jpg'
+
+    def test_returned_images(self):
+        results_all = scan_for_drawings(self.path)
+        self.assertEqual(len(results_all), 2)
+        results_crops = results_all[1]
+        self.assertEqual(len(results_crops), 2)
+        for result in results_crops:
+            self.assertIsInstance(result, np.ndarray)
+
+    def test_big_image(self):
+        results_all = scan_for_drawings(self.path_big)
+        self.assertEqual(len(results_all), 2)
+        results_crops = results_all[1]
+        self.assertEqual(len(results_crops), 4) #manually upscaled image causes anomalies
+        for result in results_crops:
+            self.assertIsInstance(result, np.ndarray)
+
+    def test_noimg(self):
+        self.assertRaises(scan_for_drawings(self.path_text))
+
+
+class AppsTest(TestCase):
+    def test_apps(self):
+        self.assertEqual(OcrConfig.name, 'ocr')
+        self.assertEqual(apps.get_app_config('ocr').name, 'ocr') 

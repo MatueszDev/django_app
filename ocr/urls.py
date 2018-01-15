@@ -4,6 +4,8 @@ from . import views
 
 urlpatterns = [
     url('^$', views.index, name='index'),
-    url(r'^ocr_scan/$', views.ocr_scan, name='ocr_scan'),
-    url(r'^ocr_crop/$', views.ocr_crop, name='ocr_crop'),
+    url(r'^(?P<classes>[A-Za-z0-9-]+)/(?P<lecture_number>[0-9]+)/add_ocr/$',
+        views.add_ocr, name='add_ocr'),
+    url(r'^(?P<classes>[A-Za-z0-9-]+)/(?P<lecture_number>[0-9]+)/add_crop/$',
+        views.add_crop, name='add_crop'),
 ]
