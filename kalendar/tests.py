@@ -160,6 +160,8 @@ class ViewTest(TestCase):
 
         response_2 = self.client.get('/kalendar/?day__gte=2018-02-01')
         self.assertEqual(response_2.context['text']  , '/kalendar/?day__gte=2018-02-01')
+        response_3 = self.client.get('/kalendar/?day__gte=20180201')
+        self.assertEqual(response_3.context['previous_month'],'?day__gte=2017-12-01' )
 
     def test_name_view(self):
 
@@ -207,6 +209,16 @@ class ViewTest(TestCase):
     def test_delete_event(self):
         response = self.client.get('/kalendar/delete/%s/'% self.event_object.id)
         self.assertFalse(Event.objects.filter(title='New event').exists())
+
+
+    def test_import_events_from_uni(self):
+        text = b'''"Name","Section","Type","Title","Day Of Week","First Date","Last Date","Published Start","Published End","Location","Capacity","Instructor / Sponsor","Email","Requested Services","Approved",
+        "FiIS-FT-1 Języki(3rok)","1","Lektorat","Język Obcy (3rok)","Th","11.1.2018",,"11:00","14:00","D-11 SJO","10000",,,,"6.10.2017",'''
+        response = self.client.get('/kalendar/import/', follow=True)
+        self.assertTemplateUsed(response, 'kalendar/calendar.html')
+
+
+        self.assertIsNone(self.client.post('/kalendar/import/', {'title':'ev.csv','file': text  }, follow=True))
 
 
 class AppsTest(TestCase):
