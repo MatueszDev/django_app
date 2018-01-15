@@ -56,14 +56,6 @@ class Event(models.Model):
         if self.ending_time <= self.starting_time:
             raise ValidationError('Starting time could not be after ending time')
 
-        events = Event.objects.filter(day=self.day)
-        if events.exists():
-            for event in events:
-                if self.check_overlap(event.starting_time, event.ending_time, self.starting_time, self.ending_time):
-                    raise ValidationError(
-                        'There is an overlap with another event: ' + str(event.day) + ', ' + str(
-                            event.starting_time) + '-' + str(event.ending_time))
-
 
 
     def __unicode__(self):

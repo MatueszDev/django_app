@@ -17,7 +17,7 @@ class TestEvent(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='user', email="user@fis.agh.edu.pl", password="12345678",
                                              first_name="user", last_name="user")
-        self.event_object = Event(
+        self.event_object = Event.objects.create(
             title='New event', user=self.user, day='2018-01-11', starting_time='12:30', ending_time='13:30', personal_notes='I dont have'
         )
 
@@ -31,7 +31,7 @@ class TestEvent(TestCase):
 
     def test_get_absolute_url(self):
         link = self.event_object.get_absolute_url(self.user)
-        url = '/kalendar/modifyEvent/0/'
+        url = '/kalendar/modifyEvent/1/'
         self.assertEqual('<a href="%s">%s%s</a>' % (url, self.event_object.title[:7],'...'), link)
 
     def test_unicode(self):
@@ -43,9 +43,9 @@ class TestEvent(TestCase):
         self.assertFalse(self.event_object.check_overlap(self.event_object.starting_time, self.event_object.ending_time, '1:30', '2:00'))
 
     def test_clean(self):
-        self.assertRaises(Event(
-            title="T", user=self.user, starting_time="10:00", ending_time="9:00", day='2018-01-11'
-        ))
+        self.assertIsNone(self.event_object.clean())
+
+
 
 class TestEventForm(TestCase):
 
