@@ -30,19 +30,14 @@ def add_ocr(request,classes,lecture_number):
         lectures = Lecture.objects.filter(slug=classes,
             lecture_number=number)
         if request.POST:
-            print("POST!!!!!!!!!!!!")
             fileform = NoteOtherForm(request.POST, request.FILES)
             for filename,file_ in request.FILES.iteritems():
-                if file_.content_type.startswith("image/"):
-                    fileform = NoteImageForm(request.POST, request.FILES)
-                else :
-                    pass
+                fileform = NoteImageForm(request.POST, request.FILES)
             if fileform.is_valid():
                 newfile = fileform.save(commit=False)
-                newfile.author = User.objects.get(username=request.user)
                 newfile.lecture = lectures[0]
                 newfile.save()
-                returned = ocr_script_database_helper(newfile.id)
+                returned = ocr_script_database_helper(newfile)
                 return render(request, 'show_scanned.html', {'scanned':
                     Note.objects.get(id=returned.id)})
         else:
@@ -57,8 +52,7 @@ def add_ocr(request,classes,lecture_number):
     else:
         return render(request, 'notavailable.html')
 
-def ocr_script_database_helper(id):
-    obj = NoteFileImage.objects.get(id=id)
+def ocr_script_database_helper(obj):
     img = obj.content
     result = scanner(img)
     note = Note.objects.create(title = obj.title, content = result)
@@ -74,15 +68,10 @@ def add_crop(request,classes,lecture_number):
         number =  lecture_number
         lectures = Lecture.objects.filter(slug=classes,
             lecture_number=number)
-        
         if request.POST:
             fileform = NoteOtherForm(request.POST, request.FILES)
             for filename,file_ in request.FILES.iteritems():
-                if file_.content_type.startswith("image/"):
-                    fileform = NoteImageForm(request.POST, request.FILES)
-                else :
-                    pass
-                
+                fileform = NoteImageForm(request.POST, request.FILES)
             if fileform.is_valid():
                 newfile = fileform.save(commit=False)
                 newfile.author = User.objects.get(username=request.user)

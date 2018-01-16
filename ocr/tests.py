@@ -49,6 +49,7 @@ class OcrViewsTest(TestCase):
                                                 course=self.course,
                                                 lecture_number=1)
         self.path = 'ocr/sample_files/sample_extract.png'
+        self.path_bad = 'ocr/sample_files/test_bad_file.jpg'
 
     def test_main_view(self): 
         response = self.client.get('/ocr/', follow=True)
@@ -75,6 +76,37 @@ class OcrViewsTest(TestCase):
             follow = True)
         print(response.status_code)
         self.assertTemplateUsed(response, 'add_crop.html')
+
+    def test_add_ocr_with_file(self):
+        with open(self.path) as myfile:
+            response = self.client.post('/ocr/wot/1/add_ocr/',
+                                    {'title': 'testfile',
+                                    'author': 'admin',
+                                    'lecture': self.lecture1,
+                                    'content': myfile}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'show_scanned.html')
+
+    def test_add_crop_with_file(self):
+        with open(self.path) as myfile:
+            response = self.client.post('/ocr/wot/1/add_crop/',
+                                    {'title': 'testfile',
+                                    'author': 'admin',
+                                    'lecture': self.lecture1,
+                                    'content': myfile}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'show_cropped.html')
+
+    def test_add_crop_with_bad_file(self):
+        myfile = SimpleUploadedFile(name='foo.jpg', 
+                   content=b'GIF87a\x01\x00\x01\x00\x80\x01\x00\x00\x00\x00ccc,\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02D\x01\x00')
+        response = self.client.post('/ocr/wot/1/add_crop/',
+                                {'title': 'testfile',
+                                'author': 'admin',
+                                'lecture': self.lecture1,
+                                'content': myfile}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'images_not_found.html')
 
 class Ocr(TestCase):
 

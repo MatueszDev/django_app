@@ -321,7 +321,7 @@ class FormTest(TestCase):
                                 'lecture': self.lecture1,
                                 'content': myfile}, follow=True)
         self.assertEqual(response.status_code, 200)
-        #self.assertTemplateUsed(response, 'notes_main.html')
+        self.assertTemplateUsed(response, 'notes_main.html')
     
     def test_add_img_file_form_response(self):
         self.client.login(username='admin', password='correcthorse')

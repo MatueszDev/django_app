@@ -6,4 +6,5 @@
 *.un~
 *.sqlite3
 .idea
+.coverage
 media/*
