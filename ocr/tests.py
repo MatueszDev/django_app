@@ -13,12 +13,13 @@ from notes.models import Lecture, NoteFileImage
 from ocr.views import ocr_script_database_helper, crop_script_database_helper
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django_app.settings import DJANGO_HOST
-#from scripts.ocr_pytesseract import scanner
-#from scripts.scan_for_drawings import scan_for_drawings
 
 #commented lines in this file are tests that work only locally, commenting to be
 #able to merge with master and upload to heroku
-#import cv2
+if(DJANGO_HOST == "development"):
+    import cv2
+    from scripts.ocr_pytesseract import scanner
+    from scripts.scan_for_drawings import scan_for_drawings
 
 class OcrUrlsTest(TestCase):
 
