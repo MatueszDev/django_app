@@ -56,23 +56,36 @@ class OcrViewsTest(TestCase):
 
     def test_add_ocr(self):
         response = self.client.get('/ocr/lect/1/add_ocr/', follow=True)
-        self.assertTemplateUsed(response, 'add_ocr.html')
-    
+        if(DJANGO_HOST == "development"):
+            self.assertTemplateUsed(response, 'add_ocr.html')
+        else:
+            self.assertTemplateUsed(response, 'notavailable.html')
+
+
     def test_add_crop(self):
         response = self.client.get('/ocr/lect/1/add_crop/', follow=True)
-        self.assertTemplateUsed(response, 'add_crop.html')
+        if(DJANGO_HOST == "development"):
+            self.assertTemplateUsed(response, 'add_crop.html')
+        else:
+            self.assertTemplateUsed(response, 'notavailable.html')
 
     def test_add_ocr_post(self):
         response = self.client.post('/ocr/lect/1/add_ocr/', {'title': 'title',
             'author': 'author', 'Lecture': self.lecture1, 'content': self.path,},
             follow = True)
-        self.assertTemplateUsed(response, 'add_ocr.html')
+        if(DJANGO_HOST == "development"):
+            self.assertTemplateUsed(response, 'add_ocr.html')
+        else:
+            self.assertTemplateUsed(response, 'notavailable.html')
 
     def test_add_crop_post(self):
         response = self.client.post('/ocr/lect/1/add_crop/', {'title': 'title',
             'author': 'author', 'Lecture': self.lecture1, 'content': self.path,},
             follow = True)
-        self.assertTemplateUsed(response, 'add_crop.html')
+        if(DJANGO_HOST == "development"):
+            self.assertTemplateUsed(response, 'add_crop.html')
+        else:
+            self.assertTemplateUsed(response, 'notavailable.html')
 
     def test_add_ocr_with_file(self):
         with open(self.path) as myfile:
@@ -82,7 +95,10 @@ class OcrViewsTest(TestCase):
                                     'lecture': self.lecture1,
                                     'content': myfile}, follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'show_scanned.html')
+        if(DJANGO_HOST == "development"):
+            self.assertTemplateUsed(response, 'show_scanned.html')
+        else:
+            self.assertTemplateUsed(response, 'notavailable.html')
 
     def test_add_crop_with_file(self):
         with open(self.path) as myfile:
@@ -92,55 +108,73 @@ class OcrViewsTest(TestCase):
                                     'lecture': self.lecture1,
                                     'content': myfile}, follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'show_cropped.html')
+        if(DJANGO_HOST == "development"):
+            self.assertTemplateUsed(response, 'show_cropped.html')
+        else:
+            self.assertTemplateUsed(response, 'notavailable.html')
 
     def test_add_crop_with_bad_file(self):
         myfile = SimpleUploadedFile(name='foo.jpg', 
-                   content=b'GIF87a\x01\x00\x01\x00\x80\x01\x00\x00\x00\x00ccc,\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02D\x01\x00')
+                content=b'GIF87a\x01\x00\x01\x00\x80\x01\x00\x00\x00\x00ccc,\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02D\x01\x00')
         response = self.client.post('/ocr/wot/1/add_crop/',
                                 {'title': 'testfile',
                                 'author': 'admin',
                                 'lecture': self.lecture1,
                                 'content': myfile}, follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'images_not_found.html')
+        if(DJANGO_HOST == "development"):
+            self.assertTemplateUsed(response, 'images_not_found.html')
+        else:
+            self.assertTemplateUsed(response, 'notavailable.html')
 
 
-#class Ocr(TestCase):
-#
-#    def setUp(self):
-#        self.path = 'ocr/sample_files/sample_text.jpg'
-#
-#    def test_returned_text(self):
-#        result = scanner(self.path)
-#        self.assertEqual(result, "I'm a normal text\nI'm a bold text")
-#
-#
-#class Extract(TestCase):
-#
-#    def setUp(self):
-#        self.path = 'ocr/sample_files/sample_extract.png'
-#        self.path_big = 'ocr/sample_files/sample_big.jpg'
-#        self.path_text = 'ocr/sample_files/sample_text.jpg'
-#
-#    def test_returned_images(self):
-#        results_all = scan_for_drawings(self.path)
-#        self.assertEqual(len(results_all), 2)
-#        results_crops = results_all[1]
-#        self.assertEqual(len(results_crops), 2)
-#        for result in results_crops:
-#            self.assertIsInstance(result, np.ndarray)
-#
-#    def test_big_image(self):
-#        results_all = scan_for_drawings(self.path_big)
-#        self.assertEqual(len(results_all), 2)
-#        results_crops = results_all[1]
-#        self.assertEqual(len(results_crops), 4) #manually upscaled image causes anomalies
-#        for result in results_crops:
-#            self.assertIsInstance(result, np.ndarray)
-#
-#    def test_noimg(self):
-#        self.assertRaises(scan_for_drawings(self.path_text))
+class Ocr(TestCase):
+
+    def setUp(self):
+        self.path = 'ocr/sample_files/sample_text.jpg'
+
+    def test_returned_text(self):
+        if(DJANGO_HOST == "development"):
+            result = scanner(self.path)
+            self.assertEqual(result, "I'm a normal text\nI'm a bold text")
+        else:
+            pass
+
+
+class Extract(TestCase):
+
+    def setUp(self):
+        self.path = 'ocr/sample_files/sample_extract.png'
+        self.path_big = 'ocr/sample_files/sample_big.jpg'
+        self.path_text = 'ocr/sample_files/sample_text.jpg'
+
+    def test_returned_images(self):
+        if(DJANGO_HOST == "development"):
+            results_all = scan_for_drawings(self.path)
+            self.assertEqual(len(results_all), 2)
+            results_crops = results_all[1]
+            self.assertEqual(len(results_crops), 2)
+            for result in results_crops:
+                self.assertIsInstance(result, np.ndarray)
+        else:
+            pass
+
+    def test_big_image(self):
+        if(DJANGO_HOST == "development"):
+            results_all = scan_for_drawings(self.path_big)
+            self.assertEqual(len(results_all), 2)
+            results_crops = results_all[1]
+            self.assertEqual(len(results_crops), 4) #manually upscaled image causes anomalies
+            for result in results_crops:
+                self.assertIsInstance(result, np.ndarray)
+        else:
+            pass
+
+    def test_noimg(self):
+        if(DJANGO_HOST == "development"):
+            self.assertRaises(scan_for_drawings(self.path_text))
+        else:
+            pass
 
 
 class AppsTest(TestCase):
