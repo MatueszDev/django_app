@@ -10,13 +10,14 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from .utils import Import, Calendar
 from django.shortcuts import reverse
 from django.core.exceptions import ValidationError
+from .apps import KalendarConfig
 # Create your tests here.
 
 class TestEvent(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='user', email="user@fis.agh.edu.pl", password="12345678",
                                              first_name="user", last_name="user")
-        self.event_object = Event(
+        self.event_object = Event.objects.create(
             title='New event', user=self.user, day='2018-01-11', starting_time='12:30', ending_time='13:30', personal_notes='I dont have'
         )
 
@@ -30,7 +31,7 @@ class TestEvent(TestCase):
 
     def test_get_absolute_url(self):
         link = self.event_object.get_absolute_url(self.user)
-        url = '/kalendar/modifyEvent/0/'
+        url = '/kalendar/modifyEvent/1/'
         self.assertEqual('<a href="%s">%s%s</a>' % (url, self.event_object.title[:7],'...'), link)
 
     def test_unicode(self):
@@ -42,9 +43,9 @@ class TestEvent(TestCase):
         self.assertFalse(self.event_object.check_overlap(self.event_object.starting_time, self.event_object.ending_time, '1:30', '2:00'))
 
     def test_clean(self):
-        self.assertRaises(Event(
-            title="T", user=self.user, starting_time="10:00", ending_time="9:00", day='2018-01-11'
-        ))
+        self.assertIsNone(self.event_object.clean())
+
+
 
 class TestEventForm(TestCase):
 
@@ -147,6 +148,10 @@ class ViewTest(TestCase):
             title='New event', user=self.user, day='2018-01-11', starting_time='12:30', ending_time='13:30',
             personal_notes='I dont have'
         )
+        self.event_object_2 = Event.objects.create(
+            title='New event 321', user=self.user, day='2018-01-13', starting_time='12:30', ending_time='13:30',
+            personal_notes='I dont have'
+        )
 
     def test_index(self):
         response = self.client.get('/kalendar/', follow=True)
@@ -155,6 +160,8 @@ class ViewTest(TestCase):
 
         response_2 = self.client.get('/kalendar/?day__gte=2018-02-01')
         self.assertEqual(response_2.context['text']  , '/kalendar/?day__gte=2018-02-01')
+        response_3 = self.client.get('/kalendar/?day__gte=20180201')
+        self.assertEqual(response_3.context['previous_month'],'?day__gte=2017-12-01' )
 
     def test_name_view(self):
 
@@ -185,3 +192,36 @@ class ViewTest(TestCase):
 
         response = self.client.get('/kalendar/addEvent/', follow=True)
         self.assertEqual(response.status_code, 200)
+
+    def test_modify_event(self):
+        response = self.client.post('/kalendar/modifyEvent/%s/'% self.event_object.id,
+                                    {'title': 'modified',
+                                     'day':'2018-01-15',
+                                     'starting_time':'14:30',
+                                     'ending_time':'15:30',
+                                     'personal_notes':'I dont have',},
+                                    follow=True)
+
+        self.assertTrue(Event.objects.filter(title='modified').exists())
+        self.assertTrue(Event.objects.filter(day='2018-01-15').exists())
+        self.assertTemplateUsed(response, 'kalendar/calendar.html')
+
+    def test_delete_event(self):
+        response = self.client.get('/kalendar/delete/%s/'% self.event_object.id)
+        self.assertFalse(Event.objects.filter(title='New event').exists())
+
+
+    def test_import_events_from_uni(self):
+        text = b'''"Name","Section","Type","Title","Day Of Week","First Date","Last Date","Published Start","Published End","Location","Capacity","Instructor / Sponsor","Email","Requested Services","Approved",
+        "FiIS-FT-1 Języki(3rok)","1","Lektorat","Język Obcy (3rok)","Th","11.1.2018",,"11:00","14:00","D-11 SJO","10000",,,,"6.10.2017",'''
+        response = self.client.get('/kalendar/import/', follow=True)
+        self.assertTemplateUsed(response, 'kalendar/calendar.html')
+
+
+        #self.assertIsNone(self.client.post('/kalendar/import/', {'title':'ev.csv','file': text  }, follow=True))
+
+
+class AppsTest(TestCase):
+
+    def test_Kalendar_Config(self):
+        self.assertEqual(KalendarConfig.name, "kalendar")
