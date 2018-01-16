@@ -6,6 +6,14 @@ from .models import Post, Comment
 from django.contrib.auth.models import User
 from user_authentication.models import Profile
 from django.core.urlresolvers import reverse
+from django.apps import apps
+from notice_board.apps import NoticeBoardConfig
+
+
+class NoticeBoardConfigTest(TestCase):
+    def test_apps(self):
+        self.assertEqual(NoticeBoardConfig.name, 'notice_board')
+        self.assertEqual(apps.get_app_config('notice_board').name, 'notice_board')
 
 
 class ViewTest(TestCase):
@@ -54,3 +62,30 @@ class ViewTest(TestCase):
         self.client.login(username='admin', password='jkadyen3')
         response = self.client.get(reverse('notice_board:delete_post', args={self.post.pk}), follow=True)
         self.assertTemplateUsed(response, 'post/list.html')
+
+    def test_add_post_view_if_success(self):
+        self.client.login(username='admin', password='jkadyen3')
+        response = self.client.post("/notice_board/add_post/", {'title': 'aaa',
+                                                                'body': 'dasdasdsdsad'},
+                                    follow=True)
+        self.assertTemplateUsed(response, 'post/list.html')
+
+    def test_add_post_view(self):
+        self.client.login(username='admin', password='jkadyen3')
+        response = self.client.get("/notice_board/add_post/", follow=True)
+        self.assertTemplateUsed(response, 'post/addpost.html')
+
+    def test_edit_view_if_success(self):
+        self.client.login(username='admin', password='jkadyen3')
+        response = self.client.post('/notice_board/edit_post/1', {'title': 'aaa',
+                                                                  'body': 'dasdasdsdsad'}, follow=True)
+        self.assertTemplateUsed(response, 'post/editpost.html')
+
+    def test_add_comment_view_if_success(self):
+        self.client.login(username='user', password='alamakota22')
+        response = self.client.post(reverse('notice_board:post_detail', args=[self.post.publish.year,
+                                                                             self.post.publish.strftime('%m'),
+                                                                             self.post.publish.strftime('%d'),
+                                                                             self.post.slug]), {'body': 'asd'},
+                                    follow=True)
+        self.assertTemplateUsed(response, 'post/detail.html')

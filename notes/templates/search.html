@@ -1,0 +1,50 @@
+{% extends "main_page/main_page.html" %}
+
+{% block title %}Lecture notes: search results{% endblock %}
+
+{% block content %}
+<div id="main_page_center" style="padding-left: 4%; padding-right: 1%;"  class="paper">
+    <h1 style="margin-left: 2%;"> Search results for: {{terms}}</h1>
+    <div  id="noteslist" style="display: inline-block; width: 45%; float: left; margin-left: 5%; padding-right: 5%;">
+    <script type="text/javascript">
+        var lista = document.getElementById("noteslist");
+        var currentlecture = 0;
+        var currentcourse = "";
+    </script>
+        {% for note in notes %}
+        <script type="text/javascript">
+            if(currentcourse != "{{note.lecture.course.classes}}" || currentlecture != "{{note.lecture.lecture_number}}"){
+                currentcourse = "{{note.lecture.course.classes}}";
+                currentlecture = "{{note.lecture.lecture_number}}";
+                lista.innerHTML += '<a href="/notes/{{note.lecture.slug}}/{{note.lecture.lecture_number}}"><h4 style="color: #000;">{{note.lecture.course.classes}} #{{note.lecture.lecture_number}}: {{note.lecture.lecture_title}}</h4></a>';
+            }
+        </script>
+        <table>
+                <tr style="background-color: #f0f0f0; cursor: pointer;" onclick="toggleNote({{note.pk}})"><td style="font-size: 15px;">{{note.title}}, by {{note.author}}</td></tr>
+                <tr class="note{{note.pk}}" style="display: none;"><td>{{note.content|linebreaksbr}}</td></tr>
+                {% for question in note.questions.all %}
+                    <tr class="note{{note.pk}}" style="display: none;"><td><b>{{question.publish}} {{question.author}} asks:</b><br><a href="/notes/{{note.lecture.slug}}/{{note.lecture.lecture_number}}/{{note.slug}}/{{question.pk}}/">{{question.title}}</a> {% if question.answered %} <span style="color: green;"><b>✓</b></span> {% endif %}</td></tr>
+                {% endfor %}
+                <tr class="note{{note.pk}}" style="display: none;"><td><a href="/notes/{{note.lecture.slug}}/{{note.lecture.lecture_number}}/{{note.slug}}/ask">Ask a question</a></td></tr>
+                <tr class="note{{note.pk}}" style="display: none;"><td><a href="/notes/{{note.lecture.slug}}/{{note.lecture.lecture_number}}/{{note.slug}}/mark/">[ bookmark ]</a></td></tr>
+        </table>
+        {% endfor %}
+    </div>
+    
+    
+    <script type="text/javascript">
+        function toggleNote(pk){
+            classname = "note"+pk;
+            var contents = document.getElementsByClassName(classname);
+            for(i=0; i<contents.length; i++){
+                if(contents[i].style.display === "none"){
+                    contents[i].style.display = "block";
+                }
+                else{
+                    contents[i].style.display = "none";
+                }
+		    }
+        }
+    </script>
+</div>    
+{% endblock %}

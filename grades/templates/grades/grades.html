@@ -3,36 +3,23 @@
 
 <div id="main_page_center">
     <div id="table">
-    <form  action="#">
         <fieldset>
         <legend id="title"><h1 style="color:black; margin-left: 50px;">Choose your group:</h1></legend>
             <div id="choose" style="color:black; margin-left: 50px;">
-                {% for group in gradesGroups %}
-                    <h1>Kierunek: {{group.fieldOfStudy}}</h1>
-                    <h1>Rok: {{group.year}}</h1>
-                    {% for subject in group.classes.all %}
-                        <h1>{{subject}}</h1>
-                    {% empty %}
-                        <h3>No subjects!</h3>
-                    {% endfor %}
-
-                {% endfor %}
-
                 {% if not fields %}
                     <h2>There are no fields to display. You shoud add some.</h2>
                 {% else %}
                 <ul>
-                    {% for field in fields %}
+                    {% for group in grades %}
                     <li style='font-weight: bold; font-size:20px'>
-                        <h3><a style="font-weight: bold; font-size:20px;" onclick="show_years( '{{field}}' )">{{field}}</a></h3>
-                        <ul id='{{field}}' style="color:blue; font-weight: bold; font-size: 20px;"></ul>
+                        <h3><a style="font-weight: bold; font-size:20px;" onclick="show_years( '{{group.group.fieldOfStudy}}' )">{{group.group.fieldOfStudy}}</a></h3>
+                        <ul id='{{group.group.fieldOfStudy}}' style="color:blue; font-weight: bold; font-size: 20px;"></ul>
                     </li>
                     {% endfor %}
                 </ul>
                 {% endif %}
             </div>
         </fieldset>
-    </form>
     </div>
 
 
@@ -40,22 +27,48 @@
 
 <script type="text/javascript">
 
-var globalField='Technical Physics';
-var globalYear='year I';
-var globalSubject='MMF';
+var globalField='none';
+var globalYear='none';
+var globalSubject='none';
+var yearFlag = 0 ;
+var fieldFlag = 0 ;
+
+function return_dict(string)
+{
+    var dict = JSON.parse(string) ;
+    return dict ;
+}
+
+function average(arr) 
+{ 
+    var i,
+        sum = 0,
+        len = arr.length;
+    for (i = 0; i < len; i++) 
+    {
+        sum += arr[i]; 
+    } 
+    return sum / len;
+}
 
 
 function show_years(field)
 {
-    alert(field);
     globalField = field ;
     var list = document.getElementById(field) ;
 
-    {% for year in years %}
-        var li = document.createElement('li');
-        li.innerHTML = `<h3><a id='{{year}}' onclick="show_subjects( '{{year}}' )"> {{year}} </a></h3>` ;
-        list.appendChild(li) ;
-    {% endfor %}
+    if ( fieldFlag == 0)
+    {
+        {% for group in grades %}
+                if( '{{group.group.fieldOfStudy}}' == field)
+                {
+                var li = document.createElement('li');
+                li.innerHTML = `<h3><a id='{{group.group.year}}' onclick="show_subjects( '{{group.group.year}}' )"> {{group.group.year}} </a></h3>` ;
+                list.appendChild(li) ;
+                }
+        {% endfor %}
+        fieldFlag = 1;
+    }
 
 }
 
@@ -72,57 +85,85 @@ function show_subjects(year)
     li.innerHTML = 'Classes:' ;
     ul.appendChild(li) ;
 
-    {% for group in classes %}
-       li = document.createElement('li');
-       li.innerHTML = "<h5><a id='{{group}}' onclick=show_table('{{group}}')> {{group}} </a></h5>" ;
-       ul.appendChild(li) ;
-       list.appendChild(ul) ;
-   {% endfor %}
+    if ( yearFlag == 0 )
+    {
+        {% for group in grades %}
+            {% for subject in group.group.classes.all %}
+                if( '{{group.group.fieldOfStudy }}' == globalField && '{{group.group.year}}' == globalYear )
+                {
+                    li = document.createElement('li');
+                    li.innerHTML = "<p id='{{subject}}' onclick=show_table('{{subject}}')> {{subject}} </p>" ;
+                    ul.appendChild(li) ;
+                    list.appendChild(ul) ;
+                }
+            {% empty %}
+                alert('There are no subjects!')
+            {% endfor %}
+       {% endfor %}
+       yearFlag = 1 ;
+    }
+
 
 
 }
 
-function show_table(group)
+function show_table(subject)
 {
-    alert("You are going to see marks from  " + globalSubject + " classes.") ;
+    globalSubject = subject;
     $("#table").remove();
+    var gradesDictionary ;
 
-    document.write
-    (`
-       <h2 id="title"></h2>
-       <table id="table_area">
-       <table id="grades_table">
-           <tr>
-               <th><h4>Student</h4></th>
-               <th><h4>Grades</h4></th>
-           </tr>
-           <tr id="row"></tr>
-       </table>
-       </table>
-
-    `);
-
-    document.getElementById("title").innerHTML = globalField +", "+ globalYear +", "+ globalSubject+":" ;
-
-
-
-
-    var table = document.getElementById('grades_table');
-
-
-    var td1 = document.createElement('td');
-    var td2 = document.createElement('td');
-    var row = document.getElementById('row');
-
-    {% for student in students %}
-        alert('{{student}}');
-        td1.innerHTML = "{{student}}" ;
-        td2.innerHTML = "[2,4, 5]";
-        row.appendChild(td1);
-        row.appendChild(td2);
-        table.appendChild(row);
+    {% for group in grades %}
+        {% for subject in group.group.classes.all %}
+            if('{{group.group.fieldOfStudy}}' == globalField && '{{group.group.year}}' == globalYear && '{{subject}}' == globalSubject )
+            {
+                gradesDictionary = '{{group.gradesDict}}' ;
+                gradesDictionary = gradesDictionary.split("&#39;").join('"') ;
+                gradesDictionary = gradesDictionary.split("u").join("") ;
+                gradesDictionary = JSON.parse(gradesDictionary) ;
+            }  
+        {% endfor %}
     {% endfor %}
 
+
+    
+    document.getElementById("main_page_center").innerHTML = '<center>' +
+                                                            '<h2 id="title" style="color:black; margin-left: 50px;"></h2>' +
+                                                            '<h4 id="subtitle" style="color:black; margin-left: 50px;"></h4>' +
+                                                            '</center>' +
+                                                            '<table id="grades_table">' +
+                                                               '<tr id="tr">' +
+                                                                   '<th><h4>Student:</h4></th>' +
+                                                                   '<th><h4>Grades:</h4></th>' +
+                                                               '</tr>' +
+                                                               '<tr id="row"></tr>' +
+                                                            '</table>' ;
+
+
+
+    document.getElementById("title").innerHTML = globalSubject ;
+    document.getElementById("subtitle").innerHTML = globalField +", "+ globalYear ;
+
+    var table = document.getElementById("grades_table");
+    var gradesAverage ;
+    $.each(gradesDictionary[globalSubject], function (index, value) 
+    {
+        var tr = document.createElement('tr');   
+
+        var td1 = document.createElement('td');
+        var td2 = document.createElement('td');
+
+        var name = document.createTextNode(index.split("_").join(" ") );
+        var grades = document.createTextNode(value);
+
+        td1.appendChild(name);
+        td2.appendChild(grades);
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+
+        table.appendChild(tr);
+
+    });
 
 
 

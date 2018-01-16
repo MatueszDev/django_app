@@ -23,7 +23,8 @@
                                 {{ vote.user }}
                             {% endif %}
                         {% endfor %}
-                    </font>
+                    </font><br/>
+                    Already voted: {{ option.number_of_votes }}
                 </li>
             {% endfor %}
         </ul>

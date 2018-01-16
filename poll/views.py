@@ -50,6 +50,8 @@ def poll(request, object_id):
         answers = Respond.objects.filter(poll=question[0])
         votes = Vote.objects.filter(poll=question[0])
         form = AnsForm()
+        for obj in answers:
+            obj.number_of_votes = Vote.count_option_votes(obj)
 
         extra_content = {'question':question, 'answers':answers, 'form':form, 'id':object_id, 'info_2':info_2, 'votes':votes}
 

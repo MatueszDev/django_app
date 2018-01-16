@@ -6,6 +6,14 @@ from django.contrib.auth.models import User
 from .models import Profile
 from django.contrib.messages.api import get_messages
 from django.test import Client
+from django.apps import apps
+from user_authentication.apps import UserAuthenticationConfig
+
+
+class UserAuthenticationConfigTest(TestCase):
+    def test_apps(self):
+        self.assertEqual(UserAuthenticationConfig.name, 'user_authentication')
+        self.assertEqual(apps.get_app_config('user_authentication').name, 'user_authentication')
 
 
 class LoginTest(TestCase):

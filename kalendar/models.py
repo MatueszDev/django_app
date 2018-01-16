@@ -38,9 +38,7 @@ class Event(models.Model):
         if 'admin' not in request:
             url = reverse('modify_event', args=[self.id])
             return '<a href="%s">%s%s</a>' % (url, self.title[:7],'...')
-        else:
-            url = reverse('admin:%s_%s_change' % (self._meta.app_label, self._meta.model_name), args=[self.id])
-            return u'<a href="%s">%s</a>' % (url, self.title)
+
 
     def check_overlap(self, fixed_start, fixed_end, new_start, new_end):
         overlap = False
@@ -57,14 +55,6 @@ class Event(models.Model):
     def clean(self):
         if self.ending_time <= self.starting_time:
             raise ValidationError('Starting time could not be after ending time')
-
-        events = Event.objects.filter(day=self.day)
-        if events.exists():
-            for event in events:
-                if self.check_overlap(event.starting_time, event.ending_time, self.starting_time, self.ending_time):
-                    raise ValidationError(
-                        'There is an overlap with another event: ' + str(event.day) + ', ' + str(
-                            event.starting_time) + '-' + str(event.ending_time))
 
 
 
