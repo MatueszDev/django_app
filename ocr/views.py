@@ -94,7 +94,7 @@ def add_crop(request,classes,lecture_number):
         args['lecture_number'] = lecture_number
         return render_to_response('add_crop.html', args)
     else:
-        return render(request, 'notavaliable.html')
+        return render(request, 'notavailable.html')
 
 def crop_script_database_helper(id):
     obj = NoteFileImage.objects.get(id=id)

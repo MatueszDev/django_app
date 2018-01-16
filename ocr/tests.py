@@ -105,41 +105,41 @@ class OcrViewsTest(TestCase):
         self.assertTemplateUsed(response, 'images_not_found.html')
 
 
-class Ocr(TestCase):
-
-    def setUp(self):
-        self.path = 'ocr/sample_files/sample_text.jpg'
-
-    def test_returned_text(self):
-        result = scanner(self.path)
-        self.assertEqual(result, "I'm a normal text\nI'm a bold text")
-
-
-class Extract(TestCase):
-
-    def setUp(self):
-        self.path = 'ocr/sample_files/sample_extract.png'
-        self.path_big = 'ocr/sample_files/sample_big.jpg'
-        self.path_text = 'ocr/sample_files/sample_text.jpg'
-
-    def test_returned_images(self):
-        results_all = scan_for_drawings(self.path)
-        self.assertEqual(len(results_all), 2)
-        results_crops = results_all[1]
-        self.assertEqual(len(results_crops), 2)
-        for result in results_crops:
-            self.assertIsInstance(result, np.ndarray)
-
-    def test_big_image(self):
-        results_all = scan_for_drawings(self.path_big)
-        self.assertEqual(len(results_all), 2)
-        results_crops = results_all[1]
-        self.assertEqual(len(results_crops), 4) #manually upscaled image causes anomalies
-        for result in results_crops:
-            self.assertIsInstance(result, np.ndarray)
-
-    def test_noimg(self):
-        self.assertRaises(scan_for_drawings(self.path_text))
+#class Ocr(TestCase):
+#
+#    def setUp(self):
+#        self.path = 'ocr/sample_files/sample_text.jpg'
+#
+#    def test_returned_text(self):
+#        result = scanner(self.path)
+#        self.assertEqual(result, "I'm a normal text\nI'm a bold text")
+#
+#
+#class Extract(TestCase):
+#
+#    def setUp(self):
+#        self.path = 'ocr/sample_files/sample_extract.png'
+#        self.path_big = 'ocr/sample_files/sample_big.jpg'
+#        self.path_text = 'ocr/sample_files/sample_text.jpg'
+#
+#    def test_returned_images(self):
+#        results_all = scan_for_drawings(self.path)
+#        self.assertEqual(len(results_all), 2)
+#        results_crops = results_all[1]
+#        self.assertEqual(len(results_crops), 2)
+#        for result in results_crops:
+#            self.assertIsInstance(result, np.ndarray)
+#
+#    def test_big_image(self):
+#        results_all = scan_for_drawings(self.path_big)
+#        self.assertEqual(len(results_all), 2)
+#        results_crops = results_all[1]
+#        self.assertEqual(len(results_crops), 4) #manually upscaled image causes anomalies
+#        for result in results_crops:
+#            self.assertIsInstance(result, np.ndarray)
+#
+#    def test_noimg(self):
+#        self.assertRaises(scan_for_drawings(self.path_text))
 
 
 class AppsTest(TestCase):
