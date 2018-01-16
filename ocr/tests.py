@@ -4,24 +4,20 @@ from __future__ import unicode_literals
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.apps import apps 
+from ocr.apps import OcrConfig
+import numpy as np
+from notes.forms import NoteImageForm, NoteOtherForm, NoteForm
+from grades.models import Classes
+from notes.models import Lecture, NoteFileImage
+from ocr.views import ocr_script_database_helper, crop_script_database_helper
+from django.core.files.uploadedfile import SimpleUploadedFile
+
+if(DJANGO_HOST == "development"):
+    import cv2
 from scripts.ocr_pytesseract import scanner
 from scripts.scan_for_drawings import scan_for_drawings
 
-from django.apps import apps 
-from ocr.apps import OcrConfig
-import cv2
-import numpy as np
-
-from notes.forms import NoteImageForm, NoteOtherForm, NoteForm
-
-
-from grades.models import Classes
-from notes.models import Lecture, NoteFileImage
-
-from ocr.views import ocr_script_database_helper, crop_script_database_helper
-
-from django.core.files.uploadedfile import SimpleUploadedFile
-# Create your tests here.
 
 class OcrUrlsTest(TestCase):
 
@@ -37,6 +33,7 @@ class OcrUrlsTest(TestCase):
             'lecture_number': 2}), '/ocr/wot/2/add_ocr/')
         self.assertEqual(reverse('ocr:add_crop', kwargs = {'classes': 'wot',
             'lecture_number': 2}), '/ocr/wot/2/add_crop/')
+
 
 class OcrViewsTest(TestCase):
 
@@ -67,14 +64,12 @@ class OcrViewsTest(TestCase):
         response = self.client.post('/ocr/lect/1/add_ocr/', {'title': 'title',
             'author': 'author', 'Lecture': self.lecture1, 'content': self.path,},
             follow = True)
-        print(response.status_code)
         self.assertTemplateUsed(response, 'add_ocr.html')
 
     def test_add_crop_post(self):
         response = self.client.post('/ocr/lect/1/add_crop/', {'title': 'title',
             'author': 'author', 'Lecture': self.lecture1, 'content': self.path,},
             follow = True)
-        print(response.status_code)
         self.assertTemplateUsed(response, 'add_crop.html')
 
     def test_add_ocr_with_file(self):
@@ -108,6 +103,7 @@ class OcrViewsTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'images_not_found.html')
 
+
 class Ocr(TestCase):
 
     def setUp(self):
@@ -116,6 +112,7 @@ class Ocr(TestCase):
     def test_returned_text(self):
         result = scanner(self.path)
         self.assertEqual(result, "I'm a normal text\nI'm a bold text")
+
 
 class Extract(TestCase):
 
