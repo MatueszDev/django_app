@@ -12,7 +12,7 @@ from ocr.apps import OcrConfig
 import cv2
 import numpy as np
 
-from notes.forms import NoteImageForm
+from notes.forms import NoteImageForm, NoteOtherForm, NoteForm
 
 
 from grades.models import Classes
@@ -62,9 +62,19 @@ class OcrViewsTest(TestCase):
         response = self.client.get('/ocr/lect/1/add_crop/', follow=True)
         self.assertTemplateUsed(response, 'add_crop.html')
 
-#    def test_unavailable(self):
-#        response = self.client.get('/ocr/wot/1/add_ocr/')
-#        self.assertTemplateUsed(response, 'unavailable.html')
+    def test_add_ocr_post(self):
+        response = self.client.post('/ocr/lect/1/add_ocr/', {'title': 'title',
+            'author': 'author', 'Lecture': self.lecture1, 'content': self.path,},
+            follow = True)
+        print(response.status_code)
+        self.assertTemplateUsed(response, 'add_ocr.html')
+
+    def test_add_crop_post(self):
+        response = self.client.post('/ocr/lect/1/add_crop/', {'title': 'title',
+            'author': 'author', 'Lecture': self.lecture1, 'content': self.path,},
+            follow = True)
+        print(response.status_code)
+        self.assertTemplateUsed(response, 'add_crop.html')
 
 class Ocr(TestCase):
 

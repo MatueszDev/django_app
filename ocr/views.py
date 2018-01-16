@@ -30,6 +30,7 @@ def add_ocr(request,classes,lecture_number):
         lectures = Lecture.objects.filter(slug=classes,
             lecture_number=number)
         if request.POST:
+            print("POST!!!!!!!!!!!!")
             fileform = NoteOtherForm(request.POST, request.FILES)
             for filename,file_ in request.FILES.iteritems():
                 if file_.content_type.startswith("image/"):
