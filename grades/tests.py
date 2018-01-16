@@ -5,6 +5,7 @@ from django.db import models
 from .models import Grades_group, Grades, Classes, Year, Field_of_study
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from grades.apps import GradesConfig
 
 # Models
 class GroupTest(TestCase):
