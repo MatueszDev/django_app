@@ -12,6 +12,7 @@ from grades.models import Classes
 from notes.models import Lecture, NoteFileImage
 from ocr.views import ocr_script_database_helper, crop_script_database_helper
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django_app.settings import DJANGO_HOST
 
 if(DJANGO_HOST == "development"):
     import cv2
