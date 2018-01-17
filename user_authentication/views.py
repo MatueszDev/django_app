@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from django.conf import settings
-import urlparse
+import base64
 
 
 def register(request):
@@ -23,11 +23,11 @@ def register(request):
             user = User.objects.get(id=id)
             text = ''
             if settings.DJANGO_HOST == "development":
-                text = "Hi " + str(user) + "!\nHow are you?\nHere is the link to activate your account:\n" + \
-                       urlparse.urljoin("http://localhost:8000/activation", "/?id=" + str(id))
+                text = "Hi {}!\nHow are you?\nHere is the link to activate your account:\n" \
+                        "http://localhost:8000/activation/?id=%s".format(user) % id
             if settings.DJANGO_HOST == "production":
-                text = "Hi " + str(user) + "!\nHow are you?\nHere is the link to activate your account:\n" + \
-                       urlparse.urljoin("https://student-notebook.herokuapp.com/activation", "/?id=" + str(id))
+                text = "Hi {}!\nHow are you?\nHere is the link to activate your account:\n" \
+                       "https://student-notebook.herokuapp.com/activation/?id=%s".format(user) % id
             subject = "Activate your account at Student Notebook"
             send_mail(subject, text, 'admin@gmail.com', [register_form.cleaned_data['email']])
             return render(request, 'user_authentication/thankyou.html')
@@ -58,5 +58,3 @@ def edit(request):
         user_form = UserEditForm(instance=request.user)
         profile_form = ProfileEditForm(instance=request.user.profile)
     return render(request, 'user_authentication/edit.html', {'user_form': user_form,  'profile_form': profile_form})
-
-
