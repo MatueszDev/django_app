@@ -1,7 +1,8 @@
 Django==1.11.7
 jsmin==2.2.2
 pillow
+coveralls
+numpy
 psycopg2
 dj_database_url
-numpy
-coveralls
+pytesseract

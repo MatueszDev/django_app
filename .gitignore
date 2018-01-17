@@ -1,6 +1,10 @@
 *.pyc
 *.swp
+*.swo
+*.swn
+*.swm
 *.un~
 *.sqlite3
 .idea
+.coverage
 media/*

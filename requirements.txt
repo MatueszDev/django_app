@@ -4,3 +4,4 @@ jsmin==2.2.2
 Pillow
 dj_database_url
 numpy
+pytesseract

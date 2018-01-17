@@ -1,0 +1,16 @@
+{% extends "main_page/main_page.html" %}
+
+{% block title %}Lecture notes{% endblock %}
+
+{% block content %}
+
+<div id="main_page_center" class="paper">
+    <div style="margin-left: 5%;">
+        <form action="/notes/" method="post"> 
+          <h2>Sorry, no images were found on this picture</h2>
+          {%csrf_token %}
+          <input type="submit" name="sumbit" value="Go back to Notes">
+        </form>
+    </div>
+</div>
+{% endblock %}
